@@ -7,8 +7,8 @@ import { DEVELOPERS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
+        backgroundColor: 'whitesmoke',
+        color: 'black',
         padding: theme.spacing(3, 0),
     },
     footerContainer: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     gitHubLink: {
-        color: 'white',
+        color: 'black',
         textDecoration: 'none',
     },
     gitHubList: {
@@ -45,6 +45,15 @@ const useStyles = makeStyles((theme) => ({
             textAlign: 'center',
         },
     },
+    logoPick: {
+        width: '70px',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        },
+        border: '2px solid black',
+        backgroundColor: 'black',
+        boxShadow: '0 0 14px rgb(128 128 128)',
+    },
 }));
 
 const DeveloperElement = ({ className, github, fullname }) => (
@@ -62,7 +71,7 @@ function Footer() {
                 <Grid container>
                     <Grid item xs={12} md={2} className={classes.logo}>
                         <a target="_blank" rel="noreferrer" href="https://rs.school/react/">
-                            <img className={classes.logo} src={img} alt="RSS" />
+                            <img className={classes.logoPick} src={img} alt="RSS" />
                         </a>
                     </Grid>
                     <Grid item xs={12} md={8} className={classes.gitHubList}>

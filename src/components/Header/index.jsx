@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import background from "../../assets/istockphoto.jpg";
+
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     [theme.breakpoints.down('sm')]: {
@@ -18,15 +20,23 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   titleLink: {
-    color: 'white',
+    color: 'black',
     textDecoration: 'none',
     fontSize: '18px',
+    fontWeight: '900',
+    textShadow: '2px 3px 3px grey, 0 0 1em blue',
   },
   link: {
-    color: 'white',
+    color: 'black',
     textDecoration: 'none',
     fontSize: '16px',
-    margin: '0 10px'
+    fontWeight: '900',
+    margin: '0 10px',
+    textShadow: '2px 3px 3px grey, 0 0 1em red',
+  },
+  mainHeader: {
+    backgroundImage: `url(${background})`,
+    backgroundPosition: '0% 3%'
   }
 }));
 
@@ -34,7 +44,7 @@ function Header() {
   const classes = useStyles();
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" className={classes.mainHeader}>
       <Container maxWidth="lg">
         <Toolbar disableGutters className={classes.toolbar}>
           <Typography variant="h6" color="inherit" noWrap className={classes.title}>
