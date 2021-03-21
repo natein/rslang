@@ -1,32 +1,80 @@
 import React from 'react';
-import Box from '@material-ui/core/Box';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Button from './Button';
+import Typography from './Typography';
+import ProductHeroLayout from './ProductHeroLayout';
+import backgroundImage from '../../assets/main_bg.jpg';
 
-// import background from "../../assets/main_bg.jpg";
+const useStyles = makeStyles((theme) => ({
+    background: {
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundColor: '#7fc7d9', // Average color of the background image.
+        // backgroundPosition: 'center',
+        //     height: '100%',
+        //     width: '100%',
+        //     objectFit: 'cover',
+        // objectPosition: 'bottom',
+        // backgroundSize: 'cover',
+    },
+    button: {
+        minWidth: 150,
+        margin: '1rem',
+    },
+    h5: {
+        marginBottom: theme.spacing(4),
+        marginTop: theme.spacing(4),
+        [theme.breakpoints.up('sm')]: {
+            marginTop: theme.spacing(10),
+        },
+    },
+    more: {
+        marginTop: theme.spacing(2),
+    },
+    buttonCont: {
+        padding: theme.spacing(2),
+    },
+}));
 
 function HomePage() {
+    const classes = useStyles();
 
     return (
-        <div style={{ width: '100%' }}>
-          <Box display="flex" p={1}>
-            <Box p={1} flexGrow={1}>
-            RSLang
-            </Box>
-            {/* <div style={{ backgroundImage: `url(${background})` }}> */}
-            <div>
-            <Box p={1} bgcolor="grey.300">
-              Item 2
-            </Box>
-            <Box p={1} bgcolor="grey.300">
-              Item 3
-            </Box>
+        <ProductHeroLayout backgroundClassName={classes.background}>
+            {/* Increase the network loading priority of the background image. */}
+            <img style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
+            <Typography color="inherit" align="center" variant="h2" marked="center">
+                RSLang
+            </Typography>
+            <Typography color="inherit" align="center" variant="h5" className={classes.h5}>
+                Learn more english words fast and funy.
+            </Typography>
+            <div className={classes.buttonCont}>
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    className={classes.button}
+                    component="a"
+                    // href="/premium-themes/onepirate/sign-up/"
+                >
+                    Register
+                </Button>
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    className={classes.button}
+                    component="a"
+                    // href="/premium-themes/onepirate/sign-up/"
+                >
+                    Learn More
+                </Button>
             </div>
-          </Box>
-          <h2>
-                Изучи английский язык не выходя из дома! Ты расширишь свой словарный запас на 4000 слов, используя
-                современную методику обучения.
-            </h2>
-        </div>
-      );
+            <Typography variant="body2" color="inherit" className={classes.more}>
+                Discover the experience
+            </Typography>
+        </ProductHeroLayout>
+    );
 }
 
 export default HomePage;
