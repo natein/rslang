@@ -1,0 +1,41 @@
+import { useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router';
+import { loadWords } from '../../actions/wordsActions';
+import Words from '../Words';
+import LoadingPage from '../LoadingPage';
+import WordsPanel from '../WordsPanel';
+
+function EbookContainer({ loader, wordsList, loadWords, page, group }) {
+  useEffect(() => {
+    loadWords(group, page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group, page]);
+
+  const history = useHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
+
+  return (
+    <>
+      {loader && <LoadingPage />}
+      {<WordsPanel group={group} routeGroupPage={routeGroupPage} />}
+      {!loader && <Words wordsList={wordsList} page={page} group={group} />}
+    </>
+  );
+}
+
+const mapStateToProps = (state) => {
+  return {
+    wordsList: state.words.wordsList,
+    loader: state.words.loader
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadWords: (page, group) => dispatch(loadWords(page, group)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EbookContainer);

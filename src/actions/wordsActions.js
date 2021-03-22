@@ -5,10 +5,9 @@ export const SET_PAGE = 'SET_PAGE';
 export const SET_GROUP = 'SET_GROUP';
 export const SET_LOADER = 'SET_LOADER';
 
-export const loadWords = () => (dispatch, getState) => {
+export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
-  const { words } = getState();
-  return wordsService.getWords(words.page, words.group)
+  return wordsService.getWords(group, page)
     .then(data => dispatch(setWords(data)))
     .finally(() => dispatch(setLoader(false)));
 }
@@ -30,7 +29,7 @@ export const setPage = (page) => {
 export const setGroup = (group) => {
   return {
     type: SET_GROUP,
-    payload: { page: 0, group }
+    payload: { page: 1, group }
   }
 }
 
