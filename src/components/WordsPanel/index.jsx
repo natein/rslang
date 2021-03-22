@@ -13,6 +13,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import CloseIcon from '@material-ui/icons/Close';
 import FolderIcon from '@material-ui/icons/Folder';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
 import { SECTIONS_EBOOK } from '../../constants';
 
@@ -50,14 +51,13 @@ function WordsPanel({ group, routeGroupPage }) {
   const [anchorGames, setAnchorGames] = useState(null);
   const [openModalSettings, setOpenModalSettings] = useState(false);
 
-
   const handleClickSection = (event) => {
     setAnchorSection(event.currentTarget);
   };
 
   const handleCloseSection = (group) => {
     setAnchorSection(null);
-    if (group >= 0) routeGroupPage(group, 1)
+    if (group >= 1) routeGroupPage(group, 1)
   };
 
   const handleClickGames = (event) => {
@@ -81,14 +81,15 @@ function WordsPanel({ group, routeGroupPage }) {
       {
         <>
           <Button
-            style={{ backgroundColor: `${SECTIONS_EBOOK[group].backgroundBtn}` }}
+            style={{ backgroundColor: `${SECTIONS_EBOOK[group - 1].backgroundBtn}` }}
+            startIcon={<FolderOpenIcon />}
             className={classes.button}
             variant="contained"
             color="default"
             aria-controls="section-menu"
             aria-haspopup="true"
             onClick={handleClickSection}>
-            Раздел: {group}
+            {`${SECTIONS_EBOOK[group - 1].name}`}
           </Button>
           <Menu
             id="section-menu"
@@ -102,7 +103,7 @@ function WordsPanel({ group, routeGroupPage }) {
               SECTIONS_EBOOK.map(item =>
                 <MenuItem
                   key={item.group}
-                  onClick={() => handleCloseSection(item.group)}
+                  onClick={() => handleCloseSection(item.group + 1)}
                 >
                   <FolderIcon className={classes.menuItemSectionIcon} style={{ color: `${item.backgroundBtn}` }} /> {item.name}
                 </MenuItem>

@@ -101,8 +101,8 @@ function Words({ wordsList, page, group }) {
               <div className={classes.details}>
                 <CardContent className={classes.content}>
                   <Typography component="h5" variant="h5" className={classes.word}>
-                    <Tooltip title={`Раздел: ${group + 1}`}>
-                      <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[group].backgroundBtn}` }} />
+                    <Tooltip title={`${SECTIONS_EBOOK[group - 1].name}`}>
+                      <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[group - 1].backgroundBtn}` }} />
                     </Tooltip>
                     {word.word} - {word.transcription}
                     <VolumeUpIcon color="primary" className={classes.volume} />
