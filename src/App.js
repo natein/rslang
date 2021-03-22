@@ -34,7 +34,8 @@ function App() {
         <Container component="main" className={classes.mainContent}>
           <Switch>
             <Route path="/" component={HomePage} exact />
-            <Route path="/ebook" component={EbookPage} />
+            <Route path="/ebook" component={EbookPage} exact />
+            <Route path="/ebook/:group/:page" component={EbookPage} />
           </Switch>
         </Container>
         <Footer />
