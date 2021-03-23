@@ -1,4 +1,3 @@
-
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,12 +8,12 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SchoolIcon from '@material-ui/icons/School';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import FolderIcon from '@material-ui/icons/Folder';
 import { SECTIONS_EBOOK } from '../../constants';
+import WordsAudio from '../WordsAudio';
 
 const baseUrl = process.env.REACT_APP_API || '';
 
@@ -84,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, page, group }) {
+function Words({ wordsList, page, group, audio, wordPlaying, setWordPlaying }) {
   const classes = useStyles();
 
   return (
@@ -105,7 +104,7 @@ function Words({ wordsList, page, group }) {
                       <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[group - 1].backgroundBtn}` }} />
                     </Tooltip>
                     {word.word} - {word.transcription}
-                    <VolumeUpIcon color="primary" className={classes.volume} />
+                    <WordsAudio className={classes.volume} audio={audio} word={word} />
                   </Typography>
                   <Typography variant="subtitle1" color="textSecondary">
                     {word.wordTranslate}

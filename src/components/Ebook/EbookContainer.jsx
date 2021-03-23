@@ -1,34 +1,36 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { loadWords } from '../../actions/wordsActions';
+import { loadWords } from '../../actions/ebookActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import WordsPanel from '../WordsPanel';
 
 function EbookContainer({ loader, wordsList, loadWords, page, group }) {
+  const history = useHistory();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
+
+  const audio = useRef(new Audio());
+
   useEffect(() => {
     loadWords(group, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [group, page]);
 
-  const history = useHistory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
-
   return (
     <>
       {loader && <LoadingPage />}
       {<WordsPanel group={group} routeGroupPage={routeGroupPage} />}
-      {!loader && <Words wordsList={wordsList} page={page} group={group} />}
+      {!loader && <Words wordsList={wordsList} page={page} group={group} audio={audio} />}
     </>
   );
 }
 
 const mapStateToProps = (state) => {
   return {
-    wordsList: state.words.wordsList,
-    loader: state.words.loader
+    wordsList: state.ebook.wordsList,
+    loader: state.ebook.loader
   }
 }
 

@@ -1,13 +1,12 @@
-import * as wordsService from '../api/wordsService';
+import * as ebookService from '../api/ebookService';
 
 export const GET_WORDS = 'GET_WORDS';
-export const SET_PAGE = 'SET_PAGE';
-export const SET_GROUP = 'SET_GROUP';
+export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
 
 export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
-  return wordsService.getWords(group, page)
+  return ebookService.getWords(group, page)
     .then(data => dispatch(setWords(data)))
     .finally(() => dispatch(setLoader(false)));
 }
@@ -19,17 +18,10 @@ export const setWords = (words) => {
   }
 }
 
-export const setPage = (page) => {
+export const setWordPlaying = (wordsId) => {
   return {
-    type: SET_PAGE,
-    payload: page
-  }
-}
-
-export const setGroup = (group) => {
-  return {
-    type: SET_GROUP,
-    payload: { page: 1, group }
+    type: WORD_PLAYING,
+    payload: wordsId
   }
 }
 
