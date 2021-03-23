@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import wordsReducer from './wordsReducer';
+import ebookReducer from './ebookReducer';
 
 export default combineReducers({
-  words: wordsReducer
+  ebook: ebookReducer
 });

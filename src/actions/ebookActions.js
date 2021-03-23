@@ -1,4 +1,4 @@
-import * as wordsService from '../api/wordsService';
+import * as ebookService from '../api/ebookService';
 
 export const GET_WORDS = 'GET_WORDS';
 export const WORD_PLAYING = 'WORD_PLAYING';
@@ -6,7 +6,7 @@ export const SET_LOADER = 'SET_LOADER';
 
 export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
-  return wordsService.getWords(group, page)
+  return ebookService.getWords(group, page)
     .then(data => dispatch(setWords(data)))
     .finally(() => dispatch(setLoader(false)));
 }

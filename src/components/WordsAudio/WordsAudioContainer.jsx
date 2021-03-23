@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setWordPlaying } from '../../actions/wordsActions';
+import { setWordPlaying } from '../../actions/ebookActions';
 import WordsAudio from './WordsAudio';
 
 function WordsAudioContainer({ wordPlaying, setWordPlaying, className, audio, word }) {
@@ -19,7 +19,7 @@ function WordsAudioContainer({ wordPlaying, setWordPlaying, className, audio, wo
 
 const mapStateToProps = (state) => {
   return {
-    wordPlaying: state.words.wordPlaying,
+    wordPlaying: state.ebook.wordPlaying,
   }
 }
 

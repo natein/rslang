@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { loadWords } from '../../actions/wordsActions';
+import { loadWords } from '../../actions/ebookActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import WordsPanel from '../WordsPanel';
@@ -29,8 +29,8 @@ function EbookContainer({ loader, wordsList, loadWords, page, group }) {
 
 const mapStateToProps = (state) => {
   return {
-    wordsList: state.words.wordsList,
-    loader: state.words.loader
+    wordsList: state.ebook.wordsList,
+    loader: state.ebook.loader
   }
 }
 

@@ -1,4 +1,4 @@
-import { GET_WORDS, SET_LOADER, WORD_PLAYING } from "../actions/wordsActions";
+import { GET_WORDS, SET_LOADER, WORD_PLAYING } from "../actions/ebookActions";
 
 const initialState = {
   wordsList: [],
@@ -6,7 +6,7 @@ const initialState = {
   loader: false,
 };
 
-const wordsReducer = (state = initialState, action) => {
+const ebookReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WORDS:
       return { ...state, wordsList: action.payload }
@@ -22,4 +22,4 @@ const wordsReducer = (state = initialState, action) => {
   }
 }
 
-export default wordsReducer;
+export default ebookReducer;
