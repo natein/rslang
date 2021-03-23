@@ -12,22 +12,23 @@ function WordsAudio({ audio, word, className, wordPlaying, setWordPlaying }) {
       `${baseUrl}/${word.audioExample}`
     ];
 
-    //audio.current.pause();
-    audio.current.src = audioList[0];
-    audio.current.play();
+    audio.src = audioList[0];
+    audio.play();
 
     let index = 1;
-    audio.current.onended = function () {
+    audio.onended = function () {
       if (index < audioList.length) {
-        audio.current.src = audioList[index];
-        audio.current.play();
+        audio.src = audioList[index];
+        audio.play();
         index++;
+      } else {
+        setWordPlaying(null);
       }
     }
   }
 
   const pauseAudio = (audio) => {
-    audio.current.pause();
+    audio.pause();
     setWordPlaying(null);
   }
 

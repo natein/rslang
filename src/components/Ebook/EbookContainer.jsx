@@ -7,16 +7,16 @@ import LoadingPage from '../LoadingPage';
 import WordsPanel from '../WordsPanel';
 
 function EbookContainer({ loader, wordsList, loadWords, page, group }) {
-  useEffect(() => {
-    loadWords(group, page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [group, page]);
-
   const history = useHistory();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
 
   const audio = useRef(new Audio());
+
+  useEffect(() => {
+    loadWords(group, page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group, page]);
 
   return (
     <>
