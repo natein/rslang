@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,10 +17,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
+import LoginPage from '../LoginPage/LoginPage';
+import SignupPage from '../LoginPage/SingupPage';
 
 const drawerWidth = 240;
 
@@ -150,7 +151,7 @@ export default function Dashboard() {
                         overflow: 'auto',
                     }}
                     style={{
-                        margin: '0 auto',
+                        margin: '2rem auto',
                     }}
                 >
                     <div className={classes.appBarSpacer} />
@@ -159,6 +160,8 @@ export default function Dashboard() {
                             <Route path="/" component={HomePage} exact />
                             <Route path="/ebook" component={EbookPage} exact />
                             <Route path="/ebook/:group/:page" component={EbookPage} />
+                            <Route path="/login" component={LoginPage} />
+                            <Route path="/sign-up" component={SignupPage} />
                         </Switch>
                     </Container>
                 </Box>
