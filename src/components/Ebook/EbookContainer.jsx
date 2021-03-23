@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { loadWords } from '../../actions/wordsActions';
@@ -16,11 +16,13 @@ function EbookContainer({ loader, wordsList, loadWords, page, group }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
 
+  const audio = useRef(new Audio());
+
   return (
     <>
       {loader && <LoadingPage />}
       {<WordsPanel group={group} routeGroupPage={routeGroupPage} />}
-      {!loader && <Words wordsList={wordsList} page={page} group={group} />}
+      {!loader && <Words wordsList={wordsList} page={page} group={group} audio={audio} />}
     </>
   );
 }

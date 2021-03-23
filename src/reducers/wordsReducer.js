@@ -1,9 +1,8 @@
-import { GET_WORDS, SET_PAGE, SET_GROUP, SET_LOADER } from "../actions/wordsActions";
+import { GET_WORDS, SET_LOADER, WORD_PLAYING } from "../actions/wordsActions";
 
 const initialState = {
   wordsList: [],
-  page: 0,
-  group: 0,
+  wordPlaying: null,
   loader: false,
 };
 
@@ -12,11 +11,8 @@ const wordsReducer = (state = initialState, action) => {
     case GET_WORDS:
       return { ...state, wordsList: action.payload }
 
-    case SET_PAGE:
-      return { ...state, page: action.payload }
-
-    case SET_GROUP:
-      return { ...state, page: action.payload.page, group: action.payload.group }
+    case WORD_PLAYING:
+      return { ...state, wordPlaying: action.payload }
 
     case SET_LOADER:
       return { ...state, loader: action.payload }
