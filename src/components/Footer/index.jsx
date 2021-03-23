@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'whitesmoke',
         color: 'black',
         padding: theme.spacing(3, 0),
+        marginTop: 'auto',
     },
     footerContainer: {
         justifyContent: 'center',

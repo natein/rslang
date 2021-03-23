@@ -20,12 +20,15 @@ import { mainListItems, secondaryListItems } from './listItems';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
+import TransitionsModal from './UserIcon';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
+        justifyContent: 'space-between',
+        backgroundColor: 'tomato',
     },
     toolbarIcon: {
         display: 'flex',
@@ -112,6 +115,7 @@ export default function Dashboard() {
                                 RSLang
                             </Link>
                         </Typography>
+                        <TransitionsModal />
                         {/* <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
@@ -144,6 +148,9 @@ export default function Dashboard() {
                         flexGrow: 1,
                         height: '100vh',
                         overflow: 'auto',
+                    }}
+                    style={{
+                        margin: '0 auto',
                     }}
                 >
                     <div className={classes.appBarSpacer} />
