@@ -83,3 +83,5 @@ export const GAMES_LIST = [
     component: ''
   }
 ];
+
+export const EBOOK_COUNT_PAGES = 30;

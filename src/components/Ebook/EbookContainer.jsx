@@ -21,7 +21,7 @@ function EbookContainer({ loader, wordsList, loadWords, page, group }) {
   return (
     <>
       {loader && <LoadingPage />}
-      {<WordsPanel group={group} routeGroupPage={routeGroupPage} />}
+      {<WordsPanel group={group} page={page} routeGroupPage={routeGroupPage} />}
       {!loader && <Words wordsList={wordsList} page={page} group={group} audio={audio} />}
     </>
   );
