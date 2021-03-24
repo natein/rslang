@@ -161,7 +161,7 @@ export default function Dashboard() {
                         <Route path="/ebook" component={EbookPage} exact />
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/games" component={HomePage} exact />
-                        <Route path="/games/:code" component={HomePage} />
+                        <Route path="/games/savanna" component={HomePage} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
                     </Switch>
