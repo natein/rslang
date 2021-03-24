@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -83,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, page, group, audio, wordPlaying, setWordPlaying }) {
+function Words({ wordsList, group, audio }) {
   const classes = useStyles();
 
   return (
@@ -144,7 +143,6 @@ function Words({ wordsList, page, group, audio, wordPlaying, setWordPlaying }) {
           </Grid>
         ))}
       </Grid>
-      <Button variant="contained" color="primary">Next</Button>
     </div>
   );
 }
