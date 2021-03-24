@@ -11,7 +11,9 @@ const useStyles = makeStyles({
         right: 0,
         bottom: 0,
         backgroundColor: '#FAFAFA',
-        zIndex: '2000'
+        zIndex: '2000',
+        width: '100%',
+        margin: '0'
     }
 });
 
