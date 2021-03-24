@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,15 +17,19 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
+import TransitionsModal from './UserIcon';
+import LoginPage from '../LoginPage/LoginPage';
+import SignupPage from '../LoginPage/SingupPage';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
+        justifyContent: 'space-between',
+        backgroundColor: 'tomato',
     },
     toolbarIcon: {
         display: 'flex',
@@ -112,6 +116,7 @@ export default function Dashboard() {
                                 RSLang
                             </Link>
                         </Typography>
+                        <TransitionsModal />
                         {/* <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
@@ -145,6 +150,9 @@ export default function Dashboard() {
                         height: '100vh',
                         overflow: 'auto',
                     }}
+                    style={{
+                        margin: '2rem auto',
+                    }}
                 >
                     <div className={classes.appBarSpacer} />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -152,6 +160,8 @@ export default function Dashboard() {
                             <Route path="/" component={HomePage} exact />
                             <Route path="/ebook" component={EbookPage} exact />
                             <Route path="/ebook/:group/:page" component={EbookPage} />
+                            <Route path="/login" component={LoginPage} />
+                            <Route path="/sign-up" component={SignupPage} />
                         </Switch>
                     </Container>
                 </Box>
