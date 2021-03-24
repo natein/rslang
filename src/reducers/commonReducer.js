@@ -1,13 +1,12 @@
 const initialState = {
     user: null,
     error: null,
-    loader: false,
   };
 
 const commonReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'ERROR': {
-            return { ...state, loader: false, error: action.payload };
+            return { ...state, error: action.payload };
         }
         case 'USER': {
             return { ...state, error: null, user: action.payload };

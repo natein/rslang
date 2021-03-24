@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     gitHubLink: {
         color: 'black',
         textDecoration: 'none',
+        cursor: 'pointer'
     },
     gitHubList: {
         display: 'flex',
