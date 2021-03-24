@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -97,75 +97,76 @@ export default function Dashboard() {
     };
 
     return (
-        <BrowserRouter>
-            <Box style={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                            <Link className={classes.titleLink} to="/">
-                                RSLang
+        <Box style={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+                <Toolbar className={classes.toolbar}>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={toggleDrawer}
+                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+                        <Link className={classes.titleLink} to="/">
+                            RSLang
                             </Link>
-                        </Typography>
-                        <TransitionsModal />
-                        {/* <IconButton color="inherit">
+                    </Typography>
+                    <TransitionsModal />
+                    {/* <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton> */}
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="permanent"
-                    classes={{
-                        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                    }}
-                    open={open}
-                >
-                    <div className={classes.toolbarIcon}>
-                        <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>{mainListItems}</List>
-                    <Divider />
-                    <List>{secondaryListItems}</List>
-                </Drawer>
-                <Box
-                    component="main"
-                    sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
-                    }}
-                    style={{
-                        margin: '2rem auto',
-                    }}
-                >
-                    <div className={classes.appBarSpacer} />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                        <Switch>
-                            <Route path="/" component={HomePage} exact />
-                            <Route path="/ebook" component={EbookPage} exact />
-                            <Route path="/ebook/:group/:page" component={EbookPage} />
-                            <Route path="/login" component={LoginPage} />
-                            <Route path="/sign-up" component={SignupPage} />
-                        </Switch>
-                    </Container>
-                </Box>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                variant="permanent"
+                classes={{
+                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+                }}
+                open={open}
+            >
+                <div className={classes.toolbarIcon}>
+                    <IconButton onClick={toggleDrawer}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>{mainListItems}</List>
+                <Divider />
+                <List>{secondaryListItems}</List>
+            </Drawer>
+            <Box
+                component="main"
+                sx={{
+                    backgroundColor: (theme) =>
+                        theme.palette.mode === 'light' ? theme.palette.grey[100] : theme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
+                style={{
+                    margin: '2rem auto',
+                    width: '100%'
+                }}
+            >
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg">
+                    <Switch>
+                        <Route path="/" component={HomePage} exact />
+                        <Route path="/ebook" component={EbookPage} exact />
+                        <Route path="/ebook/:group/:page" component={EbookPage} />
+                        <Route path="/games" component={HomePage} exact />
+                        <Route path="/games/savanna" component={HomePage} />
+                        <Route path="/login" component={LoginPage} />
+                        <Route path="/sign-up" component={SignupPage} />
+                    </Switch>
+                </Container>
             </Box>
-        </BrowserRouter>
+        </Box>
     );
 }

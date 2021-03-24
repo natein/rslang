@@ -1,6 +1,7 @@
 import { Box, makeStyles } from '@material-ui/core';
 import Footer from './components/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
+import { useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     rootContainer: {
@@ -16,10 +17,16 @@ const useStyles = makeStyles((theme) => ({
 function App() {
     const classes = useStyles();
 
+    const match = useRouteMatch({
+        path: '/games/:code',
+        strict: true,
+        sensitive: true,
+    });
+
     return (
         <Box component="div" className={classes.rootContainer}>
             <Dashboard />
-            <Footer />
+            {!match && <Footer />}
         </Box>
     );
 }

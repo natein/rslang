@@ -66,17 +66,20 @@ export const GAMES_LIST = [
     name: 'Саванна',
     coverImage: '',
     backgroundImage: '',
+    component: ''
   },
   {
     code: 'audio',
     name: 'Аудивызов',
     coverImage: '',
     backgroundImage: '',
+    component: ''
   },
   {
     code: 'sprint',
     name: 'Спринт',
     coverImage: '',
     backgroundImage: '',
+    component: ''
   }
 ];
