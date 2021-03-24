@@ -59,3 +59,24 @@ export const SECTIONS_EBOOK = [
     backgroundBtn: 'rgba(239, 154, 154, 1)',
   },
 ];
+
+export const GAMES_LIST = [
+  {
+    code: 'savanna',
+    name: 'Саванна',
+    coverImage: '',
+    backgroundImage: '',
+  },
+  {
+    code: 'audio',
+    name: 'Аудивызов',
+    coverImage: '',
+    backgroundImage: '',
+  },
+  {
+    code: 'sprint',
+    name: 'Спринт',
+    coverImage: '',
+    backgroundImage: '',
+  }
+];
