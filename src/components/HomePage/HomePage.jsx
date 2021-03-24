@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button';
 import Typography from './Typography';
 import ProductHeroLayout from './ProductHeroLayout';
@@ -55,7 +55,7 @@ function HomePage() {
                     size="small"
                     className={classes.button}
                     component="a"
-                    // href="/premium-themes/onepirate/sign-up/"
+                // href="/premium-themes/onepirate/sign-up/"
                 >
                     Register
                 </Button>
@@ -65,7 +65,7 @@ function HomePage() {
                     size="small"
                     className={classes.button}
                     component="a"
-                    // href="/premium-themes/onepirate/sign-up/"
+                // href="/premium-themes/onepirate/sign-up/"
                 >
                     Learn More
                 </Button>
