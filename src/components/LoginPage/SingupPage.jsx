@@ -5,7 +5,7 @@ import ImageUpload from './ImageUpload';
 import * as userActions from '../../actions/userActions';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import LoaderPage from '../LoadingPage';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,10 +26,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignUpPage = ({ user, error, onUserCreate }) => {
+const SignUpPage = ({ user, error, onUserCreate, loader }) => {
     const classes = useStyles();
     const history = useHistory();
-    const { t } = useTranslation();
     const avatarRef = useRef(null);
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
@@ -41,8 +40,8 @@ const SignUpPage = ({ user, error, onUserCreate }) => {
     };
 
     useEffect(() => {
-        if (user?.username) {
-            history.push('/');
+        if (user?.email) {
+            history.push('/login');
         }
     }, [user, history]);
 
@@ -58,7 +57,7 @@ const SignUpPage = ({ user, error, onUserCreate }) => {
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    {t('labels.user.signUp')}
+                    Регистрация
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <ImageUpload ref={avatarRef} />
@@ -66,9 +65,10 @@ const SignUpPage = ({ user, error, onUserCreate }) => {
                         variant="outlined"
                         margin="normal"
                         required
+                        color="secondary"
                         fullWidth
                         id="username"
-                        label={t('labels.user.username')}
+                        label="пользовательский email"
                         autoFocus
                         value={username}
                         onChange={onInputChange}
@@ -77,27 +77,30 @@ const SignUpPage = ({ user, error, onUserCreate }) => {
                         variant="outlined"
                         margin="normal"
                         required
+                        color="secondary"
                         fullWidth
-                        label={t('labels.user.password')}
+                        label="пароль"
                         type="password"
                         id="password"
                         value={password}
                         onChange={onInputChange}
                     />
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                        {t('labels.user.signUp')}
+                    <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>
+                        Зарегистрироваться
                     </Button>
 
                     {error && <Alert severity="error">{error}</Alert>}
                 </form>
             </div>
+            {!!loader && <LoaderPage />}
         </Container>
     );
 };
 
 const mapStateToProps = (state) => ({
-    error: state.error,
+    error: state.common.error,
     user: state.user,
+    loader: state.ebook.loader,
 });
 
 const mapDispatchToProps = (dispatch) => ({

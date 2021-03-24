@@ -8,52 +8,45 @@ export const createNewUser = (username, password, avatar) => {
         .post(
             url,
             {
-                username,
+                name: username,
+                email: username,
                 password,
-                logo: avatar,
-            },
-            { withCredentials: true },
+                avatar,
+            }
         )
         .then((response) => response.data)
         .catch((err) => {
-            console.log(err.response);
             if (err.response?.status === 413) {
                 throw new Error('Image avatar is too high. Please choose smaller image');
+            }
+            if(err.response?.status === 422) {
+                throw new Error('Invalid email or password was specified');
             }
             throw err;
         });
 };
 
 export const login = (username, password) => {
-    const url = `${baseUrl}/users/${username}`;
+    const url = `${baseUrl}/signin`;
     return axios
         .post(
             url,
             {
-                username,
+                email: username,
                 password,
-            },
-            { withCredentials: true },
+            }
         )
         .then((response) => response.data);
 };
 
-export const autoLogin = () => {
-    const url = `${baseUrl}/users/autologin`;
+export const getUserById = (id, token) => {
+    const url = `${baseUrl}/users/${id}`;
     return axios
         .get(
             url,
-            { withCredentials: true },
-        )
-        .then((response) => response.data);
-};
-
-export const logout = () => {
-    const url = `${baseUrl}/users/logout`;
-    return axios
-        .get(
-            url,
-            { withCredentials: true },
+            {
+                headers: {'Authorization': `Bearer ${token}`}
+            }
         )
         .then((response) => response.data);
 };

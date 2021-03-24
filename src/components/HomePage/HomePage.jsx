@@ -4,6 +4,7 @@ import Button from './Button';
 import Typography from './Typography';
 import ProductHeroLayout from './ProductHeroLayout';
 import backgroundImage from '../../assets/main_bg.jpg';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     background: {
@@ -37,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
 
 function HomePage() {
     const classes = useStyles();
+    const history = useHistory();
+
+    const onRegisterClick = () => {
+        history.push('/sign-up')
+    }
 
     return (
         <ProductHeroLayout backgroundClassName={classes.background}>
@@ -55,7 +61,7 @@ function HomePage() {
                     size="small"
                     className={classes.button}
                     component="a"
-                // href="/premium-themes/onepirate/sign-up/"
+                    onClick={onRegisterClick}
                 >
                     Register
                 </Button>
