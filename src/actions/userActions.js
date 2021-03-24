@@ -1,4 +1,5 @@
-import { onError, setLoader } from './commonActions';
+import { onError } from './commonActions';
+import { setLoader } from './ebookActions';
 import * as userService from '../api/userservice';
 
 export const createNewUser = (username, password, avatar) => (dispatch) => {
@@ -6,38 +7,28 @@ export const createNewUser = (username, password, avatar) => (dispatch) => {
     return userService
         .createNewUser(username, password, avatar)
         .then((data) => dispatch({ type: 'USER', payload: data }))
-        .catch((err) => dispatch(onError(err.response ? err.response.data : err)))
+        .then(() => dispatch(onError()))
+        .catch((err) => dispatch(onError(err.response ? err.response.data : err.message)))
         .finally(() => dispatch(dispatch(setLoader(false))));
 };
 
 export const logout = () => (dispatch) => {
     dispatch({ type: 'USER_LOGOUT' });
-    document.cookie = 'AUTH; Max-Age=-99999999;';
 };
 
-export const onLogin = (username, password) => (dispatch) => {
-    dispatch(setLoader(true));
-    return userService
-        .login(username, password)
-        .then((data) => dispatch({ type: 'USER', payload: data }))
-        .catch((err) => dispatch(onError(err.response ? err.response.data : err)))
-        .finally(() => dispatch(dispatch(setLoader(false))));
+export const onLogin = (username, password) => async (dispatch) => {
+    try {
+        dispatch(setLoader(true));
+        const data = await userService.login(username, password);
+        const userInfo = await userService.getUserById(data.userId, data.token);
+
+        dispatch({ type: 'USER', payload: { ...data, ...userInfo } });
+        dispatch(onError());
+    } catch (err) {
+        dispatch(onError(err.response ? err.response.data : err.message));
+    } finally {
+        dispatch(setLoader(false));
+    }
 };
 
-export const onAutoLogin = () => (dispatch) => {
-    dispatch(setLoader(true));
-    return userService
-        .autoLogin()
-        .then((data) => dispatch({ type: 'USER', payload: data }))
-        .catch((err) => console.log('Autologin failed', err))
-        .finally(() => dispatch(dispatch(setLoader(false))));
-};
-
-export const onLogout = () => (dispatch) => {
-    dispatch(setLoader(true));
-    return userService
-        .logout()
-        .then(() => dispatch({ type: 'USER_LOGOUT' }))
-        .catch((err) => console.log('Autologin failed', err))
-        .finally(() => dispatch(dispatch(setLoader(false))));
-};
+export const onLogout = () => ({ type: 'USER_LOGOUT' });

@@ -4,14 +4,14 @@ import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { makeStyles } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
 
 const styles = makeStyles({
     input: {
         display: 'none',
     },
     button: {
-        color: blue[900],
+        color: red[900],
         margin: 10,
     },
     avatar: {
@@ -29,7 +29,7 @@ const styles = makeStyles({
     }
 });
 
-const ImageUploadCard = (props, ref) => {
+const ImageUploadCard = (_, ref) => {
     const classes = styles();
     const [image, setImage] = useState(null);
     const [isImageUploaded, setImageUploaded] = useState(false);

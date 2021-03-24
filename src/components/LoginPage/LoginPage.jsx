@@ -1,11 +1,10 @@
-
 import { Button, Container, Link, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import * as userActions from '../../actions/userActions';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useTranslation } from 'react-i18next';
+import LoaderPage from '../LoadingPage';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,10 +25,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const LoginPage = ({ user, error, onLogin }) => {
+const LoginPage = ({ user, error, onLogin, loader }) => {
     const classes = useStyles();
     const history = useHistory();
-    const { t } = useTranslation();
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
@@ -39,7 +37,7 @@ const LoginPage = ({ user, error, onLogin }) => {
     };
 
     useEffect(() => {
-        if (user?.username) {
+        if (user?.token) {
             history.push('/');
         }
     }, [user, history]);
@@ -56,16 +54,17 @@ const LoginPage = ({ user, error, onLogin }) => {
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    {t('labels.user.loginTitle')}
+                    Вход в аккаунт
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
+                        color="secondary"
                         required
                         fullWidth
                         id="username"
-                        label={t('labels.user.username')}
+                        label="пользовательский email"
                         autoFocus
                         value={username}
                         onChange={onInputChange}
@@ -73,16 +72,17 @@ const LoginPage = ({ user, error, onLogin }) => {
                     <TextField
                         variant="outlined"
                         margin="normal"
+                        color="secondary"
                         required
                         fullWidth
-                        label={t('labels.user.password')}
+                        label="пароль"
                         type="password"
                         id="password"
                         value={password}
                         onChange={onInputChange}
                     />
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                        {t('labels.user.loginButton')}
+                    <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>
+                        Войти
                     </Button>
                     <Link
                         component="button"
@@ -91,18 +91,20 @@ const LoginPage = ({ user, error, onLogin }) => {
                             history.push('/sign-up');
                         }}
                     >
-                        {t('labels.user.signUp')}
+                        Страница регистрации
                     </Link>
                     {error && <Alert severity="error">{error}</Alert>}
                 </form>
             </div>
+            {!!loader && <LoaderPage />}
         </Container>
     );
 };
 
 const mapStateToProps = (state) => ({
-    error: state.error,
+    error: state.common.error,
     user: state.user,
+    loader: state.ebook.loader,
 });
 
 const mapDispatchToProps = (dispatch) => ({

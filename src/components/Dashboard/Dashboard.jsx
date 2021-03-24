@@ -150,7 +150,7 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    margin: '2rem auto',
+                    margin: '1rem auto',
                     width: '100%'
                 }}
             >
