@@ -32,7 +32,7 @@ function UserIcon({ user, onLogout }) {
     const history = useHistory();
 
     const onClick = () => {
-        if (user) {
+        if (user.token) {
             onLogout();
         } else {
             history.push('/login');
@@ -42,9 +42,9 @@ function UserIcon({ user, onLogout }) {
     return (
         <>
             <IconButton className={classes.loginBtn} onClick={onClick}>
-                {!user && <AccountCircleIcon />}
-                {user && !user.avatar && <ExitToAppIcon />}
-                {user && user.avatar && <Avatar src={user.avatar} />}
+                {!user.token && <AccountCircleIcon />}
+                {user.token && !user.avatar && <ExitToAppIcon />}
+                {user.token && user.avatar && <Avatar src={user.avatar} />}
             </IconButton>
         </>
     );
@@ -52,15 +52,15 @@ function UserIcon({ user, onLogout }) {
 
 UserIcon.propTypes = {
     user: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired,
+        username: PropTypes.string,
+        password: PropTypes.string,
         avatar: PropTypes.string,
     }),
     onLogout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    user: state.common.user,
+    user: state.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -103,7 +103,7 @@ const LoginPage = ({ user, error, onLogin, loader }) => {
 
 const mapStateToProps = (state) => ({
     error: state.common.error,
-    user: state.common.user,
+    user: state.user,
     loader: state.ebook.loader,
 });
 

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import ebookReducer from './ebookReducer';
 import commonReducer from './commonReducer';
+import userReducer from './userReducer';
 
 export default combineReducers({
   ebook: ebookReducer,
-  common: commonReducer
+  common: commonReducer,
+  user: userReducer,
 });

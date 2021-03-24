@@ -7,6 +7,7 @@ export const createNewUser = (username, password, avatar) => (dispatch) => {
     return userService
         .createNewUser(username, password, avatar)
         .then((data) => dispatch({ type: 'USER', payload: data }))
+        .then(() => dispatch(onError()))
         .catch((err) => dispatch(onError(err.response ? err.response.data : err.message)))
         .finally(() => dispatch(dispatch(setLoader(false))));
 };
@@ -22,8 +23,8 @@ export const onLogin = (username, password) => async (dispatch) => {
         const userInfo = await userService.getUserById(data.userId, data.token);
 
         dispatch({ type: 'USER', payload: { ...data, ...userInfo } });
+        dispatch(onError());
     } catch (err) {
-        console.log('!!!!!!!!!!!!!!!!!!!!!',err)
         dispatch(onError(err.response ? err.response.data : err.message));
     } finally {
         dispatch(setLoader(false));
