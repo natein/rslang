@@ -19,7 +19,7 @@ export const createNewUser = (username, password, avatar) => {
             if (err.response?.status === 413) {
                 throw new Error('Image avatar is too high. Please choose smaller image');
             }
-            if(err.response?.status === 422) {
+            if (err.response?.status === 422) {
                 throw new Error('Invalid email or password was specified');
             }
             throw err;
@@ -45,7 +45,7 @@ export const getUserById = (id, token) => {
         .get(
             url,
             {
-                headers: {'Authorization': `Bearer ${token}`}
+                headers: { 'Authorization': `Bearer ${token}` }
             }
         )
         .then((response) => response.data);

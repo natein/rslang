@@ -1,7 +1,6 @@
-const initialState = {
-};
+const initialState = JSON.parse(localStorage.getItem('rslang-team15-user')) || {};
 
-const commonReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'USER': {
             return { ...state, ...action.payload };
@@ -15,4 +14,4 @@ const commonReducer = (state = initialState, action) => {
     }
 };
 
-export default commonReducer;
+export default userReducer;

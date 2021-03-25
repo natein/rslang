@@ -1,6 +1,6 @@
 import { onError } from './commonActions';
 import { setLoader } from './ebookActions';
-import * as userService from '../api/userservice';
+import * as userService from '../api/userService';
 
 export const createNewUser = (username, password, avatar) => (dispatch) => {
     dispatch(setLoader(true));
