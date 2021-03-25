@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, group, audio }) {
+function Words({ wordsList, group, audio, addUserWord, userWords }) {
   const classes = useStyles();
 
   return (
@@ -124,7 +124,7 @@ function Words({ wordsList, group, audio }) {
               </div>
               <div className={classes.buttons}>
                 <Tooltip title="Добавить в сложные">
-                  <IconButton color="default" component="span">
+                  <IconButton color={userWords.includes(word.id) ? 'primary' : 'default'} component="span" onClick={() => addUserWord(word.id, 'hard')}>
                     <SchoolIcon />
                   </IconButton>
                 </Tooltip>
