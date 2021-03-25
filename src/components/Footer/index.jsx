@@ -7,9 +7,9 @@ import { DEVELOPERS } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
     footer: {
-        backgroundColor: 'whitesmoke',
-        color: 'black',
-        padding: theme.spacing(3, 0),
+        backgroundColor: '#ebebeb',
+        color: 'grey',
+        padding: '10px',
         marginTop: 'auto',
     },
     footerContainer: {
@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     gitHubLink: {
-        color: 'black',
+        color: 'grey',
         textDecoration: 'none',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     gitHubList: {
         display: 'flex',

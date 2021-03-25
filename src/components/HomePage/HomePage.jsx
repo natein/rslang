@@ -14,16 +14,23 @@ const useStyles = makeStyles((theme) => ({
     background: {
         backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#7fc7d9', // Average color of the background image.
+        boxShadow: '-13px 0px 13px -7px #000000, 13px 0px 13px -7px #000000, 5px 5px 15px 5px rgb(0 0 0 / 0%)',
     },
     button: {
         color: 'white',
         minWidth: 150,
         margin: '1rem',
-        boxShadow: '0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 2px 2px 2px rgba(206,179,173,0)',
-        border: '1px double rgb(113, 129, 255)',
+        boxShadow: '0 0 10px #FFFFFF',
+        border: '1px double white',
         borderRadius: '15px 15px 15px 15px',
+        fontFamily: 'Segoe script, cursive',
         '&:focus': {
             boxShadow: '0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 2px 2px 2px rgba(206,179,173,0)',
+        },
+        '&:hover': {
+            color: 'lightgrey',
+            border: '1px double grey',
+            boxShadow: '0 0 10px grey',
         },
     },
     h5: {
@@ -31,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
         textShadow: '0 0 10px #FFFFFF',
     },
     more: {
+        fontFamily: 'Segoe script, cursive',
+        textShadow: '0 0 10px #FFFFFF',
         marginTop: theme.spacing(2),
     },
     buttonCont: {
