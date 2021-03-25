@@ -1,26 +1,21 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import Savanna from './Savanna';
+import { openCrossModal } from '../../../actions/gamesActions';
 import styled, { StyleSheetManager } from 'styled-components';
 
-function SavannaContainer() {
-    useEffect(() => {}, []);
-
+function SavannaContainer({ crossModalOpen }) {
     return (
         <>
             <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === 'development'}>
-                <Savanna />
+                <Savanna crossModalOpen={crossModalOpen} />
             </StyleSheetManager>
         </>
     );
 }
 
-const mapStateToProps = (state) => {
-    return {};
-};
+const mapDispatchToProps = (dispatch) => ({
+    crossModalOpen: () => dispatch(openCrossModal()),
+});
 
-const mapDispatchToProps = (dispatch) => {
-    return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SavannaContainer);
+export default connect(null, mapDispatchToProps)(SavannaContainer);

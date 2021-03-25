@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import FolderIcon from '@material-ui/icons/Folder';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
-import { SECTIONS_EBOOK, GAMES_LIST } from '../../constants';
+import { SECTIONS_EBOOK, GAMES } from '../../constants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -130,7 +130,7 @@ function WordsPanel({ group, routeGroupPage }) {
             onClose={handleCloseGame}
           >
             {
-              GAMES_LIST.map(item =>
+              GAMES.list.map(item =>
                 <MenuItem
                   key={item.code}
                   onClick={() => handleCloseGame(item.code)}
