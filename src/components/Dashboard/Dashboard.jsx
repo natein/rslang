@@ -22,6 +22,7 @@ import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
+import AboutTeam from '../AboutTeam';
 
 const drawerWidth = 240;
 
@@ -162,6 +163,7 @@ export default function Dashboard() {
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/games" component={HomePage} exact />
                         <Route path="/games/savanna" component={HomePage} />
+                        <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
                     </Switch>
