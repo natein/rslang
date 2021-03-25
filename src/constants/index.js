@@ -1,3 +1,6 @@
+import SavannaBackground from '../assets/savanna/savanna_background.svg';
+
+
 export const DEVELOPERS = [
   {
     "fullname": "Иван Михальченко",
@@ -60,12 +63,14 @@ export const SECTIONS_EBOOK = [
   },
 ];
 
+
 export const GAMES_LIST = [
   {
     code: 'savanna',
     name: 'Саванна',
+    description: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
     coverImage: '',
-    backgroundImage: '',
+    backgroundImage: SavannaBackground,
     component: ''
   },
   {
