@@ -10,7 +10,7 @@ const useStyles = makeStyles({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: '#FAFAFA',
+        backgroundColor: 'rgba(250, 250, 250, 0.4)',
         zIndex: '2000',
         width: '100%',
         margin: '0'
@@ -21,7 +21,7 @@ const LoaderPage = () => {
     const classes = useStyles();
     return (
         <Grid container spacing={4} className={classes.root}>
-            <CircularProgress size='5rem'/>
+            <CircularProgress size='5rem' />
         </Grid>
     );
 };
