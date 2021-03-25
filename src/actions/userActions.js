@@ -1,10 +1,10 @@
 import { onError } from './commonActions';
 import { setLoader } from './ebookActions';
-import * as userService from '../api/userService';
+import * as userLoginService from '../api/userLoginService';
 
 export const createNewUser = (username, password, avatar) => (dispatch) => {
     dispatch(setLoader(true));
-    return userService
+    return userLoginService
         .createNewUser(username, password, avatar)
         .then((data) => dispatch({ type: 'USER', payload: data }))
         .then(() => dispatch(onError()))
@@ -19,8 +19,8 @@ export const logout = () => (dispatch) => {
 export const onLogin = (username, password) => async (dispatch) => {
     try {
         dispatch(setLoader(true));
-        const data = await userService.login(username, password);
-        const userInfo = await userService.getUserById(data.userId, data.token);
+        const data = await userLoginService.login(username, password);
+        const userInfo = await userLoginService.getUserById(data.userId, data.token);
 
         dispatch({ type: 'USER', payload: { ...data, ...userInfo } });
         dispatch(onError());

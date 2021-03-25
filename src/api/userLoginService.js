@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 const baseUrl = process.env.REACT_APP_API || '';
 
 export const createNewUser = (username, password, avatar) => {
