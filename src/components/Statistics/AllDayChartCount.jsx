@@ -7,35 +7,35 @@ import { Animation } from '@devexpress/dx-react-chart';
 const data = [
     {
         year: '19.03',
-        words: 29,
+        words: 19,
     },
     {
         year: '20.03',
-        words: 32,
+        words: 13,
     },
     {
         year: '21.03',
-        words: 35,
+        words: 14,
     },
     {
         year: '22.03',
-        words: 32,
+        words: 13,
     },
     {
         year: '23.03',
-        words: 28,
+        words: 15,
     },
     {
         year: '24.03',
-        words: 27,
+        words: 16,
     },
     {
         year: '25.03',
-        words: 28,
+        words: 12,
     },
     {
         year: '26.03',
-        words: 26,
+        words: 11,
     },
 ];
 
@@ -76,7 +76,7 @@ const demoStyles = () => ({
 
 const ValueLabel = (props) => {
     const { text } = props;
-    return <ValueAxis.Label {...props} text={text} />;
+    return <ValueAxis.Label {...props} text={`${text}%`} />;
 };
 
 const titleStyles = {
@@ -88,7 +88,7 @@ const TitleText = withStyles(titleStyles)(({ classes, ...props }) => (
     <Title.Text {...props} className={classes.title} />
 ));
 
-class AllDayChart extends React.PureComponent {
+class AllDayChartCount extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -107,9 +107,9 @@ class AllDayChart extends React.PureComponent {
                     <ArgumentAxis tickFormat={format} />
                     <ValueAxis max={50} labelComponent={ValueLabel} />
 
-                    <LineSeries name="Кол-во" valueField="words" argumentField="year" color="red" />
+                    <LineSeries name="Кол-во" valueField="words" argumentField="year" />
                     <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
-                    <Title text={`Изученные слова за ${'\n'}каждый день`} textComponent={TitleText} />
+                    <Title text={`Увеличение общего количества  ${'\n'}изученных слов`} textComponent={TitleText} />
                     <Animation />
                 </Chart>
             </Paper>
@@ -117,4 +117,4 @@ class AllDayChart extends React.PureComponent {
     }
 }
 
-export default withStyles(demoStyles, { name: 'Demo' })(AllDayChart);
+export default withStyles(demoStyles, { name: 'Demo' })(AllDayChartCount);
