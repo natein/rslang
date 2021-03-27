@@ -10,7 +10,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#ebebeb',
         color: 'grey',
         padding: '10px',
-        marginTop: 'auto',
     },
     footerContainer: {
         justifyContent: 'center',
