@@ -104,6 +104,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
         audio.current?.pause();
         audio.current = new Audio(`${baseUrl}/${audioPath}`);
         audio.current.play();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
