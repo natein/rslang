@@ -1,5 +1,8 @@
 import SavannaBackground from '../assets/savanna/savanna_background.svg';
-
+import SoundIcon from '../assets/hud/sound.svg';
+import MutedIcon from '../assets/hud/muted.svg';
+import CrossIcon from '../assets/hud/cross.svg';
+import HeartIcon from '../assets/hud/heart.png';
 
 export const DEVELOPERS = [
   {
@@ -64,8 +67,25 @@ export const SECTIONS_EBOOK = [
 ];
 
 export const GAMES = {
+  difficultyTitle: 'Сложность',
+  timeout: 3000,
+  lifes: 5,
+
+  hud: {
+    sound: SoundIcon,
+    disableSound: MutedIcon,
+    cross: CrossIcon,
+    heart: HeartIcon,
+  },
+
+  closeModal: {
+    title: 'Игра не закончена!',
+    description: 'Если вы вернетесь к списку, ваши результаты не будут сохранены',
+    closeBtn: 'Закрыть',
+    cancelBtn: 'Отмена'
+  },
   btnLabel: 'Начать',
-  cross: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICAgIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+CiAgICAgICAgPHBhdGggZD0iTS02LTZoMzB2MzBILTZ6Ii8+CiAgICAgICAgPHBhdGggZmlsbD0iI0RFREVERSIgZD0iTTE3Ljc1IDIuMDEyTDE1Ljk4OC4yNSA5IDcuMjM4IDIuMDEyLjI1LjI1IDIuMDEyIDcuMjM4IDkgLjI1IDE1Ljk4OGwxLjc2MiAxLjc2Mkw5IDEwLjc2Mmw2Ljk4OCA2Ljk4OCAxLjc2Mi0xLjc2MkwxMC43NjIgOXoiLz4KICAgIDwvZz4KPC9zdmc+Cg==',
+
   list: [
     {
       code: 'savanna',

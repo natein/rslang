@@ -10,4 +10,5 @@ export default combineReducers({
   common: commonReducer,
   user: userReducer,
   games: gamesReducer,
+  userWords: userWordsReducer
 });

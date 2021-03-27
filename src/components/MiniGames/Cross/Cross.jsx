@@ -5,7 +5,7 @@ import { GAMES } from '../../../constants/index';
 const Cross = styled(Box)`
     width: 20px;
     height: 20px;
-    background-image: url(${GAMES.cross});
+    background-image: url(${GAMES.hud.cross});
     background-size: cover;
     position: absolute;
     top: 27px;

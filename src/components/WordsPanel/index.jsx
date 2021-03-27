@@ -19,7 +19,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { SECTIONS_EBOOK, GAMES_LIST, EBOOK_COUNT_PAGES } from '../../constants';
+import { SECTIONS_EBOOK, GAMES, EBOOK_COUNT_PAGES } from '../../constants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -185,7 +185,7 @@ function WordsPanel({ group, page, routeGroupPage }) {
         onClose={handleCloseGame}
       >
         {
-          GAMES_LIST.map(item =>
+          GAMES.list.map(item =>
             <MenuItem
               key={item.code}
               onClick={() => handleCloseGame(item.code)}

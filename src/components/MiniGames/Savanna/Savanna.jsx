@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core/';
 import { GAMES } from '../../../constants/index';
 import Difficulty from '../Difficulty';
+import Timer from '../Timer';
 import Cross from '../Cross/Cross';
 import CrossModal from '../Cross/CrossModal';
+import Sound from '../Hud/Sound';
+import Life from '../Hud/Life';
+
+import PropTypes from 'prop-types';
 
 const [game] = GAMES.list;
 
@@ -34,14 +39,13 @@ const GameTitle = styled(Typography)`
   }
   `}
 `;
-
-const GameDescriptionWrap = styled(Box)`
+const GameInner = styled(Box)`
     display: flex;
     max-width: 565px;
     margin: 0 auto 58px;
     padding: 0 15px;
+    color: white;
 `;
-
 const GameDescriptionText = styled(Typography)`
     ${({ theme }) => `
   color: white;
@@ -53,13 +57,6 @@ const GameDescriptionText = styled(Typography)`
   `}
 `;
 
-const GameControlsWrap = styled(Box)`
-    display: flex;
-    max-width: 565px;
-    margin: 0 auto 58px;
-    padding: 0 15px;
-    color: white;
-`;
 const StartBtn = styled(Button)`
     margin: 0 15px;
     &:hover {
@@ -67,36 +64,54 @@ const StartBtn = styled(Button)`
     }
 `;
 
-function Savanna({ crossModalOpen }) {
-    console.log(crossModalOpen)
+function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
+    const [isStarted, setIsStarted] = useState(false);
+
+    function StartGameHandle() {
+        startGame();
+        setIsStarted(true);
+    }
+
     return (
         <MuiThemeProvider theme={breakpoints}>
             <ThemeProvider theme={breakpoints}>
                 <Wrapper>
+                    {timer && <Timer />}
+
                     <Cross onClick={() => crossModalOpen()} />
-                    {/* TITLE */}
-                    <GameTitle variant="h2" component="h1">
-                        {game.name}
-                    </GameTitle>
-
-                    {/* DESCRIPTION */}
-                    <GameDescriptionWrap>
-                        <GameDescriptionText component="p">{game.description}</GameDescriptionText>
-                    </GameDescriptionWrap>
-                    <GameControlsWrap>
-                        {/* DIFFICULTY */}
-                        <Difficulty lvlTitle="Cложность" />
-
-                        {/* STARTBTN */}
-                        <StartBtn variant="outlined" color="inherit">
-                            {GAMES.btnLabel}
-                        </StartBtn>
-                    </GameControlsWrap>
                     <CrossModal />
+
+                    {!isStarted ? (
+                        <>
+                            <GameTitle variant="h2" component="h1">
+                                {game.name}
+                            </GameTitle>
+                            <GameInner>
+                                <GameDescriptionText component="p">{game.description}</GameDescriptionText>
+                            </GameInner>
+                            <GameInner>
+                                <Difficulty lvlTitle={GAMES.difficultyTitle} />
+                                <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
+                                    {GAMES.btnLabel}
+                                </StartBtn>
+                            </GameInner>
+                        </>
+                    ) : (
+                        <>
+                            <Sound />
+                            <Life />
+                        </>
+                    )}
                 </Wrapper>
             </ThemeProvider>
         </MuiThemeProvider>
     );
 }
+
+Savanna.propTypes = {
+    crossModalOpen: PropTypes.func.isRequired,
+    timer: PropTypes.bool,
+    startGame: PropTypes.func.isRequired,
+};
 
 export default Savanna;
