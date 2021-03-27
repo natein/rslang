@@ -23,6 +23,7 @@ import TransitionsModal from './UserIcon';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
+import SprintPage from '../../pages/SprintPage';
 
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -95,7 +96,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: `max(${theme.mixins.toolbar.minHeight}px, 64px)`,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     }
 }));
 
@@ -179,6 +181,7 @@ export default function Dashboard() {
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
                         <Route path="/review" component={HomePage} />
+                        <Route path="/games/sprint" component={SprintPage} />
                     </Switch>
                 </Container>
             </Box>
