@@ -21,7 +21,7 @@ function SavannaContainer({ crossModalOpen, loadWords, gameInit, startGame, time
 
 Savanna.propTypes = {
     crossModalOpen: PropTypes.func.isRequired,
-    loadWords: PropTypes.func.isRequired,
+    loadWords: PropTypes.func,
     timer: PropTypes.bool,
 };
 

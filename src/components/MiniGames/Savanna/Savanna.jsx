@@ -3,12 +3,13 @@ import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core/';
 import { GAMES } from '../../../constants/index';
-import Difficulty from '../Difficulty';
-import Timer from '../Timer';
+import Difficulty from '../Difficulty/Difficulty';
+import Timer from '../Timer/Timer';
 import Cross from '../Cross/Cross';
 import CrossModal from '../Cross/CrossModal';
 import Sound from '../Hud/Sound';
 import Life from '../Hud/Life';
+import ChooseWords from './Gameplay/ChooseWords';
 
 import PropTypes from 'prop-types';
 
@@ -98,8 +99,9 @@ function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
                         </>
                     ) : (
                         <>
-                            <Sound />
-                            <Life />
+                            {!timer && <Sound />}
+                            {!timer && <Life />}
+                            {!timer && <ChooseWords />}
                         </>
                     )}
                 </Wrapper>

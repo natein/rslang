@@ -44,9 +44,6 @@ function Sound() {
 }
 
 Sound.propTypes = {
-    crossModalOpen: PropTypes.func.isRequired,
-    timer: PropTypes.bool,
-    startGame: PropTypes.func.isRequired,
 };
 
 export default Sound;

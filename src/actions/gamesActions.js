@@ -7,6 +7,7 @@ export const OPEN_CROSSMODAL = 'OPEN_CROSSMODAL';
 export const CLOSE_CROSSMODAL = 'CLOSE_CROSSMODAL';
 export const CHANGE_DIFFICULTY = 'CHANGE_DIFFICULTY';
 export const TIMER = 'TIMER';
+export const GETGAME_WORDS = 'GETGAME_WORDS';
 
 export const loadWords = (group = 2, page = 1) => (dispatch) => {
     return ebookService.getWords(group, page)
@@ -18,16 +19,17 @@ export const loadWords = (group = 2, page = 1) => (dispatch) => {
 export const startTimer = () => (dispatch) => {
     dispatch(setTimer(true));
     setTimeout(() => {
-        dispatch(setTimer(false))
+        dispatch(setTimer(false));
+        dispatch(getGameWords());
     }, GAMES.timeout);
 }
 
+// GAME_INIT FOR CROSS MODAL INITIAL STATE
 export const gameInit = () => {
     return {
         type: GAME_INIT
     }
 }
-
 export const openCrossModal = () => {
     return {
         type: OPEN_CROSSMODAL
@@ -48,5 +50,10 @@ export const changeDifficulty = (words) => {
     return {
         type: CHANGE_DIFFICULTY,
         payload: words
+    }
+}
+export const getGameWords = () => {
+    return {
+        type: GETGAME_WORDS,
     }
 }

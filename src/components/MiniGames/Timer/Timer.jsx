@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import styled, { ThemeProvider } from 'styled-components';
 import { Box } from '@material-ui/core/';
+import { TrainOutlined } from '@material-ui/icons';
 
 const TimerWrapper = styled(Box)`
     display: flex;
@@ -49,7 +50,7 @@ const RenderTime = ({ remainingTime }) => {
     const [, setOneLastRerender] = useState(0);
 
     if (currentTime.current !== remainingTime) {
-        isNewTimeFirstTick.current = true;
+        isNewTimeFirstTick.current = TrainOutlined;
         prevTime.current = currentTime.current;
         currentTime.current = remainingTime;
     } else {
@@ -66,11 +67,11 @@ const RenderTime = ({ remainingTime }) => {
 
     return (
         <TimeWrapper>
-            <Time key={remainingTime} up={isTimeUp}>
+            <Time key={remainingTime} up={isTimeUp ? 'true' : null}>
                 {remainingTime}
             </Time>
             {prevTime.current !== null && (
-                <Time key={prevTime.current} down={!isTimeUp}>
+                <Time key={prevTime.current} down={!isTimeUp ? 'true' : null}>
                     {prevTime.current}
                 </Time>
             )}
