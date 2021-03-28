@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function WordsPanel({ group, page, routeGroupPage }) {
+function WordsPanel({ group, page, routeGroupPage, onGame }) {
   const classes = useStyles();
   const [anchorSection, setAnchorSection] = useState(null);
   const [anchorGames, setAnchorGames] = useState(null);
@@ -81,7 +81,10 @@ function WordsPanel({ group, page, routeGroupPage }) {
     setAnchorGames(event.currentTarget);
   };
 
-  const handleCloseGame = () => {
+  const handleCloseGame = (id) => {
+    if(id) {
+      onGame(id);
+    }       
     setAnchorGames(null);
   };
 

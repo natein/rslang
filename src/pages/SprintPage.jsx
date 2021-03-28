@@ -6,6 +6,8 @@ import { Box, Button, makeStyles } from '@material-ui/core';
 import { common } from '@material-ui/core/colors';
 import SprintStatistics from '../components/SprintGame/SprintStatistics';
 import SelectComplexityLevel from '../components/SprintGame/SelectComplexityLevel';
+import LoadingPage from '../components/LoadingPage';
+import * as gameActions from '../actions/gameActions';
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -19,7 +21,7 @@ const styles = makeStyles((theme) => ({
     },
 }));
 
-const SprintPage = ({ words = [] }) => {
+const SprintPage = ({ words = [], loader, onLoadWords }) => {
     const classes = styles();
     const [finished, onFinish] = useState(false);
     const statistics = useRef({ score: 0, words: [] });
@@ -40,9 +42,12 @@ const SprintPage = ({ words = [] }) => {
 
     return (
         <Box id="sprint-game-board" component="section" ref={gameRef}>
-            {(words.length === 0) && <SelectComplexityLevel />}
-            {words.length > 0 && !finished && <SprintGame words={words} statistics={statistics} onFinish={onFinish} />}
-            {finished && <SprintStatistics statistics={statistics} onNewGame={onNewGame} />}
+            {loader && <LoadingPage />}
+            {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
+            {!loader && words.length > 0 && !finished && (
+                <SprintGame words={words} statistics={statistics} onFinish={onFinish} />
+            )}
+            {!loader && !!finished && <SprintStatistics statistics={statistics} onNewGame={onNewGame} />}
             <Button className={classes.fullscreen} onClick={onFullScreen}>
                 <FullscreenIcon fontSize="large" />
             </Button>
@@ -51,7 +56,12 @@ const SprintPage = ({ words = [] }) => {
 };
 
 const mapStateToProps = (state) => ({
-    words: state.ebook.wordsList,
+    words: state.game.wordsList,
+    loader: state.ebook.loader,
 });
 
-export default connect(mapStateToProps)(SprintPage);
+const mapDispatchToProps = (dispatch) => ({
+    onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);

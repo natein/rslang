@@ -124,8 +124,9 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
         (index = 0) => {
             const random = Math.random();
             const isValid = Math.round(random);
-            if (index === words.length - 1) {
+            if (index === words.length) {
                 onFinish(true);
+                return;
             }
             if (isValid === 1) {
                 const translation = words[index].wordTranslate;
@@ -154,7 +155,6 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
             }
-            // populate statistics
             onNextWord(current.index + 1);
         },
         [current, onNextWord, answerScore, statistics, bonus],
