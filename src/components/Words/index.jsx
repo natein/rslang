@@ -82,14 +82,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, group, audio, addUserWord, userWords }) {
+function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord }) {
   const classes = useStyles();
 
   return (
     <div>
       <Grid container>
-        {wordsList.map((word) => (
-          <Grid key={word.id} item xs={12} sm={12} md={12}>
+        {wordsList.map((word, idx) => (
+          <Grid key={idx} item xs={12} sm={12} md={12}>
             <Card className={`${classes.root}`} variant="outlined">
               <CardMedia
                 className={classes.cover}
@@ -99,8 +99,8 @@ function Words({ wordsList, group, audio, addUserWord, userWords }) {
               <div className={classes.details}>
                 <CardContent className={classes.content}>
                   <Typography component="h5" variant="h5" className={classes.word}>
-                    <Tooltip title={`${SECTIONS_EBOOK[group - 1].name}`}>
-                      <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[group - 1].backgroundBtn}` }} />
+                    <Tooltip title={`${SECTIONS_EBOOK[word.group].name}`}>
+                      <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[word.group].backgroundBtn}` }} />
                     </Tooltip>
                     {word.word} - {word.transcription}
                     <WordsAudio className={classes.volume} audio={audio} word={word} />
@@ -123,13 +123,23 @@ function Words({ wordsList, group, audio, addUserWord, userWords }) {
                 </CardContent>
               </div>
               <div className={classes.buttons}>
-                <Tooltip title="Добавить в сложные">
-                  <IconButton color={userWords.includes(word.id) ? 'primary' : 'default'} component="span" onClick={() => addUserWord(word.id, 'hard')}>
-                    <SchoolIcon />
-                  </IconButton>
-                </Tooltip>
+                {
+                  word.userWord?.difficulty === 'hard'
+                    ?
+                    <Tooltip title="Добавлено в словарь 'Сложные слова'">
+                      <IconButton disabled component="span">
+                        <SchoolIcon color="primary" />
+                      </IconButton>
+                    </Tooltip>
+                    :
+                    <Tooltip title="Добавить в словарь 'Сложные слова'">
+                      <IconButton color="default" component="span" onClick={() => onChangeDifficulty(word, 'hard')}>
+                        <SchoolIcon />
+                      </IconButton>
+                    </Tooltip>
+                }
                 <Tooltip title="Удалить слово">
-                  <IconButton color="default" component="span">
+                  <IconButton color="default" component="span" onClick={() => onDeleteWord(word)}>
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
