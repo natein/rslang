@@ -24,6 +24,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
+import GamesPage from '../../pages/GamesPage';
 
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -174,7 +175,7 @@ export default function Dashboard() {
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/dictionary" component={DictionaryPage} exact />
                         <Route path="/dictionary/:type" component={DictionaryPage} />
-                        <Route path="/games" component={HomePage} exact />
+                        <Route path="/games" component={GamesPage} exact />
                         <Route path="/games/savanna" component={HomePage} />
                         <Route path="/statistics" component={Statistics} />
                         <Route path="/about" component={AboutTeam} />

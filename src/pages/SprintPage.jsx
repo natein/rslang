@@ -10,7 +10,9 @@ import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/userWordsActions';
-import levelSelect from '../assets/levelSelect.svg';
+import { GAMES_LIST } from '../constants';
+
+const sprintGame = GAMES_LIST.find(game => game.code === 'sprint').backgroundImage;
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -28,7 +30,7 @@ const styles = makeStyles((theme) => ({
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundImage: `url(${levelSelect})`,
+        backgroundImage: `url(${sprintGame})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
 
@@ -77,17 +79,22 @@ const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUs
     }, [match, onLoadWords, history]);
 
     const onAddWordToDictionary = (wordId) => {
-        if(userId && token) {
+        if (userId && token) {
             onCreateUserWord(userId, token, wordId);
         }
-    }
+    };
 
     return (
         <Box id="sprint-game-board" component="section" ref={gameRef} className={classes.root}>
             {loader && <LoadingPage />}
             {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
             {!loader && words.length > 0 && !finished && (
-                <SprintGame words={words} statistics={statistics} onFinish={onFinish} onAddWordToDictionary={onAddWordToDictionary}/>
+                <SprintGame
+                    words={words}
+                    statistics={statistics}
+                    onFinish={onFinish}
+                    onAddWordToDictionary={onAddWordToDictionary}
+                />
             )}
             {!loader && !!finished && <SprintStatistics statistics={statistics} onNewGame={onNewGame} />}
             <Button className={classes.fullscreen} onClick={onFullScreen}>
@@ -101,13 +108,12 @@ const mapStateToProps = (state) => ({
     words: state.game.wordsList,
     loader: state.ebook.loader,
     userId: state.user.id,
-    token: state.user.token
+    token: state.user.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
-    onCreateUserWord: (userId, token, wordId) =>
-        dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
+    onCreateUserWord: (userId, token, wordId) => dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);

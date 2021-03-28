@@ -1,3 +1,8 @@
+import sprintGame from '../assets/sprintGame.svg';
+import savanna from '../assets/savanna.svg';
+import audio from '../assets/audio.svg';
+import ourGame from '../assets/our-game.svg';
+
 export const DEVELOPERS = [
   {
     "fullname": "Иван Михальченко",
@@ -65,21 +70,28 @@ export const GAMES_LIST = [
     code: 'savanna',
     name: 'Саванна',
     coverImage: '',
-    backgroundImage: '',
+    backgroundImage: savanna,
     component: ''
   },
   {
     code: 'audio',
     name: 'Аудивызов',
     coverImage: '',
-    backgroundImage: '',
+    backgroundImage: audio,
     component: ''
   },
   {
     code: 'sprint',
     name: 'Спринт',
     coverImage: '',
-    backgroundImage: '',
+    backgroundImage: sprintGame,
+    component: ''
+  },
+  {
+    code: 'our-game',
+    name: 'Своя игра',
+    coverImage: '',
+    backgroundImage: ourGame,
     component: ''
   }
 ];
