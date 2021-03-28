@@ -50,3 +50,15 @@ export const getUserById = (id, token) => {
         )
         .then((response) => response.data);
 };
+
+export const updateToken = (id, token) => {
+    const url = `${baseUrl}/users/${id}/tokens`;
+    return axios
+        .get(
+            url,
+            {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }
+        )
+        .then((response) => response.data);
+}
