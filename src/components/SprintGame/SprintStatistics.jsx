@@ -1,29 +1,9 @@
 import { Box, Button, Divider, makeStyles, Typography } from '@material-ui/core';
 import React, { useCallback, useRef } from 'react';
 
-import levelSelect from '../../assets/levelSelect.svg';
-
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 const styles = makeStyles((theme) => ({
-    root: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `url(${levelSelect})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
-        color: theme.palette.primary.light,
-        flexBasis: 1,
-        padding: theme.spacing(5),
-    },
     word: {
         display: 'flex',
         flexDirection: 'row',
@@ -108,7 +88,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
     }, []);
 
     return (
-        <Box component="section" className={classes.root}>
+        <>
             <Typography className={classes.title} component="h1" variant="h4" gutterBottom>
                 Результат: {statistics.current.score}
             </Typography>
@@ -144,7 +124,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
             <Button color="primary" variant="contained" className={classes.newGame} onClick={onNewGame}>
                 Играть еще
             </Button>
-        </Box>
+        </>
     );
 };
 

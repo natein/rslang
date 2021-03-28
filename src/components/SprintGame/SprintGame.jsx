@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import levelSelect from '../../assets/levelSelect.svg';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ProgressBar from './ProgressBar';
@@ -23,23 +22,6 @@ import success from '../../assets/sounds/correct.mp3';
 import failed from '../../assets/sounds/wrong.mp3';
 
 const styles = makeStyles((theme) => ({
-    root: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `url(${levelSelect})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: common.white,
-        flexBasis: 1,
-    },
     card: {
         backgroundColor: '#7986CBA1',
         padding: '1rem',
@@ -184,7 +166,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
     }, [progress, answerScore]);
 
     return (
-        <Box component="section" className={classes.root}>
+        <>
             <Typography component="h1" variant="h4" gutterBottom>
                 Текущий результат {statistics.current.score}
             </Typography>
@@ -225,7 +207,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                     </Button>
                 </CardActions>
             </Card>
-        </Box>
+        </>
     );
 };
 
