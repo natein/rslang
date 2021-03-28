@@ -122,7 +122,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
                 {statistics.current.words
                     .filter((word) => word.correct)
                     .map((word) => (
-                        <Box className={classes.row}>
+                        <Box className={classes.row} key={word.id}>
                             <Word word={word} onAudioPlay={onAudioPlay} />
                         </Box>
                     ))}
@@ -136,7 +136,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
                 {statistics.current.words
                     .filter((word) => !word.correct)
                     .map((word) => (
-                        <Box className={classes.row}>
+                        <Box className={classes.row} key={word.id}>
                             <Word word={word} onAudioPlay={onAudioPlay} />
                         </Box>
                     ))}

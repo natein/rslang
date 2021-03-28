@@ -23,7 +23,7 @@ const styles = makeStyles((theme) => ({
         padding: theme.spacing(5),
     },
     description: {
-        marginBottom: '4rem'
+        marginBottom: '4rem',
     },
     button: {
         color: 'white',
@@ -31,8 +31,9 @@ const styles = makeStyles((theme) => ({
         padding: '1rem',
         marginLeft: '1rem',
         '&:hover': {
-            borderColor: 'white',
+            border: '2px solid white',
         },
+        boxSizing: 'border-box',
     },
     select: {
         color: 'white',
@@ -53,10 +54,16 @@ const styles = makeStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'center',
         width: '80%',
+        '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
+            border: '2px solid white',
+        },
+        '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border: '2px solid white',
+        },
     },
 }));
 
-const SprintStatistics = () => {
+const SprintStatistics = ({ onLoadWords }) => {
     const classes = styles();
     const [group, setGroup] = useState(3);
 
@@ -66,10 +73,13 @@ const SprintStatistics = () => {
                 Спринт
             </Typography>
             <Typography className={classes.description} component="p">
-                <strong>Мини-игра «Спринт» - это тренировка для повторения заученных слов из вашего словаря.</strong><br/>
-                После запуска игры вы увидите слово и перевод. Вам нужно выбрать, правильно это или неправильно. <br/>
-                1. Используйте мышь, чтобы выбрать.<br/>
-                2. Используйте клавиши влево и вправо.<br/>
+                <strong>Мини-игра «Спринт» - это тренировка для повторения заученных слов из вашего словаря.</strong>
+                <br />
+                После запуска игры вы увидите слово и перевод. Вам нужно выбрать, правильно это или неправильно. <br />
+                1. Используйте мышь, чтобы выбрать.
+                <br />
+                2. Используйте клавиши влево и вправо.
+                <br />
             </Typography>
             <FormControl variant="outlined" className={classes.formControl}>
                 <Select
@@ -97,7 +107,12 @@ const SprintStatistics = () => {
                         6
                     </MenuItem>
                 </Select>
-                <Button color="primary" variant="outlined" className={classes.button}>
+                <Button
+                    color="primary"
+                    variant="outlined"
+                    className={classes.button}
+                    onClick={() => onLoadWords(group, Math.round(Math.random() * 30))}
+                >
                     Начать
                 </Button>
             </FormControl>

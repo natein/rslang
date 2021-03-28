@@ -21,7 +21,6 @@ function EbookContainer(props) {
     loadUserWordAgregate,
     loadUserDeleteWordAgregateInGroup
   } = props;
-
   const history = useHistory();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
