@@ -29,7 +29,10 @@ const useStyles = makeStyles({
         margin: '1rem',
         backgroundColor: 'grey',
         borderRadius: '40px',
-        boxShadow: '0px 5px 24px 25px rgba(34, 60, 80, 0.2)'
+        boxShadow: '0px 5px 24px 25px rgba(34, 60, 80, 0.2)',
+        '&:hover': {
+            boxShadow: '0px 5px 24px 25px rgba(255, 99, 71, 0.5)',
+        }
     },
     media: {
         position: 'absolute',
