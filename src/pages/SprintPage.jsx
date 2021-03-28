@@ -10,6 +10,7 @@ import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/userWordsActions';
+import levelSelect from '../assets/levelSelect.svg';
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -20,6 +21,24 @@ const styles = makeStyles((theme) => ({
         margin: 0,
         padding: 0,
         minWidth: 'auto',
+    },
+    root: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: `url(${levelSelect})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+        flexBasis: 1,
+        padding: theme.spacing(5),
     },
 }));
 
@@ -64,7 +83,7 @@ const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUs
     }
 
     return (
-        <Box id="sprint-game-board" component="section" ref={gameRef}>
+        <Box id="sprint-game-board" component="section" ref={gameRef} className={classes.root}>
             {loader && <LoadingPage />}
             {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
             {!loader && words.length > 0 && !finished && (

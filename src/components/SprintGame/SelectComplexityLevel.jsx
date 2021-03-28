@@ -1,27 +1,7 @@
-import { Box, Button, FormControl, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { Button, FormControl, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import React, { useState } from 'react';
 
-import levelSelect from '../../assets/levelSelect.svg';
-
 const styles = makeStyles((theme) => ({
-    root: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `url(${levelSelect})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        flexBasis: 1,
-        padding: theme.spacing(5),
-    },
     description: {
         marginBottom: '4rem',
     },
@@ -68,7 +48,7 @@ const SprintStatistics = ({ onLoadWords }) => {
     const [group, setGroup] = useState(3);
 
     return (
-        <Box component="section" className={classes.root}>
+        <>
             <Typography className={classes.title} component="h1" variant="h4" gutterBottom>
                 Спринт
             </Typography>
@@ -116,7 +96,7 @@ const SprintStatistics = ({ onLoadWords }) => {
                     Начать
                 </Button>
             </FormControl>
-        </Box>
+        </>
     );
 };
 
