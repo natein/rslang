@@ -92,7 +92,7 @@ const theme = createMuiTheme({
 const ROUND_TIME = 60;
 const ANSWER_SCORE = 20;
 
-const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_SCORE, statistics, onFinish }) => {
+const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_SCORE, statistics, onFinish, onAddWordToDictionary }) => {
     const classes = styles();
     const [timer, setTimer] = useState(roundTime);
     const timeout = useRef();
@@ -155,9 +155,10 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
             }
+            onAddWordToDictionary(current.info.id);
             onNextWord(current.index + 1);
         },
-        [current, onNextWord, answerScore, statistics, bonus],
+        [current, onNextWord, answerScore, statistics, bonus, onAddWordToDictionary],
     );
 
     useEffect(() => {
