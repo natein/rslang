@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import SprintGame from '../components/SprintGame';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
@@ -8,6 +8,7 @@ import SprintStatistics from '../components/SprintGame/SprintStatistics';
 import SelectComplexityLevel from '../components/SprintGame/SelectComplexityLevel';
 import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
+import { useHistory, useRouteMatch } from 'react-router';
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -26,6 +27,13 @@ const SprintPage = ({ words = [], loader, onLoadWords }) => {
     const [finished, onFinish] = useState(false);
     const statistics = useRef({ score: 0, words: [] });
     const gameRef = useRef();
+    const history = useHistory();
+
+    const match = useRouteMatch({
+        path: '/games/sprint/new',
+        strict: true,
+        sensitive: true,
+    });
 
     const onFullScreen = () => {
         if (!!document.fullscreenElement) {
@@ -39,6 +47,13 @@ const SprintPage = ({ words = [], loader, onLoadWords }) => {
         onFinish(false);
         statistics.current = { score: 0, words: [] };
     };
+
+    useEffect(() => {
+        if(match) {
+            onLoadWords([]);
+            history.push('/games/sprint')
+        }
+    }, [match, onLoadWords, history]);
 
     return (
         <Box id="sprint-game-board" component="section" ref={gameRef}>

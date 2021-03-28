@@ -93,7 +93,7 @@ export const secondaryListItems = (
                 <ListItemText primary="Своя игра" />
             </ListItem>
         </Link>
-        <Link to="/games/sprint" style={link}>
+        <Link to="/games/sprint/new" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <AssignmentIcon />
