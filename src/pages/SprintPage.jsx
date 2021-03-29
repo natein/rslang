@@ -44,7 +44,7 @@ const styles = makeStyles((theme) => ({
     },
 }));
 
-const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUserWord }) => {
+const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUserWord, setGameWords }) => {
     const classes = styles();
     const [finished, onFinish] = useState(false);
     const statistics = useRef({ score: 0, words: [] });
@@ -72,11 +72,11 @@ const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUs
 
     useEffect(() => {
         if (match) {
-            onLoadWords([]);
+            setGameWords([]);
             onFinish(false);
             history.push('/games/sprint');
         }
-    }, [match, onLoadWords, history]);
+    }, [match, setGameWords, history]);
 
     const onAddWordToDictionary = (wordId) => {
         if (userId && token) {
@@ -113,6 +113,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
+    setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
     onCreateUserWord: (userId, token, wordId) => dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
 });
 
