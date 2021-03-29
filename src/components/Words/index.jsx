@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SchoolIcon from '@material-ui/icons/School';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import FolderIcon from '@material-ui/icons/Folder';
+import PublishIcon from '@material-ui/icons/Publish';
 import { SECTIONS_EBOOK } from '../../constants';
 import WordsAudio from '../WordsAudio';
 
@@ -93,9 +94,12 @@ const useStyles = makeStyles((theme) => ({
   iconHardButton: {
     color: '#4caf50'
   },
+  iconRecoverButton: {
+    color: '#039be5'
+  }
 }));
 
-function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user }) {
+function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dictionary }) {
   const classes = useStyles();
 
   return (
@@ -140,7 +144,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user }) {
                   </div>
                   <div className={classes.buttons}>
                     {
-                      user.token &&
+                      (user.token && !dictionary) &&
                       <>
                         {
                           word.userWord?.difficulty === 'hard'
@@ -160,6 +164,21 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user }) {
                         <Tooltip title="Удалить слово">
                           <IconButton color="default" className={classes.iconDeleteButton} component="span" onClick={() => onDeleteWord(word)}>
                             <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Статистика по слову">
+                          <IconButton color="default" className={classes.iconStatButton} component="span">
+                            <BarChartIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    }
+                    {
+                      (user.token && dictionary) &&
+                      <>
+                        <Tooltip title="Восстановить слово">
+                          <IconButton color="default" className={classes.iconRecoverButton} component="span">
+                            <PublishIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Статистика по слову">

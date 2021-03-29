@@ -84,4 +84,25 @@ export const GAMES_LIST = [
   }
 ];
 
+export const SECTIONS_DICTIONARY = [
+  {
+    type: 'study',
+    name: 'Изучаемые слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+  {
+    type: 'hard',
+    name: 'Сложные слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+  {
+    type: 'delete',
+    name: 'Удалённые слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+];
+
 export const EBOOK_COUNT_PAGES = 30;

@@ -50,16 +50,29 @@ export const updateUserWord = (userId, wordId, word, userWord, token) => {
     });
 };
 
-export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete) => {
+export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete, type) => {
   const url = `${baseUrl}/users/${userId}/aggregatedWords`;
 
-  let filter = `{ "$and": [{ "page": ${page - 1} }, {"group": ${group - 1}}] }`;
+  let filter = `{ "$and": [{ "page": ${page - 1} }, {"group": ${group - 1}}, { "userWord.optional.isDelete": null }] }`;
+
   if (isHard) {
     filter = '{ "$and": [{ "userWord.difficulty": "hard" }] }';
   }
 
   if (isDelete) {
-    filter = `{ "$and": [{ "userWord.optional.isDelete": null }, { "page": ${page - 1} }, {"group": ${group - 1}}] }`;
+    filter = `{ "$and": [{ "userWord.optional.isDelete": true }, { "page": ${page - 1} }, {"group": ${group - 1}}] }`;
+  }
+
+  if (type === 'study') {
+    filter = `{ "$and": [{ "$or": [{ "userWord.difficulty": "hard" }] }, { "userWord.optional.isDelete": null }] }`;
+  }
+
+  if (type === 'hard') {
+    filter = `{ "$and": [{ "userWord.difficulty": "hard" }, { "userWord.optional.isDelete": null }] }`;
+  }
+
+  if (type === 'delete') {
+    filter = `{ "$and": [{ "userWord.optional.isDelete": true }] }`;
   }
 
   return axios.get(url, {

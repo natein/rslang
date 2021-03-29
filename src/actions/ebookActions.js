@@ -45,9 +45,9 @@ export const updateUserWord = (userId, wordId, word, token) => (dispatch) => {
   });
 }
 
-export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard = false, isDelete = false) => (dispatch) => {
+export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard = false, isDelete = false, type = '') => (dispatch) => {
   dispatch(setLoader(true));
-  return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete)
+  return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete, type)
     .then(data => dispatch(setWordsAverage(data[0].paginatedResults)))
     //.then(data => console.log(data[0].paginatedResults))
     .then(() => dispatch(onError()))

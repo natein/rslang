@@ -5,12 +5,12 @@ import { loadWords, createUserWord, updateUserWord, loadUserWordAgregate } from 
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import Snackbar from '@material-ui/core/Snackbar';
-import EbookGroupMenu from '../WordsPanel/EbookGroupMenu';
+import DictionaryGroupMenu from '../WordsPanel/DictionaryGroupMenu';
 import EbookPageMenu from '../WordsPanel/EbookPageMenu';
 import GameMenu from '../WordsPanel/GameMenu';
 import Settings from '../WordsPanel/Settings';
 
-function EbookContainer(props) {
+function DictionaryContainer(props) {
   const {
     loader,
     loadWords,
@@ -20,20 +20,21 @@ function EbookContainer(props) {
     createUserWord,
     updateUserWord,
     error,
-    loadUserWordAgregate
+    loadUserWordAgregate,
+    type
   } = props;
 
   const history = useHistory();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
+  const routeTypePage = useCallback((typeNext, pageNext) => history.push(`/dictionary/${typeNext}/${pageNext}`), [type]);
 
   const audio = useRef(new Audio());
 
   useEffect(() => {
-    if (!user.token) loadWords(group, page);
-    else loadUserWordAgregate(user.userId, user.token, group, page);
+    console.log('type', type);
+    loadUserWordAgregate(user.userId, user.token, group, page, false, false, type);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [group, page]);
+  }, [type, page]);
 
   const onChangeDifficulty = (word, type) => {
     if (word?.userWord) {
@@ -54,11 +55,10 @@ function EbookContainer(props) {
   return (
     <>
       {loader && <LoadingPage />}
-      {<EbookGroupMenu {...props} routeGroupPage={routeGroupPage} />}
-      {<EbookPageMenu {...props} routeGroupPage={routeGroupPage} />}
+      {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} />}
       {<GameMenu />}
       {<Settings />}
-      {!loader && <Words {...props} onChangeDifficulty={onChangeDifficulty} onDeleteWord={onDeleteWord} audio={audio} />}
+      {!loader && <Words {...props} onChangeDifficulty={onChangeDifficulty} onDeleteWord={onDeleteWord} audio={audio} dictionary={true} />}
 
       {error && <Snackbar open={true} message={error} />}
     </>
@@ -79,8 +79,8 @@ const mapDispatchToProps = (dispatch) => {
     loadWords: (page, group) => dispatch(loadWords(page, group)),
     createUserWord: (userId, wordId, word, token) => dispatch(createUserWord(userId, wordId, word, token)),
     updateUserWord: (userId, wordId, word, token) => dispatch(updateUserWord(userId, wordId, word, token)),
-    loadUserWordAgregate: (userId, token, group, page, isHard, isDelete) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete)),
+    loadUserWordAgregate: (userId, token, group, page, isHard, isDelete, type) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete, type)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EbookContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(DictionaryContainer);
