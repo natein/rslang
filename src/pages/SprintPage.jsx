@@ -12,7 +12,7 @@ import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/userWordsActions';
 import { GAMES_LIST } from '../constants';
 
-const sprintGame = GAMES_LIST.find(game => game.code === 'sprint').backgroundImage;
+const sprintGame = GAMES_LIST.find((game) => game.code === 'sprint').backgroundImage;
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -114,7 +114,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
     setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
-    onCreateUserWord: (userId, token, wordId) => dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
+    onCreateUserWord: (userId, token, wordId) =>
+        dispatch(userWordsActions.createUserWord(userId, wordId, { optional: { game: true } }, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);
