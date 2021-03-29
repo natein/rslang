@@ -43,7 +43,7 @@ const styles = makeStyles((theme) => ({
     },
 }));
 
-const SprintStatistics = ({ onLoadWords }) => {
+const SelectComplexityLevel = ({ onLoadWords }) => {
     const classes = styles();
     const [group, setGroup] = useState(3);
 
@@ -100,4 +100,4 @@ const SprintStatistics = ({ onLoadWords }) => {
     );
 };
 
-export default SprintStatistics;
+export default SelectComplexityLevel;
