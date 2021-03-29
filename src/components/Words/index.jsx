@@ -79,79 +79,102 @@ const useStyles = makeStyles((theme) => ({
   sectionIcon: {
     marginRight: theme.spacing(1),
     marginLeft: '-3px',
-  }
+  },
+  iconDeleteButton: {
+    '&:hover': {
+      color: '#e53935'
+    }
+  },
+  iconStatButton: {
+    '&:hover': {
+      color: '#3949ab'
+    }
+  },
+  iconHardButton: {
+    color: '#4caf50'
+  },
 }));
 
-function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord }) {
+function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user }) {
   const classes = useStyles();
 
   return (
     <div>
       <Grid container>
-        {wordsList.map((word, idx) => (
-          <Grid key={idx} item xs={12} sm={12} md={12}>
-            <Card className={`${classes.root}`} variant="outlined">
-              <CardMedia
-                className={classes.cover}
-                image={`${baseUrl}/${word.image}`}
-              />
+        {
+          wordsList.length === 0
+            ? <Typography component="h5" variant="h5" className={classes.word}>Не найдено слов</Typography>
+            : wordsList.map(word => (
+              <Grid key={word._id} item xs={12} sm={12} md={12}>
+                <Card className={`${classes.root}`} variant="outlined">
+                  <CardMedia
+                    className={classes.cover}
+                    image={`${baseUrl}/${word.image}`}
+                  />
 
-              <div className={classes.details}>
-                <CardContent className={classes.content}>
-                  <Typography component="h5" variant="h5" className={classes.word}>
-                    <Tooltip title={`${SECTIONS_EBOOK[word.group].name}`}>
-                      <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[word.group].backgroundBtn}` }} />
-                    </Tooltip>
-                    {word.word} - {word.transcription}
-                    <WordsAudio className={classes.volume} audio={audio} word={word} />
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    {word.wordTranslate}
-                  </Typography>
-                  <Typography variant="subtitle1" className={classes.text}>
-                    <div dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
-                  </Typography>
-                  <Typography variant="subtitle1" className={classes.textTranslate}>
-                    {word.textMeaningTranslate}
-                  </Typography>
-                  <Typography variant="subtitle1" className={classes.text}>
-                    <div dangerouslySetInnerHTML={{ __html: word.textExample }} />
-                  </Typography>
-                  <Typography variant="subtitle1" className={classes.textTranslate}>
-                    {word.textExampleTranslate}
-                  </Typography>
-                </CardContent>
-              </div>
-              <div className={classes.buttons}>
-                {
-                  word.userWord?.difficulty === 'hard'
-                    ?
-                    <Tooltip title="Добавлено в словарь 'Сложные слова'">
-                      <IconButton disabled component="span">
-                        <SchoolIcon color="primary" />
-                      </IconButton>
-                    </Tooltip>
-                    :
-                    <Tooltip title="Добавить в словарь 'Сложные слова'">
-                      <IconButton color="default" component="span" onClick={() => onChangeDifficulty(word, 'hard')}>
-                        <SchoolIcon />
-                      </IconButton>
-                    </Tooltip>
-                }
-                <Tooltip title="Удалить слово">
-                  <IconButton color="default" component="span" onClick={() => onDeleteWord(word)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Статистика по слову">
-                  <IconButton color="default" component="span">
-                    <BarChartIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </Card>
-          </Grid>
-        ))}
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography component="h5" variant="h5" className={classes.word}>
+                        <Tooltip title={`${SECTIONS_EBOOK[word.group].name}`}>
+                          <FolderIcon className={classes.sectionIcon} style={{ color: `${SECTIONS_EBOOK[word.group].backgroundBtn}` }} />
+                        </Tooltip>
+                        {word.word} - {word.transcription}
+                        <WordsAudio className={classes.volume} audio={audio} word={word} />
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {word.wordTranslate}
+                      </Typography>
+                      <Typography variant="subtitle1" className={classes.text}>
+                        <div dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
+                      </Typography>
+                      <Typography variant="subtitle1" className={classes.textTranslate}>
+                        {word.textMeaningTranslate}
+                      </Typography>
+                      <Typography variant="subtitle1" className={classes.text}>
+                        <div dangerouslySetInnerHTML={{ __html: word.textExample }} />
+                      </Typography>
+                      <Typography variant="subtitle1" className={classes.textTranslate}>
+                        {word.textExampleTranslate}
+                      </Typography>
+                    </CardContent>
+                  </div>
+                  <div className={classes.buttons}>
+                    {
+                      user.token &&
+                      <>
+                        {
+                          word.userWord?.difficulty === 'hard'
+                            ?
+                            <Tooltip title="Добавлено в словарь 'Сложные слова'">
+                              <IconButton disabled component="span">
+                                <SchoolIcon className={classes.iconHardButton} />
+                              </IconButton>
+                            </Tooltip>
+                            :
+                            <Tooltip title="Добавить в словарь 'Сложные слова'">
+                              <IconButton color="default" component="span" onClick={() => onChangeDifficulty(word, 'hard')}>
+                                <SchoolIcon />
+                              </IconButton>
+                            </Tooltip>
+                        }
+                        <Tooltip title="Удалить слово">
+                          <IconButton color="default" className={classes.iconDeleteButton} component="span" onClick={() => onDeleteWord(word)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Статистика по слову">
+                          <IconButton color="default" className={classes.iconStatButton} component="span">
+                            <BarChartIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    }
+
+                  </div>
+                </Card>
+              </Grid>
+            ))
+        }
       </Grid>
     </div>
   );

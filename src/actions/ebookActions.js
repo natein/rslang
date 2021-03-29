@@ -1,7 +1,8 @@
 import { onError } from './commonActions';
 import * as ebookService from '../api/ebookService';
 
-export const GET_WORDS = 'GET_WORDS';
+export const SET_WORDS = 'SET_WORDS';
+export const SET_WORDS_AVERAGE = 'SET_WORDS_AVERAGE';
 export const SET_WORD_USER = 'SET_WORD_USER';
 export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
@@ -47,7 +48,7 @@ export const updateUserWord = (userId, wordId, word, token) => (dispatch) => {
 export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard = false, isDelete = false) => (dispatch) => {
   dispatch(setLoader(true));
   return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete)
-    .then(data => dispatch(setWords(data[0].paginatedResults)))
+    .then(data => dispatch(setWordsAverage(data[0].paginatedResults)))
     //.then(data => console.log(data[0].paginatedResults))
     .then(() => dispatch(onError()))
     .catch((err) => {
@@ -59,7 +60,14 @@ export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard 
 
 export const setWords = (words) => {
   return {
-    type: GET_WORDS,
+    type: SET_WORDS,
+    payload: words
+  }
+}
+
+export const setWordsAverage = (words) => {
+  return {
+    type: SET_WORDS_AVERAGE,
     payload: words
   }
 }

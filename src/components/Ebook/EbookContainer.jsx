@@ -33,7 +33,7 @@ function EbookContainer(props) {
   }, [group, page]);
 
   const onChangeDifficulty = (word, type) => {
-    if (word.userWord) {
+    if (word?.userWord) {
       updateUserWord(user.userId, word._id, { difficulty: type }, user.token);
     } else {
       createUserWord(user.userId, word._id, { difficulty: type }, user.token);
@@ -41,7 +41,7 @@ function EbookContainer(props) {
   }
 
   const onDeleteWord = (word) => {
-    if (word.userWord) {
+    if (word?.userWord) {
       updateUserWord(user.userId, word._id, { optional: { isDelete: true } }, user.token);
     } else {
       createUserWord(user.userId, word._id, { optional: { isDelete: true } }, user.token);

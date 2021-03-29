@@ -1,4 +1,4 @@
-import { GET_WORDS, SET_LOADER, WORD_PLAYING, SET_WORD_USER } from "../actions/ebookActions";
+import { SET_WORDS, SET_WORDS_AVERAGE, SET_LOADER, WORD_PLAYING, SET_WORD_USER } from "../actions/ebookActions";
 
 const initialState = {
   wordsList: [],
@@ -8,7 +8,10 @@ const initialState = {
 
 const ebookReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_WORDS:
+    case SET_WORDS:
+      return { ...state, wordsList: action.payload.map(word => ({ ...word, _id: word.id })) }
+
+    case SET_WORDS_AVERAGE:
       return { ...state, wordsList: action.payload }
 
     case SET_WORD_USER:
