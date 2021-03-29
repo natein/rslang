@@ -89,6 +89,12 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '900',
     },
     appBarSpacer: theme.mixins.toolbar,
+    main: {
+        marginTop: `max(${theme.mixins.toolbar.minHeight}px, 64px)`,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 }));
 
 export default function Dashboard() {
@@ -99,7 +105,7 @@ export default function Dashboard() {
     };
 
     return (
-        <Box style={{ display: 'flex' }}>
+        <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
@@ -152,11 +158,10 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    margin: '1rem auto',
                     width: '100%'
                 }}
+                className={classes.main}
             >
-                <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg">
                     <Switch>
                         <Route path="/" component={HomePage} exact />

@@ -10,7 +10,7 @@ const styles = (theme) => ({
     width: 73,
     display: 'block',
     margin: `${theme.spacing(1)}px auto 0`,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: 'tomato',
   },
   markedH3Center: {
     height: 4,
