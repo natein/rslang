@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { loadWords, createUserWord, updateUserWord, loadUserWordAgregate } from '../../actions/ebookActions';
+import { loadWords, createUserWord, updateUserWord, loadUserWordAgregate, loadUserDeleteWordAgregateInGroup } from '../../actions/ebookActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import EbookGroupMenu from '../WordsPanel/EbookGroupMenu';
@@ -18,7 +18,8 @@ function EbookContainer(props) {
     user,
     createUserWord,
     updateUserWord,
-    loadUserWordAgregate
+    loadUserWordAgregate,
+    loadUserDeleteWordAgregateInGroup
   } = props;
 
   const history = useHistory();
@@ -32,6 +33,11 @@ function EbookContainer(props) {
     else loadUserWordAgregate(user.userId, user.token, group, page);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [group, page]);
+
+  useEffect(() => {
+    if (user.token) loadUserDeleteWordAgregateInGroup(user.userId, user.token, group);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [group]);
 
   const onChangeDifficulty = (word, type) => {
     if (word?.userWord) {
@@ -65,6 +71,7 @@ const mapStateToProps = (state) => {
   return {
     error: state.common.error,
     wordsList: state.ebook.wordsList,
+    wordsGroupDelete: state.ebook.wordsGroupDelete,
     loader: state.ebook.loader,
     user: state.user,
   }
@@ -76,6 +83,7 @@ const mapDispatchToProps = (dispatch) => {
     createUserWord: (userId, wordId, word, token) => dispatch(createUserWord(userId, wordId, word, token)),
     updateUserWord: (userId, wordId, word, token) => dispatch(updateUserWord(userId, wordId, word, token)),
     loadUserWordAgregate: (userId, token, group, page, isHard, isDelete) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete)),
+    loadUserDeleteWordAgregateInGroup: (userId, token, group) => dispatch(loadUserDeleteWordAgregateInGroup(userId, token, group)),
   }
 }
 

@@ -10,7 +10,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { EBOOK_COUNT_PAGES } from '../../constants';
+import { EBOOK_COUNT_PAGES, COUNT_WORDS_ON_PAGE } from '../../constants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function EbookPageMenu({ group, page, routeGroupPage }) {
+function EbookPageMenu({ group, page, routeGroupPage, wordsGroupDelete }) {
   const classes = useStyles();
   const [anchorPage, setAnchorPage] = useState(null);
 
@@ -51,17 +51,28 @@ function EbookPageMenu({ group, page, routeGroupPage }) {
     setAnchorPage(event.currentTarget);
   };
 
-  const handleClosePage = (page) => {
+  const handleClosePage = (page, type = '') => {
     setAnchorPage(null);
-    if (page >= 1 && page <= EBOOK_COUNT_PAGES) routeGroupPage(group, page)
+    if (page >= 1 && page <= EBOOK_COUNT_PAGES) {
+      if (pages[page - 1] === COUNT_WORDS_ON_PAGE) {
+        if (type === 'next') page += 1;
+        if (type === 'prev') page -= 1;
+      }
+      routeGroupPage(group, page);
+    }
   };
+
+  const pages = wordsGroupDelete.reduce((acc, item) => {
+    acc[item.page] = (acc[item.page] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <>
       <ButtonGroup className={`${classes.button} ${classes.pageButton}`} variant="contained" aria-label="button group">
         <Button
           startIcon={<ChevronLeftIcon />}
-          onClick={() => handleClosePage(page - 1)}></Button>
+          onClick={() => handleClosePage(page - 1, 'prev')}></Button>
         <Button
           startIcon={<BookmarkBorderIcon />}
           aria-controls="page-menu"
@@ -71,7 +82,7 @@ function EbookPageMenu({ group, page, routeGroupPage }) {
         </Button>
         <Button
           startIcon={<ChevronRightIcon />}
-          onClick={() => handleClosePage(page + 1)}></Button>
+          onClick={() => handleClosePage(page + 1, 'next')}></Button>
       </ButtonGroup>
       <Menu
         id="page-menu"
@@ -84,6 +95,7 @@ function EbookPageMenu({ group, page, routeGroupPage }) {
         {
           Array.apply(null, { length: EBOOK_COUNT_PAGES }).map((_, idx) =>
             <MenuItem
+              disabled={pages[idx] === COUNT_WORDS_ON_PAGE ? true : false}
               key={idx}
               onClick={() => handleClosePage(idx + 1)}
             >

@@ -107,3 +107,26 @@ export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete
       throw err;
     });
 };
+
+export const getUserDeleteWordAgregateInGroup = (userId, token, group) => {
+  const url = `${baseUrl}/users/${userId}/aggregatedWords`;
+
+  let filter = `{ "$and": [{"group": ${group - 1}}, { "userWord.optional.isDelete": true }] }`;
+
+  return axios.get(url, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    params: {
+      filter: filter,
+      wordsPerPage: 600
+    }
+  })
+    .then((response) => response.data)
+    .catch((err) => {
+      if (err.response?.status === 401) {
+        throw new Error('Необходимо авторизоваться');
+      }
+      throw err;
+    });
+};
