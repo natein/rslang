@@ -5,7 +5,7 @@ function WordsAudio({ audio, word, className, wordPlaying, setWordPlaying }) {
   const baseUrl = process.env.REACT_APP_API || '';
 
   const playAudio = (audio, word) => {
-    setWordPlaying(word.id);
+    setWordPlaying(word._id);
     const audioList = [
       `${baseUrl}/${word.audio}`,
       `${baseUrl}/${word.audioMeaning}`,
@@ -32,7 +32,7 @@ function WordsAudio({ audio, word, className, wordPlaying, setWordPlaying }) {
     setWordPlaying(null);
   }
 
-  if (wordPlaying !== word.id) {
+  if (wordPlaying !== word._id) {
     return <PlayCircleOutlineIcon color="primary" className={className} onClick={() => playAudio(audio, word)} />;
   }
   return <PauseCircleOutlineIcon color="primary" className={className} onClick={() => pauseAudio(audio)} />;
