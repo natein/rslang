@@ -1,16 +1,14 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
-import styled, { StyleSheetManager } from 'styled-components';
 import PropTypes from 'prop-types';
-// import { loadWords, gameInit, startTimer } from '../../../../../actions/gamesActions';
 import ChooseWords from './ChooseWords';
 
-function ChooseWordsContainer({ gamewords, answer }) {
+function ChooseWordsContainer({ gamewords, answer, drawer }) {
     useEffect(() => {});
 
     return (
         <>
-            <ChooseWords gamewords={gamewords} answer={answer} />
+            <ChooseWords gamewords={gamewords} drawer={drawer} answer={answer} />
         </>
     );
 }
@@ -22,8 +20,9 @@ ChooseWordsContainer.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        gamewords: state.games.gamewords,
-        answer: state.games.answer,
+        gamewords: state.game.savanna.gamewords,
+        answer: state.game.savanna.answer,
+        drawer: state.game.savanna.drawer,
     };
 };
 

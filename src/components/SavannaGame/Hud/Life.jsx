@@ -9,8 +9,8 @@ const breakpoints = createMuiTheme({});
 
 const LifeWrapper = styled(Box)`
     position: absolute;
-    right: 60px;
-    top: 29px;
+    right: 75px;
+    top: 26px;
     height: 16px;
     display: flex;
     flex-direction: row;

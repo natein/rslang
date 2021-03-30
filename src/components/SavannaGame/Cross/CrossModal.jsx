@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
 import { Fade, Backdrop, Modal, Box, Typography, Button } from '@material-ui/core';
-import { closeCrossModal } from '../../../actions/gamesActions';
+import { closeCrossModal } from '../../../actions/gameActions';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { GAMES } from '../../../constants/index';
 import PropTypes from 'prop-types';

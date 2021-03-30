@@ -2,7 +2,6 @@ import { Box, makeStyles } from '@material-ui/core';
 import Footer from './components/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useRouteMatch } from 'react-router-dom';
-import Savanna from './components/MiniGames/Savanna'
 import { Route, Switch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,12 +26,7 @@ function App() {
 
   return (
     <Box component="div" className={classes.rootContainer}>
-
-      <Switch>
-        <Route path="/games/savanna" component={Savanna} />
-      </Switch>
-
-      {!match && <Dashboard />}
+      <Dashboard />
       {!match && <Footer />}
     </Box>
   );

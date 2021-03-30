@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-
+import { toggleDrawer } from '../../actions/gameActions';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,7 +16,7 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-
+import { connect } from 'react-redux';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
@@ -24,6 +24,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
+import SavannaPage from '../../pages/SavannaPage';
 
 const drawerWidth = 240;
 
@@ -94,11 +95,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative'
-    }
+        position: 'relative',
+    },
 }));
 
-export default function Dashboard() {
+function Dashboard() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
@@ -122,7 +123,7 @@ export default function Dashboard() {
                     <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         <Link className={classes.titleLink} to="/">
                             RSLang
-                            </Link>
+                        </Link>
                     </Typography>
                     <TransitionsModal />
                     {/* <IconButton color="inherit">
@@ -159,7 +160,7 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    width: '100%'
+                    width: '100%',
                 }}
                 className={classes.main}
             >
@@ -169,14 +170,16 @@ export default function Dashboard() {
                         <Route path="/ebook" component={EbookPage} exact />
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/games" component={HomePage} exact />
-                        <Route path="/games/savanna" component={HomePage} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
                         <Route path="/games/sprint" component={SprintPage} />
+                        <Route path="/games/savanna" component={SavannaPage} />
                     </Switch>
                 </Container>
             </Box>
         </Box>
     );
 }
+
+export default Dashboard;

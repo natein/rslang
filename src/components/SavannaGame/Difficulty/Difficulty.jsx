@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
 import { SECTIONS_EBOOK } from '../../../constants/index';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { loadWords } from '../../../actions/gamesActions';
+import { GAMES } from '../../../constants/index';
 
 const DifficultyForm = styled(FormControl)`
     min-width: 120px;
@@ -22,18 +21,13 @@ const DifficultySelect = styled(Select)`
     }
 `;
 
-function Difficulty({ lvlTitle, loadWords }) {
-    const [difficultyLvl, setDifficultyLvl] = React.useState(2);
-
-    const handleDifficultyChange = ({ target }) => {
-        loadWords(target.value, 1);
-        setDifficultyLvl(target.value);
-    };
+function Difficulty({ setDifficulty = (f) => f, difficultyLvl }) {
 
     return (
         <DifficultyForm color="primary" variant="outlined">
-            <DifficultyLabel>{lvlTitle}</DifficultyLabel>
-            <DifficultySelect value={difficultyLvl} onChange={handleDifficultyChange} label={lvlTitle}>
+            <DifficultyLabel>{GAMES.difficultyTitle}</DifficultyLabel>
+
+            <DifficultySelect value={difficultyLvl} onChange={(e) => setDifficulty(e)} label={GAMES.difficultyTitle}>
                 {SECTIONS_EBOOK.map((item) => {
                     return (
                         <MenuItem key={item.name} value={item.group + 1}>
@@ -47,12 +41,8 @@ function Difficulty({ lvlTitle, loadWords }) {
 }
 
 Difficulty.propTypes = {
-    lvlTitle: PropTypes.string.isRequired,
-    loadWords: PropTypes.func.isRequired,
+    setDifficulty: PropTypes.func.isRequired,
+    difficultyLvl: PropTypes.number,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    loadWords: (group, page) => dispatch(loadWords(group, page)),
-});
-
-export default connect(null, mapDispatchToProps)(Difficulty);
+export default Difficulty;

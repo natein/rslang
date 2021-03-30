@@ -3,12 +3,10 @@ import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core/';
 import { GAMES } from '../../../constants/index';
-import Difficulty from '../Difficulty/Difficulty';
+import Difficulty from '../../SavannaGame/Difficulty/Difficulty';
 import Timer from '../Timer/Timer';
-import Cross from '../Cross/Cross';
-import CrossModal from '../Cross/CrossModal';
-import Sound from '../Hud/Sound';
-import Life from '../Hud/Life';
+import Sound from '../../SavannaGame/Hud/Sound';
+import Life from '../../SavannaGame/Hud/Life';
 import ChooseWords from './Gameplay/ChooseWords';
 
 import PropTypes from 'prop-types';
@@ -18,15 +16,22 @@ const [game] = GAMES.list;
 const breakpoints = createMuiTheme({});
 
 const Wrapper = styled(Box)`
-    height: 100vh;
-    background: linear-gradient(0deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 30%)), url(${game.backgroundImage});
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    position: absolute;
     display: flex;
     justify-content: center;
+    flex-basis: 1px;
     align-items: center;
     flex-direction: column;
+    padding: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    background: linear-gradient(0deg, rgb(0 0 0 / 35%), rgb(0 0 0 / 35%)), url(${game.backgroundImage});
+    background-repeat: no-repeat;
 `;
 const GameTitle = styled(Typography)`
     ${({ theme }) => `
@@ -65,11 +70,17 @@ const StartBtn = styled(Button)`
     }
 `;
 
-function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
+function Savanna({ preloadTimer = (f) => f, timer }) {
     const [isStarted, setIsStarted] = useState(false);
+    const [difficultyLvl, setDifficultyLvl] = React.useState(2);
+
+    function setDifficultyHandle(e) {
+        const { target } = e;
+        setDifficultyLvl(target.value);
+    }
 
     function StartGameHandle() {
-        startGame();
+        preloadTimer(difficultyLvl, Math.round(Math.random() * 30));
         setIsStarted(true);
     }
 
@@ -78,9 +89,6 @@ function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
             <ThemeProvider theme={breakpoints}>
                 <Wrapper>
                     {timer && <Timer />}
-
-                    <Cross onClick={() => crossModalOpen()} />
-                    <CrossModal />
 
                     {!isStarted ? (
                         <>
@@ -91,7 +99,8 @@ function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
                                 <GameDescriptionText component="p">{game.description}</GameDescriptionText>
                             </GameInner>
                             <GameInner>
-                                <Difficulty lvlTitle={GAMES.difficultyTitle} />
+                                <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficultyHandle} />
+
                                 <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
                                     {GAMES.btnLabel}
                                 </StartBtn>
@@ -111,9 +120,9 @@ function Savanna({ startGame = (f) => f, crossModalOpen = (f) => f, timer }) {
 }
 
 Savanna.propTypes = {
-    crossModalOpen: PropTypes.func.isRequired,
     timer: PropTypes.bool,
-    startGame: PropTypes.func.isRequired,
+    onLoadWords: PropTypes.func,
+    preloadTimer: PropTypes.func,
 };
 
 export default Savanna;

@@ -11,6 +11,7 @@ import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/userWordsActions';
 import levelSelect from '../assets/levelSelect.svg';
+import { onFullScreen } from '../helpers';
 
 const styles = makeStyles((theme) => ({
     fullscreen: {
@@ -21,6 +22,8 @@ const styles = makeStyles((theme) => ({
         margin: 0,
         padding: 0,
         minWidth: 'auto',
+        marginRight: '30px',
+        marginTop: '15px',
     },
     root: {
         position: 'absolute',
@@ -55,14 +58,6 @@ const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUs
         sensitive: true,
     });
 
-    const onFullScreen = () => {
-        if (!!document.fullscreenElement) {
-            document.exitFullscreen();
-        } else {
-            gameRef.current.requestFullscreen();
-        }
-    };
-
     const onNewGame = () => {
         onFinish(false);
         statistics.current = { score: 0, words: [] };
@@ -77,20 +72,25 @@ const SprintPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUs
     }, [match, onLoadWords, history]);
 
     const onAddWordToDictionary = (wordId) => {
-        if(userId && token) {
+        if (userId && token) {
             onCreateUserWord(userId, token, wordId);
         }
-    }
+    };
 
     return (
         <Box id="sprint-game-board" component="section" ref={gameRef} className={classes.root}>
             {loader && <LoadingPage />}
             {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
             {!loader && words.length > 0 && !finished && (
-                <SprintGame words={words} statistics={statistics} onFinish={onFinish} onAddWordToDictionary={onAddWordToDictionary}/>
+                <SprintGame
+                    words={words}
+                    statistics={statistics}
+                    onFinish={onFinish}
+                    onAddWordToDictionary={onAddWordToDictionary}
+                />
             )}
             {!loader && !!finished && <SprintStatistics statistics={statistics} onNewGame={onNewGame} />}
-            <Button className={classes.fullscreen} onClick={onFullScreen}>
+            <Button className={classes.fullscreen} onClick={() => onFullScreen(gameRef)}>
                 <FullscreenIcon fontSize="large" />
             </Button>
         </Box>
@@ -101,13 +101,12 @@ const mapStateToProps = (state) => ({
     words: state.game.wordsList,
     loader: state.ebook.loader,
     userId: state.user.id,
-    token: state.user.token
+    token: state.user.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
-    onCreateUserWord: (userId, token, wordId) =>
-        dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
+    onCreateUserWord: (userId, token, wordId) => dispatch(userWordsActions.createUserWord(userId, wordId, {}, token)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);
