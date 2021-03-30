@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { COUNT_WORDS_ON_PAGE } from '../constants';
 
 const baseUrl = process.env.REACT_APP_API || '';
 
@@ -95,7 +96,7 @@ export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete
     },
     params: {
       filter: filter,
-      wordsPerPage: 20
+      wordsPerPage: type ? 3600 : COUNT_WORDS_ON_PAGE
     }
   })
     .then((response) => response.data)

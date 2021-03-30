@@ -12,7 +12,7 @@ const ebookReducer = (state = initialState, action) => {
       return { ...state, wordsList: action.payload.map(word => ({ ...word, _id: word.id })) }
 
     case SET_WORDS_AVERAGE:
-      return { ...state, wordsList: action.payload }
+      return { ...state, wordsList: action.payload.words, totalCount: action.payload.totalCount }
 
     case SET_WORD_USER:
       const addDifficultyWords = state.wordsList.map(word => word._id === action.payload.wordId ? { ...word, userWord: action.payload } : word);

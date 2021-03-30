@@ -168,7 +168,7 @@ export default function Dashboard() {
                         <Route path="/ebook" component={EbookPage} exact />
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/dictionary" component={DictionaryPage} exact />
-                        <Route path="/dictionary/:type/:page" component={DictionaryPage} />
+                        <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={HomePage} exact />
                         <Route path="/games/savanna" component={HomePage} />
                         <Route path="/about" component={AboutTeam} />

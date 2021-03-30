@@ -52,7 +52,7 @@ function DictionaryGroupMenu({ type, routeTypePage }) {
 
   const handleCloseSection = (type) => {
     setAnchorSection(null);
-    if (type) routeTypePage(type, 1)
+    if (type) routeTypePage(type)
   };
 
   return (

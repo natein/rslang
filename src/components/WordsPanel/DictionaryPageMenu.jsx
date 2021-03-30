@@ -10,9 +10,6 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { EBOOK_COUNT_PAGES } from '../../constants';
-
-
 const useStyles = makeStyles((theme) => ({
   button: {
     margin: '0 10px 10px 0',
@@ -43,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DictionaryPageMenu({ group, page, routeGroupPage }) {
+function DictionaryPageMenu({ currentPage, countPages, paginate }) {
   const classes = useStyles();
   const [anchorPage, setAnchorPage] = useState(null);
 
@@ -53,7 +50,7 @@ function DictionaryPageMenu({ group, page, routeGroupPage }) {
 
   const handleClosePage = (page) => {
     setAnchorPage(null);
-    if (page >= 1 && page <= EBOOK_COUNT_PAGES) routeGroupPage(group, page)
+    if (page >= 1 && page <= countPages) paginate(page);
   };
 
   return (
@@ -61,17 +58,17 @@ function DictionaryPageMenu({ group, page, routeGroupPage }) {
       <ButtonGroup className={`${classes.button} ${classes.pageButton}`} variant="contained" aria-label="button group">
         <Button
           startIcon={<ChevronLeftIcon />}
-          onClick={() => handleClosePage(page - 1)}></Button>
+          onClick={() => handleClosePage(currentPage - 1)}></Button>
         <Button
           startIcon={<BookmarkBorderIcon />}
           aria-controls="page-menu"
           aria-haspopup="true"
           onClick={handleClickPage}>
-          Страница {page}
+          Страница {currentPage}
         </Button>
         <Button
           startIcon={<ChevronRightIcon />}
-          onClick={() => handleClosePage(page + 1)}></Button>
+          onClick={() => handleClosePage(currentPage + 1)}></Button>
       </ButtonGroup>
       <Menu
         id="page-menu"
@@ -82,7 +79,7 @@ function DictionaryPageMenu({ group, page, routeGroupPage }) {
         onClose={() => handleClosePage()}
       >
         {
-          Array.apply(null, { length: EBOOK_COUNT_PAGES }).map((_, idx) =>
+          Array.apply(null, { length: countPages }).map((_, idx) =>
             <MenuItem
               key={idx}
               onClick={() => handleClosePage(idx + 1)}

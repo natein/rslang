@@ -106,3 +106,4 @@ export const SECTIONS_DICTIONARY = [
 ];
 
 export const EBOOK_COUNT_PAGES = 30;
+export const COUNT_WORDS_ON_PAGE = 20;

@@ -4,7 +4,6 @@ import { useHistory } from 'react-router';
 import { loadWords, createUserWord, updateUserWord, loadUserWordAgregate } from '../../actions/ebookActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
-import Snackbar from '@material-ui/core/Snackbar';
 import EbookGroupMenu from '../WordsPanel/EbookGroupMenu';
 import EbookPageMenu from '../WordsPanel/EbookPageMenu';
 import GameMenu from '../WordsPanel/GameMenu';
@@ -19,7 +18,6 @@ function EbookContainer(props) {
     user,
     createUserWord,
     updateUserWord,
-    error,
     loadUserWordAgregate
   } = props;
 
@@ -59,8 +57,6 @@ function EbookContainer(props) {
       {<GameMenu />}
       {<Settings />}
       {!loader && <Words {...props} onChangeDifficulty={onChangeDifficulty} onDeleteWord={onDeleteWord} audio={audio} />}
-
-      {error && <Snackbar open={true} message={error} />}
     </>
   );
 }

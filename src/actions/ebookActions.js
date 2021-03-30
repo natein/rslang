@@ -60,8 +60,8 @@ export const deleteUserWord = (userId, wordId, token) => (dispatch) => {
 export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard = false, isDelete = false, type = '') => (dispatch) => {
   dispatch(setLoader(true));
   return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete, type)
-    .then(data => dispatch(setWordsAverage(data[0].paginatedResults)))
-    //.then(data => console.log(data[0].paginatedResults))
+    .then(data => dispatch(setWordsAverage(data)))
+    //.then(data => console.log(data))
     .then(() => dispatch(onError()))
     .catch((err) => {
       dispatch(onError(err.response ? err.response.data : err.message));
@@ -77,10 +77,13 @@ export const setWords = (words) => {
   }
 }
 
-export const setWordsAverage = (words) => {
+export const setWordsAverage = (data) => {
   return {
     type: SET_WORDS_AVERAGE,
-    payload: words
+    payload: {
+      words: data[0].paginatedResults,
+      totalCount: data[0].totalCount[0].count
+    }
   }
 }
 
