@@ -14,7 +14,6 @@ export const getUserWord = (userId, wordId, token) => {
     .then((response) => response.data);
 };
 
-
 export const createUserWord = (userId, wordId, word, token) => {
   const url = `${baseUrl}/users/${userId}/words/${wordId}`;
   return axios.post(url, word, {

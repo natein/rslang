@@ -3,6 +3,7 @@ import React from 'react';
 import Button from './Button';
 
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() => ({
 
 export default function ModalInfo() {
     const classes = useStyles();
+    const history = useHistory();
 
     return (
         <>
@@ -30,7 +32,7 @@ export default function ModalInfo() {
                 size="small"
                 className={classes.button}
                 component="a"
-                onClick={() => console.log('!')}
+                onClick={() => history.push('/about')}
             >
                 Разработчики
             </Button>
