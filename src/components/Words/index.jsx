@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dictionary }) {
+function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dictionary, onRecoverWord }) {
   const classes = useStyles();
 
   return (
@@ -176,8 +176,16 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                     {
                       (user.token && dictionary) &&
                       <>
+                        {
+                          word.userWord?.difficulty === 'hard' &&
+                          <Tooltip title="Добавлено в словарь 'Сложные слова'">
+                            <IconButton disabled component="span">
+                              <SchoolIcon className={classes.iconHardButton} />
+                            </IconButton>
+                          </Tooltip>
+                        }
                         <Tooltip title="Восстановить слово">
-                          <IconButton color="default" className={classes.iconRecoverButton} component="span">
+                          <IconButton color="default" className={classes.iconRecoverButton} component="span" onClick={() => onRecoverWord(word)}>
                             <PublishIcon />
                           </IconButton>
                         </Tooltip>

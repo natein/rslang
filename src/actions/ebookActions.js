@@ -4,6 +4,7 @@ import * as ebookService from '../api/ebookService';
 export const SET_WORDS = 'SET_WORDS';
 export const SET_WORDS_AVERAGE = 'SET_WORDS_AVERAGE';
 export const SET_WORD_USER = 'SET_WORD_USER';
+export const DELETE_WORD_USER = 'DELETE_WORD_USER';
 export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
 
@@ -45,6 +46,17 @@ export const updateUserWord = (userId, wordId, word, token) => (dispatch) => {
   });
 }
 
+export const deleteUserWord = (userId, wordId, token) => (dispatch) => {
+  //dispatch(setLoader(true));
+  return ebookService.deleteUserWord(userId, wordId, token)
+    .then(data => dispatch(deleteWordUser(wordId)))
+    .then(() => dispatch(onError()))
+    .catch((err) => {
+      dispatch(onError(err.response ? err.response.data : err.message));
+    })
+  //.finally(() => dispatch(setLoader(false)));
+}
+
 export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard = false, isDelete = false, type = '') => (dispatch) => {
   dispatch(setLoader(true));
   return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete, type)
@@ -76,6 +88,13 @@ export const setWordUser = (word) => {
   return {
     type: SET_WORD_USER,
     payload: word
+  }
+}
+
+export const deleteWordUser = (wordId) => {
+  return {
+    type: DELETE_WORD_USER,
+    payload: wordId
   }
 }
 

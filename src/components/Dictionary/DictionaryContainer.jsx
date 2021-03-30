@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { loadWords, loadUserWordAgregate } from '../../actions/ebookActions';
+import { loadWords, loadUserWordAgregate, deleteUserWord } from '../../actions/ebookActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -17,6 +17,7 @@ function DictionaryContainer(props) {
     user,
     error,
     loadUserWordAgregate,
+    deleteUserWord,
     type
   } = props;
 
@@ -27,10 +28,13 @@ function DictionaryContainer(props) {
   const audio = useRef(new Audio());
 
   useEffect(() => {
-    console.log('type', type);
     loadUserWordAgregate(user.userId, user.token, group, page, false, false, type);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, page]);
+
+  const onRecoverWord = (word) => {
+    deleteUserWord(user.userId, word._id, user.token);
+  }
 
   return (
     <>
@@ -38,7 +42,7 @@ function DictionaryContainer(props) {
       {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} />}
       {<GameMenu />}
       {<Settings />}
-      {!loader && <Words {...props} audio={audio} dictionary={true} />}
+      {!loader && <Words {...props} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
 
       {error && <Snackbar open={true} message={error} />}
     </>
@@ -58,6 +62,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadWords: (page, group) => dispatch(loadWords(page, group)),
     loadUserWordAgregate: (userId, token, group, page, isHard, isDelete, type) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete, type)),
+    deleteUserWord: (userId, wordId, token) => dispatch(deleteUserWord(userId, wordId, token)),
   }
 }
 

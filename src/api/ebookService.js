@@ -50,6 +50,20 @@ export const updateUserWord = (userId, wordId, word, userWord, token) => {
     });
 };
 
+export const deleteUserWord = (userId, wordId, token) => {
+  const url = `${baseUrl}/users/${userId}/words/${wordId}`;
+  return axios.delete(url, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  })
+    .then((response) => response.data)
+    .catch((err) => {
+      if (err.response?.status === 401) {
+        throw new Error('Необходимо авторизоваться');
+      }
+      throw err;
+    });
+};
+
 export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete, type) => {
   const url = `${baseUrl}/users/${userId}/aggregatedWords`;
 
