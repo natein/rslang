@@ -1,11 +1,12 @@
-import { SET_WORDS, SET_WORDS_AVERAGE, SET_LOADER, WORD_PLAYING, SET_WORD_USER, DELETE_WORD_USER, SET_DELETE_WORDS_IN_GROUP } from "../actions/ebookActions";
+import { SET_WORDS, SET_WORDS_AVERAGE, SET_LOADER, WORD_PLAYING, SET_WORD_USER, DELETE_WORD_USER, SET_DELETE_WORDS_IN_GROUP, SET_SETTINGS } from "../actions/ebookActions";
 
 const initialState = {
   wordsList: [],
   wordsGroupDelete: [],
   wordPlaying: null,
   loader: false,
-  totalCount: 0
+  totalCount: 0,
+  settings: JSON.parse(localStorage.getItem('rslang-team15-settings')) || { viewTranslate: true, viewButton: true }
 };
 
 const ebookReducer = (state = initialState, action) => {
@@ -33,6 +34,9 @@ const ebookReducer = (state = initialState, action) => {
 
     case SET_LOADER:
       return { ...state, loader: action.payload }
+
+    case SET_SETTINGS:
+      return { ...state, settings: { ...state.settings, ...action.payload } }
 
     default:
       return state;

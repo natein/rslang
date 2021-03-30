@@ -73,6 +73,7 @@ const mapStateToProps = (state) => {
     wordsList: state.ebook.wordsList,
     wordsGroupDelete: state.ebook.wordsGroupDelete,
     loader: state.ebook.loader,
+    settings: state.ebook.settings,
     user: state.user,
   }
 }

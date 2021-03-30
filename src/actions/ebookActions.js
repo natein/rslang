@@ -8,6 +8,7 @@ export const SET_WORD_USER = 'SET_WORD_USER';
 export const DELETE_WORD_USER = 'DELETE_WORD_USER';
 export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
+export const SET_SETTINGS = 'SET_SETTINGS';
 
 export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
@@ -134,5 +135,12 @@ export const setLoader = (loader) => {
   return {
     type: SET_LOADER,
     payload: loader
+  }
+}
+
+export const setSettings = (settings) => {
+  return {
+    type: SET_SETTINGS,
+    payload: settings
   }
 }
