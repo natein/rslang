@@ -23,7 +23,9 @@ import TransitionsModal from './UserIcon';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
+
 import Statistics from '../Statistics/Statistics';
+import DictionaryPage from '../../pages/DictionaryPage';
 
 const drawerWidth = 240;
 
@@ -89,6 +91,12 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '900',
     },
     appBarSpacer: theme.mixins.toolbar,
+    main: {
+        marginTop: `max(${theme.mixins.toolbar.minHeight}px, 64px)`,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 }));
 
 export default function Dashboard() {
@@ -99,7 +107,7 @@ export default function Dashboard() {
     };
 
     return (
-        <Box style={{ display: 'flex' }}>
+        <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
@@ -155,13 +163,15 @@ export default function Dashboard() {
                     margin: '1rem auto',
                     width: '100%',
                 }}
+                className={classes.main}
             >
-                <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg">
                     <Switch>
                         <Route path="/" component={HomePage} exact />
                         <Route path="/ebook" component={EbookPage} exact />
                         <Route path="/ebook/:group/:page" component={EbookPage} />
+                        <Route path="/dictionary" component={DictionaryPage} exact />
+                        <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={HomePage} exact />
                         <Route path="/games/savanna" component={HomePage} />
                         <Route path="/statistics" component={Statistics} />

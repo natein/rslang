@@ -38,7 +38,7 @@ export const mainListItems = (
                 <ListItemText primary="Учебник" />
             </ListItem>
         </Link>
-        <Link to="/" style={link}>
+        <Link to="/dictionary" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <LibraryBooksIcon />
