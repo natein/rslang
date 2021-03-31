@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function GameMenu() {
+function GameMenu({onGame}) {
   const classes = useStyles();
   const [anchorGames, setAnchorGames] = useState(null);
 
@@ -51,6 +51,12 @@ function GameMenu() {
 
   const handleCloseGame = () => {
     setAnchorGames(null);
+  };
+
+  const onGameSelected = (event) => {
+    const code = event.target.getAttribute('value');
+    setAnchorGames(code);
+    onGame(code);
   };
 
   return (
@@ -79,7 +85,8 @@ function GameMenu() {
           GAMES_LIST.map(item =>
             <MenuItem
               key={item.code}
-              onClick={() => handleCloseGame(item.code)}
+              value={item.code}
+              onClick={onGameSelected}
             >
               {item.name}
             </MenuItem>

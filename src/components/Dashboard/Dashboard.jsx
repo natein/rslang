@@ -163,12 +163,12 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    margin: '5rem auto',
+                    margin: '4rem auto 0',
                     width: '100%',
                 }}
                 className={classes.main}
             >
-                <Container maxWidth="lg">
+                <Container maxWidth="lg" style={{minHeight: "100%", padding: '1rem'}}>
                     <Switch>
                         <Route path="/" component={HomePage} exact />
                         <Route path="/ebook" component={EbookPage} exact />

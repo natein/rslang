@@ -2,6 +2,7 @@ import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { loadWords, createUserWord, updateUserWord, loadUserWordAgregate, loadUserDeleteWordAgregateInGroup } from '../../actions/ebookActions';
+import * as gameActions from '../../actions/gameActions';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
 import EbookGroupMenu from '../WordsPanel/EbookGroupMenu';
@@ -19,7 +20,9 @@ function EbookContainer(props) {
     createUserWord,
     updateUserWord,
     loadUserWordAgregate,
-    loadUserDeleteWordAgregateInGroup
+    loadUserDeleteWordAgregateInGroup,
+    onGameStart,
+    wordsList
   } = props;
   const history = useHistory();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,12 +57,17 @@ function EbookContainer(props) {
     }
   }
 
+  const onGame = useCallback((gameId) => {
+    onGameStart(wordsList);
+    history.push(`/games/${gameId}`);
+  }, [history, onGameStart, wordsList]);
+
   return (
     <>
       {loader && <LoadingPage />}
       {<EbookGroupMenu {...props} routeGroupPage={routeGroupPage} />}
       {<EbookPageMenu {...props} routeGroupPage={routeGroupPage} />}
-      {<GameMenu />}
+      {<GameMenu onGame={onGame}/>}
       {<Settings />}
       {!loader && <Words {...props} onChangeDifficulty={onChangeDifficulty} onDeleteWord={onDeleteWord} audio={audio} />}
     </>
@@ -84,6 +92,7 @@ const mapDispatchToProps = (dispatch) => {
     updateUserWord: (userId, wordId, word, token) => dispatch(updateUserWord(userId, wordId, word, token)),
     loadUserWordAgregate: (userId, token, group, page, isHard, isDelete) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete)),
     loadUserDeleteWordAgregateInGroup: (userId, token, group) => dispatch(loadUserDeleteWordAgregateInGroup(userId, token, group)),
+    onGameStart: (wordList) => dispatch(gameActions.onWordsLoaded(wordList))
   }
 }
 

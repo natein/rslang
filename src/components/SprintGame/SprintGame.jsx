@@ -137,7 +137,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
             }
-            onAddWordToDictionary(current.info.id);
+            onAddWordToDictionary(current.info.id || current.info._id);
             onNextWord(current.index + 1);
         },
         [current, onNextWord, answerScore, statistics, bonus, onAddWordToDictionary],

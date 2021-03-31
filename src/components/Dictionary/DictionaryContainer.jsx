@@ -9,6 +9,7 @@ import GameMenu from '../WordsPanel/GameMenu';
 import Settings from '../WordsPanel/Settings';
 import DictionaryPageMenu from '../WordsPanel/DictionaryPageMenu';
 import { COUNT_WORDS_ON_PAGE } from '../../constants';
+import * as gameActions from '../../actions/gameActions';
 
 function DictionaryContainer(props) {
   const {
@@ -18,7 +19,8 @@ function DictionaryContainer(props) {
     loadUserWordAgregate,
     deleteUserWord,
     type,
-    totalCount
+    totalCount,
+    onGameStart
   } = props;
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,12 +47,17 @@ function DictionaryContainer(props) {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const onGame = useCallback((gameId) => {
+    onGameStart(wordsList);
+    history.push(`/games/${gameId}`);
+  }, [history, onGameStart, wordsList]);
+
   return (
     <>
       {loader && <LoadingPage />}
       {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} setCurrentPage={setCurrentPage} />}
       {<DictionaryPageMenu countPages={countPages} currentPage={currentPage} paginate={paginate} />}
-      {<GameMenu />}
+      {<GameMenu onGame={onGame}/>}
       {<Settings />}
       {!loader && <Words {...props} wordsList={currentPosts} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
     </>
@@ -72,6 +79,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadUserWordAgregate: (userId, token, group, page, isHard, isDelete, type) => dispatch(loadUserWordAgregate(userId, token, group, page, isHard, isDelete, type)),
     deleteUserWord: (userId, wordId, token) => dispatch(deleteUserWord(userId, wordId, token)),
+    onGameStart: (wordList) => dispatch(gameActions.onWordsLoaded(wordList))
   }
 }
 

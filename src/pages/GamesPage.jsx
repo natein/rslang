@@ -55,7 +55,7 @@ const GamesPage = () => {
     const history = useHistory();
 
     const onClick = (code) => {
-        history.push(`/games/${code}`);
+        history.push(`/games/${code}/new`);
     };
 
     return (

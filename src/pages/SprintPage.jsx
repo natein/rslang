@@ -9,7 +9,7 @@ import SelectComplexityLevel from '../components/SprintGame/SelectComplexityLeve
 import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
-import * as userWordsActions from '../actions/userWordsActions';
+import * as userWordsActions from '../actions/ebookActions';
 import { GAMES_LIST } from '../constants';
 
 const sprintGame = GAMES_LIST.find((game) => game.code === 'sprint').backgroundImage;
