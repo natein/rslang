@@ -2,13 +2,19 @@ import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ChooseWords from './ChooseWords';
+import { getSavannaWords } from '../../../../../actions/gameActions';
 
-function ChooseWordsContainer({ gamewords, answer, drawer }) {
+function ChooseWordsContainer({ gamewords, answer, difficultyLvl, getSavannaWords = (f) => f }) {
     useEffect(() => {});
 
     return (
         <>
-            <ChooseWords gamewords={gamewords} drawer={drawer} answer={answer} />
+            <ChooseWords
+                difficultyLvl={difficultyLvl}
+                getSavannaWords={getSavannaWords}
+                gamewords={gamewords}
+                answer={answer}
+            />
         </>
     );
 }
@@ -26,6 +32,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+    getSavannaWords: (group, page) => dispatch(getSavannaWords(group, page)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChooseWordsContainer);

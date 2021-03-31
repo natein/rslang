@@ -28,6 +28,14 @@ export const preloadSavannaTimer = (group = 0, page = 0) => (dispatch) => {
     }, GAMES.timeout);
 }
 
+export const getSavannaWords = (group = 0, page = 0) => (dispatch) => {
+        return ebookService.getWords(group, page)
+            .then((words) => dispatch(onWordsLoaded(words)))
+            .then(() => dispatch(getWordsForSavanna()))
+            .then(() => dispatch(onError()))
+            .catch((err) => dispatch(onError(err.response ? err.response.data : err.message)))
+}
+
 
 export const onWordsLoaded = (words) => ({ type: GAME_WORDS_LOADED, payload: words });
 export const setTimer = (timer) => ({ type: TIMER, payload: timer });

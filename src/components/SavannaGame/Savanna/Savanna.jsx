@@ -7,7 +7,7 @@ import Difficulty from '../../SavannaGame/Difficulty/Difficulty';
 import Timer from '../Timer/Timer';
 import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
-import ChooseWords from './Gameplay/ChooseWords';
+import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
 
 import PropTypes from 'prop-types';
 
@@ -17,16 +17,20 @@ const breakpoints = createMuiTheme({});
 
 const Wrapper = styled(Box)`
     position: absolute;
-    display: flex;
-    justify-content: center;
-    flex-basis: 1px;
-    align-items: center;
-    flex-direction: column;
-    padding: 40px;
+    width: 100%;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+`;
+
+const SavannaOuter = styled(Box)`
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px;
     color: white;
     background-size: cover;
     background-position: center;
@@ -88,31 +92,33 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
         <MuiThemeProvider theme={breakpoints}>
             <ThemeProvider theme={breakpoints}>
                 <Wrapper>
-                    {timer && <Timer />}
+                    <SavannaOuter>
+                        {timer && <Timer />}
 
-                    {!isStarted ? (
-                        <>
-                            <GameTitle variant="h2" component="h1">
-                                {game.name}
-                            </GameTitle>
-                            <GameInner>
-                                <GameDescriptionText component="p">{game.description}</GameDescriptionText>
-                            </GameInner>
-                            <GameInner>
-                                <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficultyHandle} />
+                        {!isStarted ? (
+                            <>
+                                <GameTitle variant="h2" component="h1">
+                                    {game.name}
+                                </GameTitle>
+                                <GameInner>
+                                    <GameDescriptionText component="p">{game.description}</GameDescriptionText>
+                                </GameInner>
+                                <GameInner>
+                                    <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficultyHandle} />
 
-                                <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
-                                    {GAMES.btnLabel}
-                                </StartBtn>
-                            </GameInner>
-                        </>
-                    ) : (
-                        <>
-                            {!timer && <Sound />}
-                            {!timer && <Life />}
-                            {!timer && <ChooseWords />}
-                        </>
-                    )}
+                                    <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
+                                        {GAMES.btnLabel}
+                                    </StartBtn>
+                                </GameInner>
+                            </>
+                        ) : (
+                            <>
+                                {!timer && <Sound />}
+                                {!timer && <Life />}
+                                {!timer && <ChooseWords difficultyLvl={difficultyLvl} />}
+                            </>
+                        )}
+                    </SavannaOuter>
                 </Wrapper>
             </ThemeProvider>
         </MuiThemeProvider>
