@@ -54,7 +54,7 @@ export const mainListItems = (
                 <ListItemText primary="Игры" />
             </ListItem>
         </Link>
-        <Link to="/" style={link}>
+        <Link to="/statistics" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <BarChartIcon />

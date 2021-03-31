@@ -23,6 +23,8 @@ import TransitionsModal from './UserIcon';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
+
+import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
 
 const drawerWidth = 240;
@@ -121,7 +123,7 @@ export default function Dashboard() {
                     <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         <Link className={classes.titleLink} to="/">
                             RSLang
-                            </Link>
+                        </Link>
                     </Typography>
                     <TransitionsModal />
                     {/* <IconButton color="inherit">
@@ -158,7 +160,8 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    width: '100%'
+                    margin: '1rem auto',
+                    width: '100%',
                 }}
                 className={classes.main}
             >
@@ -171,6 +174,7 @@ export default function Dashboard() {
                         <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={HomePage} exact />
                         <Route path="/games/savanna" component={HomePage} />
+                        <Route path="/statistics" component={Statistics} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
