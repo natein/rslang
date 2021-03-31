@@ -49,24 +49,8 @@ const AnswerQuestionInner = styled(Box)`
 
 const AnswerWord = styled(Box)`
     position: absolute;
-    transform-origin: 50% bottom;
-    transition: all 0.3s ease;
-    transform: translate(-50%);
     display: inline-block;
     left: 50%;
-
-    ${({ spacing }) =>
-        spacing &&
-        `
-        transition: letter-spacing .6s ease;
-        letter-spacing: 100px;
-  `}
-    ${({ end }) =>
-        end &&
-        `
-        transition: all 0.3s ease;
-        letter-spacing: initial;
-  `}
 `;
 
 const WordsOuter = styled(Box)`
@@ -84,13 +68,20 @@ const WordsInner = styled(Box)`
     cursor: pointer;
     margin: 0 20px;
     user-select: none;
+
     &:hover {
         background: hsla(0, 0%, 100%, 0.1);
     }
+
+    ${({ correct }) =>
+        correct &&
+        `
+        &:nth-child(${correct}) {
+            background: rgba(80,227,194,.40);
+        }
+  `}
 `;
-const WordAnswer = styled(Box)`
-    display: flex;
-`;
+
 const WordsNumber = styled(Box)`
     position: absolute;
     left: 12px;
@@ -102,31 +93,34 @@ const WordsNumber = styled(Box)`
     color: yellow;
 `;
 
-// TODO: Вне зависимости от правильного ответа подгружать новые слова, после каждого клика. По таймеру.
-// TODO: Подсветка правильного слова если слово было выбрано не правильно
-// TODO: Таймер на выбор ответа, если не успеть нажать по таймеру то ответ считается не правильным
+// TODO: !Вне зависимости от правильного ответа подгружать новые слова, после каждого клика и по таймеру.
+
+// TODO: Подсветка правильного слова если слово было выбрано не правильно или не выбрано совсем
+// TODO: Правильное слово всегда стоит на первом индексе
+
 // TODO: Выбор ответов с помощью клавиатуры
 // TODO: Включение и отключение звуков
 // TODO: Снизу добавить анимирующийся камень
 // TODO: После падения показать правильное слово и отнять жизнь.
 
 function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficultyLvl }) {
+    const TIMER = 2000;
     const answerInnerRef = useRef();
-    const answerWordRef = useRef();
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
-    const [isEnd, setIsEnd] = useState(false);
 
-    const [isSpacing, setIsSpacing] = useState(false);
+    const [correct, setCorrect] = useState(0);
 
-    console.log(isFalling, 'isFalling');
-
-    function animateAnswerInner() {
+    const animateOn = useCallback(() => {
         setIsFalling(false);
         setIsStart(true);
-        setIsSpacing(true);
-    }
+    }, []);
+
+    const animateOff = useCallback(() => {
+        setIsFalling(true);
+        setIsStart(false);
+    }, []);
 
     useEffect(() => {
         setIsFalling(true);
@@ -138,28 +132,39 @@ function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficulty
 
             function answerInnerTransitionEnd() {
                 if (isFalling) {
-                    animateAnswerInner();
+                    animateOn();
+
+                    const findAnswerIdx = (words, correct) => words.findIndex((x) => x.word === correct);
+                    setCorrect(findAnswerIdx(gamewords, answer) + 1);
+
+                    setTimeout(() => {
+                        animateOff();
+                        getSavannaWords(difficultyLvl, Math.round(Math.random() * 30));
+                        setCorrect(0);
+                    }, TIMER);
                 }
             }
             current.addEventListener('transitionend', answerInnerTransitionEnd, false);
             return () => current.removeEventListener('transitionend', answerInnerTransitionEnd);
         }
-    }, [answerInnerRef, isFalling]);
+    }, [animateOff, animateOn, answer, answerInnerRef, difficultyLvl, gamewords, getSavannaWords, isFalling]);
 
     function checkWord({ currentTarget }) {
-        animateAnswerInner();
+        animateOn();
 
-        // Метод для получения новых слов
-        // getSavannaWords(difficultyLvl, Math.round(Math.random() * 30));
+        setTimeout(() => {
+            animateOff();
+            getSavannaWords(difficultyLvl, Math.round(Math.random() * 30));
+        }, TIMER);
 
-        // Проверка правильности слова
-        // const [wordIdx] = currentTarget.children;
-        // const check = gamewords[wordIdx.innerText].word;
-        // if (check === answer) {
-        //     console.log('correct');
-        // } else {
-        //     console.log('wrong');
-        // }
+        const [wordIdx] = currentTarget.children;
+        const checkWord = gamewords[wordIdx.innerText].word;
+
+        if (checkWord === answer) {
+            console.log('correct');
+        } else {
+            console.log('wrong');
+        }
     }
 
     return (
@@ -168,16 +173,13 @@ function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficulty
                 ref={answerInnerRef}
                 start={isStart ? 'true' : null}
                 falling={isFalling ? 'true' : null}
-                end={isEnd ? 'true' : null}
             >
-                <AnswerWord ref={answerWordRef} end={isEnd ? 'true' : null} spacing={isSpacing ? 'true' : null}>
-                    {answer}
-                </AnswerWord>
+                <AnswerWord>{answer}</AnswerWord>
             </AnswerQuestionInner>
             <WordsOuter>
                 {gamewords.map((item, i) => (
-                    <WordsInner onClick={(e) => checkWord(e)} key={i}>
-                        <WordAnswer>{item.wordTranslate}</WordAnswer>
+                    <WordsInner correct={correct} onClick={(e) => checkWord(e)} key={i}>
+                        {item.wordTranslate}
                         <WordsNumber component="span">{i}</WordsNumber>
                     </WordsInner>
                 ))}
@@ -192,71 +194,3 @@ ChooseWords.propTypes = {
 };
 
 export default ChooseWords;
-
-// Исходное состояние inner с Answer
-// .ll-leokit__trainings-savannah__question {
-//     position: fixed;
-//     left: 0;
-//     top: 0;
-//     font-size: 48px;
-//     line-height: 1;
-//     font-weight: 300;
-//     white-space: nowrap;
-//     color: #fff;
-//     letter-spacing: 1px;
-//     height: 100%;
-//     width: 100%;
-//     transform: translate(0);
-//     transition: transform 5s ease-in
-// }
-
-// Переключение в состояние анимации падения
-// .ll-leokit__trainings-savannah__question__m-question_fall {
-//     transform: translateY(50%);
-//     transition: all 5s linear
-// }
-
-// Состояние слова Answer после выбора из списка слов
-// .ll-leokit__trainings-savannah__question__m-question_success_coin .ll-leokit__trainings-savannah__quest-word {
-//     width: 2px;
-//     height: 25px;
-//     background-color: #fff;
-//     border-radius: 5px;
-//     transition: color 0s linear;
-//     color: transparent
-// }
-
-// По идеи прокрутка заднего фона вперед после правильного ответа
-// .ll-leokit__trainings-savannah__question__m-question_success_fall {
-//     opacity: .5;
-//     transform: translateY(85%);
-//     transition: all .5s cubic-bezier(.47,0,.745,.715)
-// }
-
-// Состояние слова Answer после успешного падения
-// .ll-leokit__trainings-savannah__question__m-question_success_fall .ll-leokit__trainings-savannah__quest-word {
-//     width: 2px;
-//     height: 25px;
-//     background-color: #fff;
-//     border-radius: 5px;
-//     transition: color 0s linear;
-//     color: transparent
-// }
-
-// Состояние inner Answer после падения слова
-// .ll-leokit__trainings-savannah__question__m-question_success_end {
-//     opacity: 0;
-//     transition: opacity 0s linear
-// }
-
-// Начальное состоение inner Answer после падения
-// .ll-leokit__trainings-savannah__question__m-question_fail_start {
-//     transition: all .5s ease;
-//     opacity: 0
-// }
-
-// Состояние для слова после успешного падения или после выбора из списка слов
-// .ll-leokit__trainings-savannah__question__m-question_fail_start .ll-leokit__trainings-savannah__quest-word {
-//     transition: letter-spacing .6s ease;
-//     letter-spacing: 100px
-// }
