@@ -12,6 +12,7 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 
 const link = {
     color: 'grey',
@@ -68,6 +69,14 @@ export const mainListItems = (
                     <PeopleIcon />
                 </ListItemIcon>
                 <ListItemText primary="О команде" />
+            </ListItem>
+        </Link>
+        <Link to="/review" style={link}>
+            <ListItem button>
+                <ListItemIcon>
+                    <FeedbackIcon />
+                </ListItemIcon>
+                <ListItemText primary="Отзывы" />
             </ListItem>
         </Link>
     </div>

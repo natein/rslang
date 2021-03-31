@@ -14,13 +14,12 @@ const useStyles = makeStyles((theme) => ({
     background: {
         backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#7fc7d9', // Average color of the background image.
-        boxShadow: '-13px 0px 13px -7px #000000, 13px 0px 13px -7px #000000, 5px 5px 15px 5px rgb(0 0 0 / 0%)',
     },
     button: {
         color: 'white',
         minWidth: 150,
         margin: '1rem',
-        boxShadow: '0 0 10px #FFFFFF',
+        boxShadow: '0px 2px 0px white',
         border: '1px double white',
         borderRadius: '15px 15px 15px 15px',
         fontFamily: 'Segoe script, cursive',
@@ -28,14 +27,14 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: '0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 2px 2px 2px rgba(206,179,173,0)',
         },
         '&:hover': {
-            color: 'lightgrey',
-            border: '1px double grey',
-            boxShadow: '0 0 10px grey',
+            color: 'white',
+            border: '1px double white',
+            boxShadow: '0 5px 5px white',
         },
     },
     h5: {
         fontFamily: 'Segoe script, cursive',
-        textShadow: '0 0 10px #FFFFFF',
+        textShadow: '2px 2px 3px #aba8a8',
     },
     more: {
         fontFamily: 'Segoe script, cursive',
@@ -50,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '5rem',
         fontFamily: 'Segoe script, cursive',
         position: 'relative',
-        textShadow: '1px 3px 0 #969696, 1px 13px 5px #aba8a8',
+        textShadow: '1px 3px 0 #969696, 2px 7px 5px #aba8a8',
         marginBottom: theme.spacing(10),
     },
     modal: {

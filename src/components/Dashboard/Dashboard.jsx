@@ -160,7 +160,7 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    margin: '1rem auto',
+                    margin: '5rem auto',
                     width: '100%',
                 }}
                 className={classes.main}
@@ -178,6 +178,7 @@ export default function Dashboard() {
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
+                        <Route path="/review" component={HomePage} />
                     </Switch>
                 </Container>
             </Box>
