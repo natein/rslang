@@ -99,7 +99,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dictionary, onRecoverWord }) {
+function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dictionary, onRecoverWord, settings }) {
   const classes = useStyles();
 
   return (
@@ -126,19 +126,19 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                         <WordsAudio className={classes.volume} audio={audio} word={word} />
                       </Typography>
                       <Typography variant="subtitle1" color="textSecondary">
-                        {word.wordTranslate}
+                        {settings.viewTranslate && word.wordTranslate}
                       </Typography>
                       <Typography variant="subtitle1" className={classes.text}>
                         <div dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
                       </Typography>
                       <Typography variant="subtitle1" className={classes.textTranslate}>
-                        {word.textMeaningTranslate}
+                        {settings.viewTranslate && word.textMeaningTranslate}
                       </Typography>
                       <Typography variant="subtitle1" className={classes.text}>
                         <div dangerouslySetInnerHTML={{ __html: word.textExample }} />
                       </Typography>
                       <Typography variant="subtitle1" className={classes.textTranslate}>
-                        {word.textExampleTranslate}
+                        {settings.viewTranslate && word.textExampleTranslate}
                       </Typography>
                     </CardContent>
                   </div>
@@ -155,17 +155,21 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                               </IconButton>
                             </Tooltip>
                             :
+                            settings.viewButton &&
                             <Tooltip title="Добавить в словарь 'Сложные слова'">
                               <IconButton color="default" component="span" onClick={() => onChangeDifficulty(word, 'hard')}>
                                 <SchoolIcon />
                               </IconButton>
                             </Tooltip>
                         }
-                        <Tooltip title="Удалить слово">
-                          <IconButton color="default" className={classes.iconDeleteButton} component="span" onClick={() => onDeleteWord(word)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
+                        {
+                          settings.viewButton &&
+                          <Tooltip title="Удалить слово">
+                            <IconButton color="default" className={classes.iconDeleteButton} component="span" onClick={() => onDeleteWord(word)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        }
                         <Tooltip title="Статистика по слову">
                           <IconButton color="default" className={classes.iconStatButton} component="span">
                             <BarChartIcon />

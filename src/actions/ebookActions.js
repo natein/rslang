@@ -3,10 +3,12 @@ import * as ebookService from '../api/ebookService';
 
 export const SET_WORDS = 'SET_WORDS';
 export const SET_WORDS_AVERAGE = 'SET_WORDS_AVERAGE';
+export const SET_DELETE_WORDS_IN_GROUP = 'SET_DELETE_WORDS_IN_GROUP';
 export const SET_WORD_USER = 'SET_WORD_USER';
 export const DELETE_WORD_USER = 'DELETE_WORD_USER';
 export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
+export const SET_SETTINGS = 'SET_SETTINGS';
 
 export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
@@ -61,7 +63,18 @@ export const loadUserWordAgregate = (userId, token, group = 0, page = 0, isHard 
   dispatch(setLoader(true));
   return ebookService.getUserWordAgregate(userId, token, group, page, isHard, isDelete, type)
     .then(data => dispatch(setWordsAverage(data)))
-    //.then(data => console.log(data))
+    .then(() => dispatch(onError()))
+    .catch((err) => {
+      dispatch(onError(err.response ? err.response.data : err.message));
+      //dispatch(onLogout());
+    })
+    .finally(() => dispatch(setLoader(false)));
+}
+
+export const loadUserDeleteWordAgregateInGroup = (userId, token, group = 0) => (dispatch) => {
+  dispatch(setLoader(true));
+  return ebookService.getUserDeleteWordAgregateInGroup(userId, token, group)
+    .then(data => dispatch(setDeleteWordsAverageInGroup(data)))
     .then(() => dispatch(onError()))
     .catch((err) => {
       dispatch(onError(err.response ? err.response.data : err.message));
@@ -81,8 +94,18 @@ export const setWordsAverage = (data) => {
   return {
     type: SET_WORDS_AVERAGE,
     payload: {
-      words: data[0].paginatedResults,
-      totalCount: data[0].totalCount[0].count
+      words: data[0]?.paginatedResults,
+      totalCount: data[0]?.totalCount[0]?.count
+    }
+  }
+}
+
+export const setDeleteWordsAverageInGroup = (data) => {
+  return {
+    type: SET_DELETE_WORDS_IN_GROUP,
+    payload: {
+      words: data[0]?.paginatedResults,
+      totalCount: data[0]?.totalCount[0]?.count
     }
   }
 }
@@ -112,5 +135,12 @@ export const setLoader = (loader) => {
   return {
     type: SET_LOADER,
     payload: loader
+  }
+}
+
+export const setSettings = (settings) => {
+  return {
+    type: SET_SETTINGS,
+    payload: settings
   }
 }

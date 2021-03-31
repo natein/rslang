@@ -8,8 +8,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
+import { setSettings } from '../../actions/ebookActions';
+
 import SettingsIcon from '@material-ui/icons/Settings';
 import CloseIcon from '@material-ui/icons/Close';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,12 +42,18 @@ const useStyles = makeStyles((theme) => ({
   },
   pageButton: {
     background: '#b0bec5'
+  },
+  optionSettings: {
+    marginBottom: '20px'
   }
 }));
 
-function Settings({ group, page, routeGroupPage }) {
+function Settings() {
   const classes = useStyles();
   const [openModalSettings, setOpenModalSettings] = useState(false);
+
+  const dispatch = useDispatch();
+  const settings = useSelector(state => state.ebook.settings);
 
   const handleOpenSettings = () => {
     setOpenModalSettings(true);
@@ -52,6 +61,10 @@ function Settings({ group, page, routeGroupPage }) {
 
   const handleCloseSettings = () => {
     setOpenModalSettings(false);
+  };
+
+  const handleSetSettings = (option) => {
+    dispatch(setSettings(option));
   };
 
   return (
@@ -76,12 +89,16 @@ function Settings({ group, page, routeGroupPage }) {
           <h2>Настройки</h2>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox color="default" checked={true} name="checkedA" />}
+              className={classes.optionSettings}
+              onChange={() => handleSetSettings({ viewTranslate: !settings.viewTranslate })}
+              control={<Checkbox color="default" checked={settings?.viewTranslate ? true : false} />}
               label="Отображать перевод слова и перевод предложений с ним"
             />
             <FormControlLabel
-              control={<Checkbox color="default" checked={true} name="checkedB" />}
-              label="Отображать кнопки Сложные слова и Удалённые слова"
+              className={classes.optionSettings}
+              onChange={() => handleSetSettings({ viewButton: !settings.viewButton })}
+              control={<Checkbox color="default" checked={settings?.viewButton ? true : false} />}
+              label="Отображать кнопки 'Сложные слова' и 'Удалённые слова'"
             />
           </FormGroup>
         </div>

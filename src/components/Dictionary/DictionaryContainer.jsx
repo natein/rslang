@@ -48,7 +48,7 @@ function DictionaryContainer(props) {
   return (
     <>
       {loader && <LoadingPage />}
-      {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} />}
+      {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} setCurrentPage={setCurrentPage} />}
       {<DictionaryPageMenu countPages={countPages} currentPage={currentPage} paginate={paginate} />}
       {<GameMenu />}
       {<Settings />}
@@ -63,6 +63,7 @@ const mapStateToProps = (state) => {
     wordsList: state.ebook.wordsList,
     totalCount: state.ebook.totalCount,
     loader: state.ebook.loader,
+    settings: state.ebook.settings,
     user: state.user,
   }
 }

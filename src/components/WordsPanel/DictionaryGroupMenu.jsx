@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DictionaryGroupMenu({ type, routeTypePage }) {
+function DictionaryGroupMenu({ type, routeTypePage, setCurrentPage }) {
   const classes = useStyles();
   const [anchorSection, setAnchorSection] = useState(null);
 
@@ -52,7 +52,10 @@ function DictionaryGroupMenu({ type, routeTypePage }) {
 
   const handleCloseSection = (type) => {
     setAnchorSection(null);
-    if (type) routeTypePage(type)
+    if (type) {
+      routeTypePage(type);
+      setCurrentPage(1);
+    }
   };
 
   return (
