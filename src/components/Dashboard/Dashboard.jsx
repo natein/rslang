@@ -25,6 +25,8 @@ import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
 import GamesPage from '../../pages/GamesPage';
 import SavannaPage from '../../pages/SavannaPage';
+import ReviewPage from '../Review';
+
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
 
@@ -182,6 +184,7 @@ function Dashboard() {
                         <Route path="/review" component={HomePage} />
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
+                        <Route path="/review" component={ReviewPage} />
                     </Switch>
                 </Container>
             </Box>
