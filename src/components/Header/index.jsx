@@ -60,7 +60,7 @@ function Header() {
             <Link to="/" className={classes.link}>
               Словарь
             </Link>
-            <Link to="/" className={classes.link}>
+            <Link to="/games" className={classes.link}>
               Игры
             </Link>
             <Link to="/" className={classes.link}>

@@ -23,6 +23,8 @@ import TransitionsModal from './UserIcon';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
+import SprintPage from '../../pages/SprintPage';
+import GamesPage from '../../pages/GamesPage';
 
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -95,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: `max(${theme.mixins.toolbar.minHeight}px, 64px)`,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     }
 }));
 
@@ -160,25 +163,26 @@ export default function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
-                    margin: '5rem auto',
+                    margin: '4rem auto 0',
                     width: '100%',
                 }}
                 className={classes.main}
             >
-                <Container maxWidth="lg">
+                <Container maxWidth="lg" style={{minHeight: "100%", padding: '1rem'}}>
                     <Switch>
                         <Route path="/" component={HomePage} exact />
                         <Route path="/ebook" component={EbookPage} exact />
                         <Route path="/ebook/:group/:page" component={EbookPage} />
                         <Route path="/dictionary" component={DictionaryPage} exact />
                         <Route path="/dictionary/:type" component={DictionaryPage} />
-                        <Route path="/games" component={HomePage} exact />
+                        <Route path="/games" component={GamesPage} exact />
                         <Route path="/games/savanna" component={HomePage} />
                         <Route path="/statistics" component={Statistics} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
                         <Route path="/review" component={HomePage} />
+                        <Route path="/games/sprint" component={SprintPage} />
                     </Switch>
                 </Container>
             </Box>

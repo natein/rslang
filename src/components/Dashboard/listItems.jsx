@@ -47,7 +47,7 @@ export const mainListItems = (
                 <ListItemText primary="Словарь" />
             </ListItem>
         </Link>
-        <Link to="/" style={link}>
+        <Link to="/games" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <SportsEsportsIcon />
@@ -93,7 +93,7 @@ export const secondaryListItems = (
                 <ListItemText primary="Своя игра" />
             </ListItem>
         </Link>
-        <Link to="/" style={link}>
+        <Link to="/games/sprint/new" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <AssignmentIcon />
