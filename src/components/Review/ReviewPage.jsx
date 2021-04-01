@@ -1,15 +1,23 @@
 import * as React from 'react';
 
+import { connect } from 'react-redux';
+
 import LastReview from './LastReview';
 import FormDialog from './FormDialog';
+import LoadingPage from '../LoadingPage';
 
-function ReviewPage() {
+const ReviewPage = ({ loader }) => {
     return (
         <>
-            <LastReview />
+              {loader && <LoadingPage />}
+              {!loader && <LastReview />}
             <FormDialog />
         </>
     );
 }
 
-export default ReviewPage;
+const mapStateToProps = (state) => ({
+    loader: state.common.loader,
+});
+
+export default connect(mapStateToProps)(ReviewPage);

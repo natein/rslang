@@ -9,6 +9,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
+import { connect } from 'react-redux';
+import { onSetReview } from '../../actions/commonActions';
+
 const useStyles = makeStyles(() => ({
     button: {
         color: '#0D7E94',
@@ -19,7 +22,7 @@ const useStyles = makeStyles(() => ({
         borderRadius: '15px 15px 15px 15px',
         fontFamily: 'Segoe script, cursive',
         '&:focus': {
-          boxShadow: '0px 2px 0px #0D7E94',
+            boxShadow: '0px 2px 0px #0D7E94',
         },
         '&:hover': {
             color: '#0D7E94',
@@ -40,9 +43,10 @@ const CssTextField = withStyles({
     },
 })(TextField);
 
-export default function FormDialog() {
+function FormDialog({ setReview, user }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [value, setValue] = React.useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,6 +54,20 @@ export default function FormDialog() {
 
     const handleClose = () => {
         setOpen(false);
+        setValue('');
+    };
+
+    const handleChangeValue = (e) => {
+        setValue(e.target.value);
+    };
+
+    const handleLog = () => {
+        setReview({
+            review: value,
+            date: new Date().toLocaleDateString(),
+            name: user.name,
+            avatar: user.avatar,
+        });
     };
 
     return (
@@ -65,19 +83,21 @@ export default function FormDialog() {
                     </DialogContentText>
                     <CssTextField
                         autoFocus
+                        fullWidth
+                        multiline
                         margin="dense"
                         id="name"
                         label="Пару слов..."
                         type="text"
-                        fullWidth
-                        multiline
+                        value={value}
+                        onChange={handleChangeValue}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary" className={classes.button}>
                         Отмена
                     </Button>
-                    <Button onClick={handleClose} color="primary" className={classes.button}>
+                    <Button onClick={handleLog} color="primary" className={classes.button}>
                         Отправить
                     </Button>
                 </DialogActions>
@@ -85,3 +105,14 @@ export default function FormDialog() {
         </div>
     );
 }
+
+const mapStateToProps = (state) => ({
+    review: state.common.review,
+    user: state.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    setReview: (review) => dispatch(onSetReview(review)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormDialog);

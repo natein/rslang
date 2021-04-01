@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 import { Avatar, Grid, Paper } from "@material-ui/core";
 
@@ -15,7 +14,7 @@ function LastReview() {
           <Grid item>
             <Avatar alt="Remy Sharp" src={imgLink} />
           </Grid>
-          <Grid justifyContent="left" item xs zeroMinWidth>
+          <Grid justifycontent="left" item xs zeroMinWidth>
             <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
             <p style={{ textAlign: "left" }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
@@ -34,7 +33,7 @@ function LastReview() {
           <Grid item>
             <Avatar alt="Remy Sharp" src={imgLink} />
           </Grid>
-          <Grid justifyContent="left" item xs zeroMinWidth>
+          <Grid justifycontent="left" item xs zeroMinWidth>
             <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
             <p style={{ textAlign: "left" }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
@@ -58,7 +57,7 @@ function LastReview() {
           <Grid item>
             <Avatar alt="Remy Sharp" src={imgLink} />
           </Grid>
-          <Grid justifyContent="left" item xs zeroMinWidth>
+          <Grid justifycontent="left" item xs zeroMinWidth>
             <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
             <p style={{ textAlign: "left" }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
