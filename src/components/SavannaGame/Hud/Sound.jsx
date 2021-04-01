@@ -11,6 +11,7 @@ const SoundWrapper = styled(Box)`
     position: absolute;
     left: 27px;
     top: 27px;
+    z-index: 9999;
 `;
 const SoundInner = styled(Box)`
     width: 23px;
@@ -29,11 +30,12 @@ const SoundInner = styled(Box)`
     position: relative;
 `;
 
-function Sound() {
+function Sound({ setSound = (f) => f }) {
     const [isMuted, setIsMuted] = useState(false);
 
     function SoundDisableHandle() {
         setIsMuted(!isMuted);
+        setSound();
     }
 
     return (
@@ -43,7 +45,6 @@ function Sound() {
     );
 }
 
-Sound.propTypes = {
-};
+Sound.propTypes = {};
 
 export default Sound;

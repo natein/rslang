@@ -7,8 +7,10 @@ import Difficulty from '../../SavannaGame/Difficulty/Difficulty';
 import Timer from '../Timer/Timer';
 import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
-import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
+import Crystal from '../../SavannaGame/Hud/Crystal';
 
+import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
+import { shuffle } from '../../../helpers/index';
 import PropTypes from 'prop-types';
 
 const [game] = GAMES.list;
@@ -77,6 +79,11 @@ const StartBtn = styled(Button)`
 function Savanna({ preloadTimer = (f) => f, timer }) {
     const [isStarted, setIsStarted] = useState(false);
     const [difficultyLvl, setDifficultyLvl] = React.useState(2);
+    const [sound, setSound] = React.useState(true);
+
+    function setSoundHandle(e) {
+        setSound(!sound);
+    }
 
     function setDifficultyHandle(e) {
         const { target } = e;
@@ -84,7 +91,7 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
     }
 
     function StartGameHandle() {
-        preloadTimer(difficultyLvl, Math.round(Math.random() * 30));
+        preloadTimer(difficultyLvl, shuffle(30));
         setIsStarted(true);
     }
 
@@ -113,9 +120,10 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
                             </>
                         ) : (
                             <>
-                                {!timer && <Sound />}
+                                {!timer && <Sound setSound={setSoundHandle} />}
                                 {!timer && <Life />}
-                                {!timer && <ChooseWords difficultyLvl={difficultyLvl} />}
+                                {!timer && <ChooseWords sound={sound} difficultyLvl={difficultyLvl} />}
+                                {!timer && <Crystal />}
                             </>
                         )}
                     </SavannaOuter>

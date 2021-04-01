@@ -68,7 +68,7 @@ export const SECTIONS_EBOOK = [
 
 export const GAMES = {
   difficultyTitle: 'Сложность',
-  timeout: 0,
+  timeout: 3000,
   lifes: 4,
 
   hud: {

@@ -4,6 +4,7 @@ import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/
 import { Typography, Box, Button } from '@material-ui/core/';
 import { GAMES } from '../../../constants/index';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const breakpoints = createMuiTheme({});
 
@@ -23,21 +24,33 @@ const Heart = styled(Box)`
     margin-left: 2px;
     transition: all 0.15s ease;
     background: url(${GAMES.hud.heart}) no-repeat;
+
+    ${({ lost }) =>
+        lost &&
+        `
+        opacity: .3;
+  `}
 `;
 
-function Life({ lost }) {
-    const lifes = [...Array(GAMES.lifes)];
-
+function Life({ lifes = [] }) {
     return (
         <LifeWrapper>
             {lifes.map((_, i) => (
-                <Heart key={i} />
+                <Heart lost={lifes[i]} key={i} />
             ))}
             <Heart />
         </LifeWrapper>
     );
 }
 
-Life.propTypes = {};
+Life.propTypes = {
+    lifes: PropTypes.array,
+};
 
-export default Life;
+const mapStateToProps = (state) => {
+    return {
+        lifes: state.game.savanna.lifes,
+    };
+};
+
+export default connect(mapStateToProps)(Life);

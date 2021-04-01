@@ -4,6 +4,9 @@ import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/
 import { Typography, Box, Button } from '@material-ui/core/';
 import { GAMES } from '../../../../../constants/index';
 import PropTypes from 'prop-types';
+import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
+import success from '../../../../../assets/sounds/correct.mp3';
+import failed from '../../../../../assets/sounds/wrong.mp3';
 
 const breakpoints = createMuiTheme({});
 
@@ -50,7 +53,6 @@ const AnswerQuestionInner = styled(Box)`
 const AnswerWord = styled(Box)`
     position: absolute;
     display: inline-block;
-    left: 50%;
 `;
 
 const WordsOuter = styled(Box)`
@@ -80,6 +82,13 @@ const WordsInner = styled(Box)`
             background: rgba(80,227,194,.40);
         }
   `}
+    ${({ wrong }) =>
+        wrong &&
+        `
+        &:nth-child(${wrong}) {
+            background: rgba(255,109,127,.40)
+        }
+  `}
 `;
 
 const WordsNumber = styled(Box)`
@@ -93,24 +102,39 @@ const WordsNumber = styled(Box)`
     color: yellow;
 `;
 
-// TODO: !Вне зависимости от правильного ответа подгружать новые слова, после каждого клика и по таймеру.
+// Question: Два event listener и изменение стейта в последнем
 
-// TODO: Подсветка правильного слова если слово было выбрано не правильно или не выбрано совсем
-// TODO: Правильное слово всегда стоит на первом индексе
+// Done
+// !TODO: Вне зависимости от правильного ответа подгружать новые слова, после каждого клика и по таймеру.
+// !TODO: Правильное слово всегда стоит на первом индексе
+// !TODO: Подсветка правильного слова если слово было выбрано не правильно или не выбрано совсем
+// !TODO: После падения показать правильное слово и отнять жизнь, так же отнять жизнь если не правильно кликнул.
+// !TODO: Выбор ответов с помощью клавиатуры
+// !TODO: Включение и отключение звуков
 
-// TODO: Выбор ответов с помощью клавиатуры
-// TODO: Включение и отключение звуков
+// Active
 // TODO: Снизу добавить анимирующийся камень
-// TODO: После падения показать правильное слово и отнять жизнь.
+// TODO: Добавить к таймеру текст что можно управлять с клавиатуры
 
-function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficultyLvl }) {
-    const TIMER = 2000;
+// TODO: После завершения игры показать окно статистики
+
+// Refactor
+// TODO: Иногда не показывает весь список слов
+// TODO: Иногда не срабатывает изменение слов после падения
+// TODO: Не забыть проверить адаптивность
+// TODO: Если слово из двух слов то плывет верстка
+
+function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f) => f, getSavannaWords = (f) => f }) {
+    const refreshTimer = 2000;
     const answerInnerRef = useRef();
+    const wordsOuterRef = useRef();
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
 
     const [correct, setCorrect] = useState(0);
+    const [wrong, setWrong] = useState(0);
+    const [counter, setCounter] = useState(0);
 
     const animateOn = useCallback(() => {
         setIsFalling(false);
@@ -123,8 +147,37 @@ function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficulty
     }, []);
 
     useEffect(() => {
-        setIsFalling(true);
+        // Becouse preloadSavannaTimer async
+        setTimeout(() => {
+            setIsFalling(true);
+        }, 0);
     }, []);
+
+    useEffect(() => {
+        const keyHandler = (e) => {
+            if (e.defaultPrevented) {
+                return;
+            }
+            switch (e.key) {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                    const wordEl = wordsOuterRef.current.children[parseFloat(e.key)];
+                    checkWordHandle(wordEl, 'yes');
+                    break;
+                default:
+                    return;
+            }
+
+            e.preventDefault();
+        };
+        window.addEventListener('keydown', keyHandler, true);
+
+        return () => {
+            window.removeEventListener('keydown', keyHandler, true);
+        };
+    }, [checkWordHandle]);
 
     useEffect(() => {
         if (answerInnerRef) {
@@ -134,37 +187,68 @@ function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficulty
                 if (isFalling) {
                     animateOn();
 
-                    const findAnswerIdx = (words, correct) => words.findIndex((x) => x.word === correct);
                     setCorrect(findAnswerIdx(gamewords, answer) + 1);
 
                     setTimeout(() => {
                         animateOff();
-                        getSavannaWords(difficultyLvl, Math.round(Math.random() * 30));
+                        getSavannaWords(difficultyLvl, shuffle(30));
                         setCorrect(0);
-                    }, TIMER);
+                        setCounter(counter + 1);
+                        setLostLife(counter);
+                    }, refreshTimer);
                 }
             }
             current.addEventListener('transitionend', answerInnerTransitionEnd, false);
             return () => current.removeEventListener('transitionend', answerInnerTransitionEnd);
         }
-    }, [animateOff, animateOn, answer, answerInnerRef, difficultyLvl, gamewords, getSavannaWords, isFalling]);
+    }, [
+        animateOff,
+        animateOn,
+        answer,
+        answerInnerRef,
+        counter,
+        difficultyLvl,
+        gamewords,
+        getSavannaWords,
+        isFalling,
+        setLostLife,
+    ]);
 
-    function checkWord({ currentTarget }) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    function checkWordHandle(el, flag = 'no') {
+        let wordIdx;
         animateOn();
 
-        setTimeout(() => {
-            animateOff();
-            getSavannaWords(difficultyLvl, Math.round(Math.random() * 30));
-        }, TIMER);
+        // Condition for click or keypress
+        if (flag === 'yes') {
+            [wordIdx] = el.children;
+        } else {
+            [wordIdx] = el.currentTarget.children;
+        }
 
-        const [wordIdx] = currentTarget.children;
         const checkWord = gamewords[wordIdx.innerText].word;
 
         if (checkWord === answer) {
-            console.log('correct');
+            setCorrect(parseFloat(wordIdx.innerText) + 1);
+            if (sound) {
+                new Audio(success).play();
+            }
         } else {
-            console.log('wrong');
+            setCorrect(findAnswerIdx(gamewords, answer) + 1);
+            setWrong(parseFloat(wordIdx.innerText) + 1);
+            setCounter(counter + 1);
+            setLostLife(counter);
+            if (sound) {
+                new Audio(failed).play();
+            }
         }
+
+        setTimeout(() => {
+            animateOff();
+            setCorrect(0);
+            getSavannaWords(difficultyLvl, shuffle(30));
+            setWrong(0);
+        }, refreshTimer);
     }
 
     return (
@@ -176,9 +260,9 @@ function ChooseWords({ gamewords, answer, getSavannaWords = (f) => f, difficulty
             >
                 <AnswerWord>{answer}</AnswerWord>
             </AnswerQuestionInner>
-            <WordsOuter>
+            <WordsOuter ref={wordsOuterRef}>
                 {gamewords.map((item, i) => (
-                    <WordsInner correct={correct} onClick={(e) => checkWord(e)} key={i}>
+                    <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
                         {item.wordTranslate}
                         <WordsNumber component="span">{i}</WordsNumber>
                     </WordsInner>

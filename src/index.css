@@ -11,11 +11,50 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-@keyframes falling-animation {
-    from {
-        transform: translateY(calc(100% - 400px));
+@keyframes animate-vertical {
+    0% {
+        transform: translate(0);
     }
+
+    23% {
+        transform: translateY(-6px);
+    }
+
+    25% {
+        transform: translateY(-7px);
+    }
+
+    28% {
+        transform: translateY(-6px);
+    }
+
+    50% {
+        transform: translate(0);
+    }
+
+    72% {
+        transform: translateY(6px);
+    }
+
+    75% {
+        transform: translateY(7px);
+    }
+
+    78% {
+        transform: translateY(6px);
+    }
+
     to {
-        transform: translateY(0);
+        transform: translate(0);
+    }
+}
+
+@keyframes rotate-animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1turn);
     }
 }

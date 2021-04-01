@@ -6,6 +6,7 @@ import { GAMES } from '../constants/index';
 export const GAME_WORDS_LOADED = 'GAME_WORDS_LOADED';
 export const TIMER = 'TIMER';
 export const GET_SAVANNA_WORDS = 'GET_SAVANNA_WORDS';
+export const LOST_LIFE = 'LOST_LIFE';
 
 export const loadWords = (group = 0, page = 0) => (dispatch) => {
     dispatch(setLoader(true));
@@ -24,7 +25,7 @@ export const preloadSavannaTimer = (group = 0, page = 0) => (dispatch) => {
             .then(() => dispatch(getWordsForSavanna()))
             .then(() => dispatch(onError()))
             .catch((err) => dispatch(onError(err.response ? err.response.data : err.message)))
-            .finally(() => dispatch(dispatch(setTimer(false))));
+            .finally(() => dispatch(setTimer(false)));
     }, GAMES.timeout);
 }
 
@@ -37,7 +38,8 @@ export const getSavannaWords = (group = 0, page = 0) => (dispatch) => {
 }
 
 
-export const onWordsLoaded = (words) => ({ type: GAME_WORDS_LOADED, payload: words });
-export const setTimer = (timer) => ({ type: TIMER, payload: timer });
+export const onWordsLoaded = (words) => ({ type: GAME_WORDS_LOADED, payload: words })
+export const setTimer = (timer) => ({ type: TIMER, payload: timer })
 export const getWordsForSavanna = () => ({ type: GET_SAVANNA_WORDS })
+export const setLostLife = (id) => ({ type: LOST_LIFE, payload: id })
 

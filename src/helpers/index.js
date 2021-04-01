@@ -9,3 +9,6 @@ export function onFullScreen(ref) {
         ref.current.requestFullscreen();
     }
 };
+
+export const  shuffle = (num) => Math.round(Math.random() * num);
+export const findAnswerIdx = (words, correct) => words.findIndex((x) => x.word === correct);

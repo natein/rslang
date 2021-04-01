@@ -1,6 +1,6 @@
-import { TIMER, GET_SAVANNA_WORDS, GAME_WORDS_LOADED } from "../actions/gameActions";
-
-import { getFour } from "../helpers/index";
+import { TIMER, GET_SAVANNA_WORDS, GAME_WORDS_LOADED, LOST_LIFE } from "../actions/gameActions";
+import { GAMES } from '../constants/index'
+import { getFour, shuffle } from "../helpers/index";
 
 const initialState = {
   wordsList: [],
@@ -8,6 +8,7 @@ const initialState = {
   savanna: {
     gamewords: [],
     answer: '',
+    lifes: [0, 0, 0, 0]
   },
 };
 
@@ -21,8 +22,14 @@ const gameReducer = (state = initialState, action) => {
 
     case GET_SAVANNA_WORDS:
       const four = getFour(state.wordsList);
-      const [answer] = four;
-      return { ...state, savanna: { answer: answer.word, gamewords: four } }
+      const answer = four[shuffle(4)];
+      return { ...state, savanna: { answer: answer.word, gamewords: four, lifes: [...state.savanna.lifes] } }
+
+    case LOST_LIFE:
+      if (action.payload < GAMES.lifes) {
+        state.savanna.lifes[action.payload] = 1;
+      }
+      return { ...state, savanna: { answer: state.savanna.answer, gamewords: [...state.savanna.gamewords], lifes: [...state.savanna.lifes] } }
 
     default:
       return state;
