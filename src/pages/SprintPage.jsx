@@ -10,9 +10,9 @@ import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/ebookActions';
-import { GAMES_LIST } from '../constants';
+import { GAMES } from '../constants';
 
-const sprintGame = GAMES_LIST.find((game) => game.code === 'sprint').backgroundImage;
+const sprintGame = GAMES.list.find((game) => game.code === 'sprint').backgroundImage;
 
 const styles = makeStyles((theme) => ({
     fullscreen: {

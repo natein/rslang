@@ -5,11 +5,14 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import store from './store';
+import { StyleSheetManager } from 'styled-components';
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <StyleSheetManager disableVendorPrefixes={process.env.NODE_ENV === 'development'}>
+        <App />
+      </StyleSheetManager>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

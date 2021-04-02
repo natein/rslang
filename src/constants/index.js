@@ -1,7 +1,11 @@
 import sprintGame from '../assets/sprintGame.svg';
-import savanna from '../assets/savanna.svg';
 import audio from '../assets/audio.svg';
 import ourGame from '../assets/our-game.svg';
+import SavannaBackground from '../assets/savanna/savanna_background.svg';
+import SoundIcon from '../assets/hud/sound.svg';
+import MutedIcon from '../assets/hud/muted.svg';
+import CrossIcon from '../assets/hud/cross.svg';
+import HeartIcon from '../assets/hud/heart.png';
 
 export const DEVELOPERS = [
   {
@@ -65,36 +69,63 @@ export const SECTIONS_EBOOK = [
   },
 ];
 
-export const GAMES_LIST = [
-  {
-    code: 'savanna',
-    name: 'Саванна',
-    coverImage: '',
-    backgroundImage: savanna,
-    component: ''
+
+
+export const GAMES = {
+  difficultyTitle: 'Сложность',
+  timeout: 3000,
+  lifes: 4,
+
+  hud: {
+    sound: SoundIcon,
+    disableSound: MutedIcon,
+    cross: CrossIcon,
+    heart: HeartIcon,
   },
-  {
-    code: 'audio',
-    name: 'Аудивызов',
-    coverImage: '',
-    backgroundImage: audio,
-    component: ''
+
+  closeModal: {
+    title: 'Игра не закончена!',
+    description: 'Если вы вернетесь к списку, ваши результаты не будут сохранены',
+    closeBtn: 'Закрыть',
+    cancelBtn: 'Отмена'
   },
-  {
-    code: 'sprint',
-    name: 'Спринт',
-    coverImage: '',
-    backgroundImage: sprintGame,
-    component: ''
-  },
-  {
-    code: 'our-game',
-    name: 'Своя игра',
-    coverImage: '',
-    backgroundImage: ourGame,
-    component: ''
-  }
-];
+  btnLabel: 'Начать',
+
+  list: [
+    {
+      code: 'savanna',
+      name: 'Саванна',
+      description: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
+      coverImage: '',
+      backgroundImage: SavannaBackground,
+      component: ''
+    },
+
+    {
+      code: 'audio',
+      name: 'Аудивызов',
+      coverImage: '',
+      backgroundImage: audio,
+      component: ''
+    },
+
+    {
+      code: 'sprint',
+      name: 'Спринт',
+      coverImage: '',
+      backgroundImage: sprintGame,
+      component: ''
+    },
+    {
+      code: 'our-game',
+      name: 'Своя игра',
+      coverImage: '',
+      backgroundImage: ourGame,
+      component: ''
+    }
+  ]
+}
+
 
 export const SECTIONS_DICTIONARY = [
   {

@@ -10,7 +10,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-import { EBOOK_COUNT_PAGES, COUNT_WORDS_ON_PAGE } from '../../constants';
+import { EBOOK_COUNT_PAGES, COUNT_WORDS_ON_PAGE } from '../../constants/index';
 
 
 const useStyles = makeStyles((theme) => ({
