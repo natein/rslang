@@ -83,6 +83,37 @@ export const loadUserDeleteWordAgregateInGroup = (userId, token, group = 0) => (
     .finally(() => dispatch(setLoader(false)));
 }
 
+export const onUpdateUserWordStatistics = (userId, wordId, token, updateStatisticsCallback) => (dispatch) => {
+  return ebookService
+      .getUserWord(userId, wordId, token)
+      .then((userWord) => updateStatisticsCallback(userWord))
+      .then((userWord) =>
+          ebookService
+              .updateUserWord(userId, wordId, userWord, userWord, token)
+              .then((data) => dispatch(setWordUser(data)))
+              .then(() => dispatch(onError()))
+              .catch((err) => {
+                  dispatch(onError(err.response ? err.response.data : err.message));
+              }),
+      );
+};
+
+export const createUserWordWithStatistics = (userId, wordId, userWord, token, updateStatisticsCallback) => (
+  dispatch,
+) => {
+  return ebookService
+      .createUserWord(userId, wordId, userWord, token)
+      .then((data) => dispatch(setWordUser(data)))
+      .then(() => dispatch(onError()))
+      .catch((err) => {
+          if (err.response?.status === 417) {
+              dispatch(onUpdateUserWordStatistics(userId, wordId, token, updateStatisticsCallback));
+          } else {
+              dispatch(onError(err.response ? err.response.data : err.message));
+          }
+      });
+};
+
 export const setWords = (words) => {
   return {
     type: SET_WORDS,
