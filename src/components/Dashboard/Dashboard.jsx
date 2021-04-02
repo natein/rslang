@@ -25,6 +25,7 @@ import SignupPage from '../LoginPage/SingupPage';
 import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
 import GamesPage from '../../pages/GamesPage';
+import AudioCallPage from '../../pages/AudioCallPage';
 
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -168,7 +169,7 @@ export default function Dashboard() {
                 }}
                 className={classes.main}
             >
-                <Container maxWidth="lg" style={{minHeight: "100%", padding: '1rem'}}>
+                <Container maxWidth="lg" style={{ minHeight: "100%", padding: '1rem' }}>
                     <Switch>
                         <Route path="/" component={HomePage} exact />
                         <Route path="/ebook" component={EbookPage} exact />
@@ -183,6 +184,7 @@ export default function Dashboard() {
                         <Route path="/sign-up" component={SignupPage} />
                         <Route path="/review" component={HomePage} />
                         <Route path="/games/sprint" component={SprintPage} />
+                        <Route path="/games/audiocall" component={AudioCallPage} />
                     </Switch>
                 </Container>
             </Box>
