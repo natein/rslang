@@ -127,7 +127,8 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
 
     const onAnswer = useCallback(
         (answer) => {
-            if (current.answer === answer) {
+            const isAnswerCorrect = current.answer === answer;
+            if (isAnswerCorrect) {
                 new Audio(success).play();
                 statistics.current.score += answerScore + bonus;
                 statistics.current.words.push({ ...current.info, correct: true });
@@ -137,7 +138,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
             }
-            onAddWordToDictionary(current.info.id);
+            onAddWordToDictionary(current.info.id || current.info._id, current.info, isAnswerCorrect);
             onNextWord(current.index + 1);
         },
         [current, onNextWord, answerScore, statistics, bonus, onAddWordToDictionary],
@@ -145,9 +146,9 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
 
     useEffect(() => {
         const keyHandler = (e) => {
-            if (e.which === 39) {
+            if (e.key === 39 || e.which === 39) {
                 onAnswer(false);
-            } else if (e.which === 37) {
+            } else if (e.key === 37 || e.which === 37) {
                 onAnswer(true);
             }
         };

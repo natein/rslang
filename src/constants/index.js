@@ -1,3 +1,6 @@
+import sprintGame from '../assets/sprintGame.svg';
+import audio from '../assets/audio.svg';
+import ourGame from '../assets/our-game.svg';
 import SavannaBackground from '../assets/savanna/savanna_background.svg';
 import SoundIcon from '../assets/hud/sound.svg';
 import MutedIcon from '../assets/hud/muted.svg';
@@ -66,6 +69,8 @@ export const SECTIONS_EBOOK = [
   },
 ];
 
+
+
 export const GAMES = {
   difficultyTitle: 'Сложность',
   timeout: 3000,
@@ -95,21 +100,53 @@ export const GAMES = {
       backgroundImage: SavannaBackground,
       component: ''
     },
+
     {
       code: 'audio',
       name: 'Аудивызов',
       coverImage: '',
-      backgroundImage: '',
+      backgroundImage: audio,
       component: ''
     },
+
     {
       code: 'sprint',
       name: 'Спринт',
       coverImage: '',
-      backgroundImage: '',
+      backgroundImage: sprintGame,
+      component: ''
+    },
+    {
+      code: 'our-game',
+      name: 'Своя игра',
+      coverImage: '',
+      backgroundImage: ourGame,
       component: ''
     }
   ]
 }
 
+
+export const SECTIONS_DICTIONARY = [
+  {
+    type: 'study',
+    name: 'Изучаемые слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+  {
+    type: 'hard',
+    name: 'Сложные слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+  {
+    type: 'delete',
+    name: 'Удалённые слова',
+    background: 'rgba(255, 235, 238, 0.5)',
+    backgroundBtn: 'rgba(239, 154, 154, 1)',
+  },
+];
+
 export const EBOOK_COUNT_PAGES = 30;
+export const COUNT_WORDS_ON_PAGE = 20;

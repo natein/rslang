@@ -1,8 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core';
 import Footer from './components/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
-import { useRouteMatch } from 'react-router-dom';
-import { Route, Switch } from 'react-router-dom';
+import { useLocation, useRouteMatch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as userActions from './actions/userActions';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   rootContainer: {
@@ -15,8 +17,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
-  const classes = useStyles();
+function App({ onUserTokenUpdate }) {
+    const classes = useStyles();
+    const location = useLocation();
 
   const match = useRouteMatch({
     path: '/games/:code',
@@ -24,12 +27,21 @@ function App() {
     sensitive: true,
   });
 
-  return (
-    <Box component="div" className={classes.rootContainer}>
-      <Dashboard />
-      {!match && <Footer />}
-    </Box>
-  );
+    useEffect(() => {
+        onUserTokenUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location]);
+
+    return (
+        <Box component="div" className={classes.rootContainer}>
+            <Dashboard />
+            {!match && <Footer />}
+        </Box>
+    );
 }
 
-export default App;
+const mapDispatchToProps = (dispach) => ({
+    onUserTokenUpdate: () => dispach(userActions.updateToken()),
+});
+
+export default connect(null, mapDispatchToProps)(App);
