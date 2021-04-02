@@ -9,10 +9,13 @@ import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
 import Crystal from '../../SavannaGame/Hud/Crystal';
 import Keynote from '../../SavannaGame/Hud/Keynote';
-
+import { useEffect, useCallback, useRef } from 'react';
+import SavannaStatistics from './SavannaStatistics';
 import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
 import { shuffle } from '../../../helpers/index';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { initLife } from '../../../actions/gameActions';
 
 const [game] = GAMES.list;
 
@@ -77,10 +80,20 @@ const StartBtn = styled(Button)`
     }
 `;
 
-function Savanna({ preloadTimer = (f) => f, timer }) {
+function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
     const [isStarted, setIsStarted] = useState(false);
     const [difficultyLvl, setDifficultyLvl] = React.useState(2);
     const [sound, setSound] = React.useState(true);
+
+    const [finished, onFinish] = useState(false);
+    const statistics = useRef({ words: [] });
+
+    const onNewGame = () => {
+        onFinish(false);
+        setIsStarted(false);
+        initLife();
+        statistics.current = { words: [] };
+    };
 
     function setSoundHandle(e) {
         setSound(!sound);
@@ -92,8 +105,10 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
     }
 
     function StartGameHandle() {
+        initLife();
         preloadTimer(difficultyLvl, shuffle(30));
         setIsStarted(true);
+        statistics.current = { words: [] };
     }
 
     return (
@@ -122,12 +137,21 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
                             </>
                         ) : (
                             <>
-                                {!timer && <Sound setSound={setSoundHandle} />}
-                                {!timer && <Life />}
-                                {!timer && <ChooseWords sound={sound} difficultyLvl={difficultyLvl} />}
-                                {!timer && <Crystal />}
+                                {!timer && !finished && <Sound setSound={setSoundHandle} />}
+                                {!timer && !finished && <Life />}
+                                {!timer && !finished && (
+                                    <ChooseWords
+                                        statistics={statistics}
+                                        onFinish={onFinish}
+                                        sound={sound}
+                                        difficultyLvl={difficultyLvl}
+                                    />
+                                )}
+                                {!timer && !finished && <Crystal />}
                             </>
                         )}
+
+                        {!timer && finished && <SavannaStatistics statistics={statistics} onNewGame={onNewGame} />}
                     </SavannaOuter>
                 </Wrapper>
             </ThemeProvider>
@@ -141,4 +165,16 @@ Savanna.propTypes = {
     preloadTimer: PropTypes.func,
 };
 
-export default Savanna;
+const mapStateToProps = (state) => {
+    return {
+        gamewords: state.game.savanna.gamewords,
+        answer: state.game.savanna.answer,
+        drawer: state.game.savanna.drawer,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    initLife: () => dispatch(initLife()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Savanna);

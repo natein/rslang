@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
+import { CollectionsBookmarkOutlined } from '@material-ui/icons';
 
 const breakpoints = createMuiTheme({});
 
@@ -103,34 +104,36 @@ const WordsNumber = styled(Box)`
     color: yellow;
 `;
 
-// Question: Два event listener и изменение стейта в последнем
-
 // Done
-// !TODO: Вне зависимости от правильного ответа подгружать новые слова, после каждого клика и по таймеру.
-// !TODO: Правильное слово всегда стоит на первом индексе
-// !TODO: Подсветка правильного слова если слово было выбрано не правильно или не выбрано совсем
-// !TODO: После падения показать правильное слово и отнять жизнь, так же отнять жизнь если не правильно кликнул.
-// !TODO: Выбор ответов с помощью клавиатуры
-// !TODO: Включение и отключение звуков
-// !TODO: Снизу добавить анимирующийся камень
-// !TODO: Добавить к таймеру текст что можно управлять с клавиатуры
+// !TODO: После завершения игры показать окно статистики
 
 // Active
-// TODO: После завершения игры показать окно статистики
+// TODO: Добавлять слова из игры в словарь
 
 // Refactor
+// TODO: Если слова не меняются значит ошибка в запросе
 // TODO: Иногда не показывает весь список слов
-// TODO: Иногда не срабатывает изменение слов после падения
 // TODO: Не забыть проверить адаптивность
 // TODO: Если слово из двух слов то плывет верстка
 
-function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f) => f, getSavannaWords = (f) => f }) {
+function ChooseWords({
+    onFinish = (f) => f,
+    sound,
+    gamewords,
+    statistics,
+    answer,
+    difficultyLvl,
+    setLostLife = (f) => f,
+    getSavannaWords = (f) => f,
+}) {
     const refreshTimer = 2000;
     const answerInnerRef = useRef();
     const wordsOuterRef = useRef();
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
+
+    const [current, setCurrent] = useState();
 
     const [correct, setCorrect] = useState(0);
     const [wrong, setWrong] = useState(0);
@@ -185,8 +188,9 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
             function answerInnerTransitionEnd() {
                 if (isFalling) {
                     animateOn();
-
-                    setCorrect(findAnswerIdx(gamewords, answer) + 1);
+                    const answerIdx = findAnswerIdx(gamewords, answer);
+                    setCorrect(answerIdx + 1);
+                    statistics.current.words.push({ ...gamewords[answerIdx], correct: false });
 
                     setTimeout(() => {
                         animateOff();
@@ -194,6 +198,7 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
                         setCorrect(0);
                         setCounter(counter + 1);
                         setLostLife(counter);
+                        onFinish(counter === GAMES.lifes);
                     }, refreshTimer);
                 }
             }
@@ -228,6 +233,7 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
 
         if (checkWord === answer) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);
+            statistics.current.words.push({ ...gamewords[wordIdx.innerText], correct: true });
             if (sound) {
                 new Audio(success).play();
             }
@@ -236,6 +242,9 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
             setWrong(parseFloat(wordIdx.innerText) + 1);
             setCounter(counter + 1);
             setLostLife(counter);
+            onFinish(counter === GAMES.lifes);
+            statistics.current.words.push({ ...gamewords[wordIdx.innerText], correct: false });
+
             if (sound) {
                 new Audio(failed).play();
             }

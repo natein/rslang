@@ -1,7 +1,7 @@
 import { Box, Button, Divider, makeStyles, Typography } from '@material-ui/core';
 import React, { useCallback, useRef } from 'react';
-
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import styled, { ThemeProvider } from 'styled-components';
 
 const styles = makeStyles((theme) => ({
     word: {
@@ -63,36 +63,41 @@ const styles = makeStyles((theme) => ({
         padding: '0.5rem',
         backgroundColor: 'red',
         color: 'white',
-        marginLeft: '0.5rem'
+        marginLeft: '0.5rem',
     },
     green: {
         borderRadius: '40%',
         padding: '0.5rem',
         backgroundColor: 'green',
         color: 'white',
-        marginLeft: '0.5rem'
-    }
+        marginLeft: '0.5rem',
+    },
 }));
 
-const SprintStatistics = ({ statistics, onNewGame }) => {
+const AgainBtn = styled(Button)`
+    margin: 0 15px;
+    &:hover {
+        border-color: black;
+    }
+`;
+
+const SavannaStatistics = ({ statistics, onNewGame = (f) => f }) => {
     const baseUrl = process.env.REACT_APP_API || '';
     const classes = styles();
 
     const audio = useRef();
-    
-    console.log(statistics, 'statistics')
 
     const onAudioPlay = useCallback((audioPath) => {
         audio.current?.pause();
         audio.current = new Audio(`${baseUrl}/${audioPath}`);
         audio.current.play();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <>
             <Typography className={classes.title} component="h1" variant="h4" gutterBottom>
-                Результат: {statistics.current.score}
+                Результат
             </Typography>
             <Box component="div" className={classes.table}>
                 <Typography className={classes.description} component="h2" variant="h5">
@@ -123,9 +128,9 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
                         </Box>
                     ))}
             </Box>
-            <Button color="primary" variant="contained" className={classes.newGame} onClick={onNewGame}>
+            <AgainBtn color="primary" variant="outlined" color="inherit" onClick={onNewGame}>
                 Играть еще
-            </Button>
+            </AgainBtn>
         </>
     );
 };
@@ -147,4 +152,4 @@ const Word = ({ word, onAudioPlay }) => {
     );
 };
 
-export default SprintStatistics;
+export default SavannaStatistics;

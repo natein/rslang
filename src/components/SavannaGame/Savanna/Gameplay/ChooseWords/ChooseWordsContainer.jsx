@@ -5,12 +5,14 @@ import ChooseWords from './ChooseWords';
 import { getSavannaWords, setLostLife } from '../../../../../actions/gameActions';
 
 function ChooseWordsContainer({
+    onFinish = (f) => f,
     sound,
     gamewords,
     answer,
     difficultyLvl,
     setLostLife = (f) => f,
     getSavannaWords = (f) => f,
+    statistics
 }) {
     useEffect(() => {});
 
@@ -18,11 +20,13 @@ function ChooseWordsContainer({
         <>
             <ChooseWords
                 sound={sound}
+                onFinish={onFinish}
                 difficultyLvl={difficultyLvl}
                 getSavannaWords={getSavannaWords}
                 setLostLife={setLostLife}
                 gamewords={gamewords}
                 answer={answer}
+                statistics={statistics}
             />
         </>
     );
