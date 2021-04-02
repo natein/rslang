@@ -13,7 +13,7 @@ import { useHistory } from 'react-router';
 const useStyles = makeStyles((theme) => ({
     background: {
         backgroundImage: `url(${backgroundImage})`,
-        backgroundColor: '#7fc7d9', // Average color of the background image.
+        backgroundColor: '#7fc7d9',
     },
     button: {
         color: 'white',
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '15px 15px 15px 15px',
         fontFamily: 'Segoe script, cursive',
         '&:focus': {
-            boxShadow: '0 0 5px #FFF, 0 0 10px #FFF, 0 0 15px #FFF, 2px 2px 2px rgba(206,179,173,0)',
+            boxShadow: '0px 2px 0px white',
         },
         '&:hover': {
             color: 'white',

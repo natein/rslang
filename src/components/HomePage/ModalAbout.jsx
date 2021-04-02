@@ -7,13 +7,20 @@ import { useHistory } from 'react-router';
 
 const useStyles = makeStyles(() => ({
     button: {
+        color: '#0D7E94',
         minWidth: 150,
         margin: '1rem',
-        border: '1px double rgb(113, 129, 255)',
+        boxShadow: '0px 2px 0px #0D7E94',
+        border: '1px double #0D7E94',
         borderRadius: '15px 15px 15px 15px',
+        fontFamily: 'Segoe script, cursive',
+        '&:focus': {
+            boxShadow: '0px 2px 0px #0D7E94',
+        },
         '&:hover': {
-            color: 'tomato',
-            border: '1px double tomato',
+            color: '#0D7E94',
+            border: '1px double #0D7E94',
+            boxShadow: '0 5px 5px #0D7E94',
         },
     },
 }));
