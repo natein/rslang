@@ -7,6 +7,7 @@ import { TrainOutlined } from '@material-ui/icons';
 const TimerWrapper = styled(Box)`
     display: flex;
     justify-content: center;
+    margin-bottom: 80px;
 `;
 
 const TimeWrapper = styled(Box)`

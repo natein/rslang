@@ -8,7 +8,7 @@ import DictionaryGroupMenu from '../WordsPanel/DictionaryGroupMenu';
 import GameMenu from '../WordsPanel/GameMenu';
 import Settings from '../WordsPanel/Settings';
 import DictionaryPageMenu from '../WordsPanel/DictionaryPageMenu';
-import { COUNT_WORDS_ON_PAGE } from '../../constants';
+import { COUNT_WORDS_ON_PAGE } from '../../constants/index';
 import * as gameActions from '../../actions/gameActions';
 
 function DictionaryContainer(props) {

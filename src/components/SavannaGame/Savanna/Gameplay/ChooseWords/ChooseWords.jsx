@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
@@ -111,11 +112,10 @@ const WordsNumber = styled(Box)`
 // !TODO: После падения показать правильное слово и отнять жизнь, так же отнять жизнь если не правильно кликнул.
 // !TODO: Выбор ответов с помощью клавиатуры
 // !TODO: Включение и отключение звуков
+// !TODO: Снизу добавить анимирующийся камень
+// !TODO: Добавить к таймеру текст что можно управлять с клавиатуры
 
 // Active
-// TODO: Снизу добавить анимирующийся камень
-// TODO: Добавить к таймеру текст что можно управлять с клавиатуры
-
 // TODO: После завершения игры показать окно статистики
 
 // Refactor
@@ -169,7 +169,6 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
                 default:
                     return;
             }
-
             e.preventDefault();
         };
         window.addEventListener('keydown', keyHandler, true);
@@ -214,7 +213,6 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
         setLostLife,
     ]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     function checkWordHandle(el, flag = 'no') {
         let wordIdx;
         animateOn();

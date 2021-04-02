@@ -8,8 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 
-import { GAMES_LIST } from '../../constants';
-
+import { GAMES } from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -82,7 +81,7 @@ function GameMenu({onGame}) {
         onClose={handleCloseGame}
       >
         {
-          GAMES_LIST.map(item =>
+          GAMES.list.map(item =>
             <MenuItem
               key={item.code}
               value={item.code}

@@ -8,6 +8,7 @@ import Timer from '../Timer/Timer';
 import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
 import Crystal from '../../SavannaGame/Hud/Crystal';
+import Keynote from '../../SavannaGame/Hud/Keynote';
 
 import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
 import { shuffle } from '../../../helpers/index';
@@ -101,6 +102,7 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
                 <Wrapper>
                     <SavannaOuter>
                         {timer && <Timer />}
+                        {timer && <Keynote />}
 
                         {!isStarted ? (
                             <>

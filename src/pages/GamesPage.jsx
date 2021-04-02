@@ -1,6 +1,6 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
-import { GAMES_LIST } from '../constants';
+import { GAMES } from '../constants';
 
 import gamesBackground from '../assets/games.svg';
 import { useHistory } from 'react-router';
@@ -60,7 +60,7 @@ const GamesPage = () => {
 
     return (
         <Grid container className={classes.container}>
-            {GAMES_LIST.map((game) => (
+            {GAMES.list.map((game) => (
                 <Card key={game.code} className={classes.game}>
                     <CardActionArea onClick={() => onClick(game.code)}>
                         <CardMedia image={game.backgroundImage} title={game.name} className={classes.media} />
