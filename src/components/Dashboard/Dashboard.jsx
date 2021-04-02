@@ -176,10 +176,9 @@ function Dashboard() {
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
-                        <Route path="/review" component={HomePage} />
+                        <Route path="/review" component={ReviewPage} />
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
-                        <Route path="/review" component={ReviewPage} />
                     </Switch>
                 </Container>
             </Box>

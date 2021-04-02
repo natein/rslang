@@ -30,6 +30,9 @@ const useStyles = makeStyles(() => ({
             boxShadow: '0 5px 5px #0D7E94',
         },
     },
+    mainForm: {
+        textAlign: 'center',
+    },
 }));
 
 const CssTextField = withStyles({
@@ -46,6 +49,7 @@ const CssTextField = withStyles({
 function FormDialog({ setReview, user }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [val, setVal] = React.useState(false);
     const [value, setValue] = React.useState('');
 
     const handleClickOpen = () => {
@@ -54,6 +58,7 @@ function FormDialog({ setReview, user }) {
 
     const handleClose = () => {
         setOpen(false);
+        setVal(false);
         setValue('');
     };
 
@@ -62,17 +67,29 @@ function FormDialog({ setReview, user }) {
     };
 
     const handleLog = () => {
-        setReview({
-            review: value,
-            date: new Date().toLocaleDateString(),
-            name: user.name,
-            avatar: user.avatar,
-        });
+        if (value.length > 10) {
+            setReview({
+                review: value,
+                date: new Date().toLocaleDateString(),
+                name: user.name,
+                avatar: user.avatar,
+            });
+            handleClose();
+        }
+        if (value.length <= 10) {
+            setVal(true);
+        }
     };
 
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.button}>
+        <div className={classes.mainForm}>
+            <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleClickOpen}
+                className={classes.button}
+                disabled={!user.token}
+            >
                 Оставить свой
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -82,6 +99,7 @@ function FormDialog({ setReview, user }) {
                         Заполните поле и оставьте отзыв, чтобы каждый смог его увидеть.
                     </DialogContentText>
                     <CssTextField
+                        error={val}
                         autoFocus
                         fullWidth
                         multiline

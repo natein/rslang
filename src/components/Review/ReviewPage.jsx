@@ -6,15 +6,25 @@ import LastReview from './LastReview';
 import FormDialog from './FormDialog';
 import LoadingPage from '../LoadingPage';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(() => ({
+    reviewCont: {
+        padding: '0 12em',
+    },
+}));
+
 const ReviewPage = ({ loader }) => {
+    const classes = useStyles();
+
     return (
-        <>
-              {loader && <LoadingPage />}
-              {!loader && <LastReview />}
+        <div className={classes.reviewCont}>
+            {loader && <LoadingPage />}
+            {!loader && <LastReview />}
             <FormDialog />
-        </>
+        </div>
     );
-}
+};
 
 const mapStateToProps = (state) => ({
     loader: state.common.loader,
