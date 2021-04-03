@@ -205,11 +205,6 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
     setHint(false);
   };
 
-  useEffect(() => {
-    createAnswers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
-
   const onWordPlay = () => {
     currentAudio.play();
   };
@@ -249,8 +244,47 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
     );
   };
 
-  console.log(current);
-  console.log(list);
+  useEffect(() => {
+    createAnswers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
+
+  useEffect(() => {
+    const keyHandler = (e) => {
+      switch (e.code) {
+        case 'Digit1':
+          onAnswer(list[0]);
+          break;
+        case 'Digit2':
+          onAnswer(list[1]);
+          break;
+        case 'Digit3':
+          onAnswer(list[2]);
+          break;
+        case 'Digit4':
+          onAnswer(list[3]);
+          break;
+        case 'Digit5':
+          onAnswer(list[4]);
+          break;
+        case 'Space':
+          onWordPlay();
+          break;
+        case 'Enter':
+          !answer && onAnswer(currentWord, true);
+          answer && onNext();
+          break;
+        default:
+          break;
+      }
+    };
+    window.addEventListener('keydown', keyHandler);
+
+    return () => {
+      window.removeEventListener('keydown', keyHandler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onAnswer, list, onWordPlay, onNext]);
 
 
   return (
