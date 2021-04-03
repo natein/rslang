@@ -1,7 +1,8 @@
-import { Box, Button, Divider, makeStyles, Typography } from '@material-ui/core';
+import { Box, Divider, makeStyles, Typography, IconButton } from '@material-ui/core';
 import React, { useCallback, useRef } from 'react';
 
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import { Link } from 'react-router-dom';
 
 const styles = makeStyles((theme) => ({
     word: {
@@ -9,27 +10,17 @@ const styles = makeStyles((theme) => ({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        '& button': {
-            color: '#0e2394',
-        },
+        marginLeft: '0.5rem',
     },
     table: {
-        width: '80%',
+        width: '100%',
+        maxWidth: '784px',
         margin: '0 auto 1rem',
         borderRadius: '10px',
         border: '1px solid grey',
-        backgroundColor: '#7986CBA1',
+        backgroundColor: '#fff',
         overflow: 'auto',
-    },
-    row: {
-        padding: '0.5rem 0',
-        '& p': {
-            fontSize: '1.6rem',
-            color: 'white',
-        },
-        '&:hover': {
-            backgroundColor: '#7d7d7d36',
-        },
+        padding: '30px 50px'
     },
     title: {
         color: 'white',
@@ -40,16 +31,6 @@ const styles = makeStyles((theme) => ({
         textAlign: 'start',
         margin: '1rem 0 0 1rem',
     },
-    wordInfo: {
-        flexGrow: 1,
-        '& p': {
-            display: 'inline-block',
-            width: '30%',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            textAlign: 'center',
-        },
-    },
     newGame: {
         flexShrink: 2,
         margin: '0 auto',
@@ -59,18 +40,42 @@ const styles = makeStyles((theme) => ({
     },
 
     red: {
-        borderRadius: '40%',
-        padding: '0.5rem',
-        backgroundColor: 'red',
-        color: 'white',
-        marginLeft: '0.5rem'
+        color: '#ed593b',
+        marginLeft: '0.5rem',
+        textTransform: 'uppercase'
     },
     green: {
-        borderRadius: '40%',
-        padding: '0.5rem',
-        backgroundColor: 'green',
-        color: 'white',
-        marginLeft: '0.5rem'
+        color: '#28c38a',
+        marginLeft: '0.5rem',
+        textTransform: 'uppercase'
+    },
+    wordText: {
+        color: '#2582e7',
+        fontWeight: 'bold'
+    },
+    wordTranslate: {
+        color: '#37383c'
+    },
+    resultText: {
+        color: '#37383c',
+        textAlign: 'center',
+        marginBottom: '40px',
+        fontSize: '34px'
+    },
+    linkGame: {
+        marginTop: '20px',
+        color: '#fff',
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(37,130,231,.3)',
+        padding: '10px 20px',
+        margin: '10px 20px',
+        '&:hover': {
+            backgroundColor: 'rgba(37,130,231,.5)',
+        },
+        textDecoration: 'none'
+    },
+    linkGameBox: {
+        marginTop: '20px'
     }
 }));
 
@@ -84,19 +89,25 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
         audio.current?.pause();
         audio.current = new Audio(`${baseUrl}/${audioPath}`);
         audio.current.play();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const correctWords = statistics.current.words.filter((word) => word.correct);
+    const wrongtWords = statistics.current.words.filter((word) => !word.correct);
+    const correctPerWrong = correctWords.length / wrongtWords.length * 100;
+    console.log(correctPerWrong);
 
     return (
         <>
-            <Typography className={classes.title} component="h1" variant="h4" gutterBottom>
-                Результат: {statistics.current.score}
-            </Typography>
             <Box component="div" className={classes.table}>
+                <Typography className={classes.resultText} component="h2" variant="h5">
+                    {correctPerWrong < 50 && 'В этот раз не получилось, но продолжай тренироваться!'}
+                    {(correctPerWrong > 50 && correctPerWrong < 80) && 'Неплохо, но есть над чем поработать'}
+                    {correctPerWrong > 80 && 'Поздравляем, отличный результат!'}
+                </Typography>
                 <Typography className={classes.description} component="h2" variant="h5">
-                    Правильно:
                     <Typography className={classes.green} component="span">
-                        {statistics.current.words.filter((word) => word.correct).length}
+                        Знаю: {statistics.current.words.filter((word) => word.correct).length}
                     </Typography>
                 </Typography>
                 {statistics.current.words
@@ -108,9 +119,8 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
                     ))}
                 <Divider variant="middle" className={classes.divider} />
                 <Typography className={classes.description} component="h3" variant="h5" gutterBottom>
-                    Ошибся:
                     <Typography component="span" className={classes.red}>
-                        {statistics.current.words.filter((word) => !word.correct).length}
+                        Ошибок: {statistics.current.words.filter((word) => !word.correct).length}
                     </Typography>
                 </Typography>
                 {statistics.current.words
@@ -121,9 +131,10 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
                         </Box>
                     ))}
             </Box>
-            <Button color="primary" variant="contained" className={classes.newGame} onClick={onNewGame}>
-                Играть еще
-            </Button>
+            <Box className={classes.linkGameBox}>
+                <Link to='/games' className={classes.linkGame} onClick={onNewGame}>Играть еще</Link>
+                <Link to='/games' className={classes.linkGame}>К списку игр</Link>
+            </Box>
         </>
     );
 };
@@ -133,13 +144,13 @@ const Word = ({ word, onAudioPlay }) => {
 
     return (
         <Box component="div" className={classes.word}>
-            <Button onClick={() => onAudioPlay(word.audioMeaning)}>
+            <IconButton color="default" onClick={() => onAudioPlay(word.audio)}>
                 <VolumeUpIcon />
-            </Button>
-            <Box component="div" className={classes.wordInfo}>
-                <Typography className={classes.wordText}>{word.word}</Typography>
-                <Typography className={classes.wordText}>{word.transcription}</Typography>
-                <Typography className={classes.wordText}>{word.wordTranslate}</Typography>
+            </IconButton>
+            <Box component="div" className={classes.wordInfo1}>
+                <Box component="span" className={classes.wordText}>{word.word}</Box>
+                <Box component="span" className={classes.wordTranslate}> — </Box>
+                <Box component="span" className={classes.wordTranslate}>{word.wordTranslate}</Box>
             </Box>
         </Box>
     );
