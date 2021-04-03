@@ -41,7 +41,7 @@ const SignUpPage = ({ user, error, onUserCreate, loader }) => {
 
     useEffect(() => {
         if (user?.email) {
-            history.push('/login');
+            history.replace('/login');
         }
     }, [user, history]);
 

@@ -7,25 +7,25 @@ import * as userActions from './actions/userActions';
 import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
-    rootContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-    },
-    footer: {
-        flex: '0 0 auto',
-    },
+  rootContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  footer: {
+    flex: '0 0 auto',
+  },
 }));
 
 function App({ onUserTokenUpdate }) {
     const classes = useStyles();
     const location = useLocation();
 
-    const match = useRouteMatch({
-        path: '/games/:code',
-        strict: true,
-        sensitive: true,
-    });
+  const match = useRouteMatch({
+    path: '/games/:code',
+    strict: true,
+    sensitive: true,
+  });
 
     useEffect(() => {
         onUserTokenUpdate();

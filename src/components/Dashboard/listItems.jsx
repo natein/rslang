@@ -109,7 +109,7 @@ export const secondaryListItems = (
                 <ListItemText primary="Аудиовызов" />
             </ListItem>
         </Link>
-        <Link to="/" style={link}>
+        <Link to="/games/savanna" style={link}>
             <ListItem button>
                 <ListItemIcon>
                     <AssignmentIcon />

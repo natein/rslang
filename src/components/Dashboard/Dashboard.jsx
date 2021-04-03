@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,7 +15,6 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
@@ -26,6 +24,8 @@ import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
 import GamesPage from '../../pages/GamesPage';
 import AudioCallPage from '../../pages/AudioCallPage';
+import SavannaPage from '../../pages/SavannaPage';
+import ReviewPage from '../Review';
 
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -99,11 +99,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'relative'
-    }
+        position: 'relative',
+    },
 }));
 
-export default function Dashboard() {
+function Dashboard() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
@@ -130,11 +130,6 @@ export default function Dashboard() {
                         </Link>
                     </Typography>
                     <TransitionsModal />
-                    {/* <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -169,7 +164,7 @@ export default function Dashboard() {
                 }}
                 className={classes.main}
             >
-                <Container maxWidth="lg" style={{ minHeight: "100%", padding: '1rem' }}>
+                <Container maxWidth="lg" style={{ minHeight: '100%', padding: '1rem' }}>
                     <Switch>
                         <Route path="/" component={HomePage} exact />
                         <Route path="/ebook" component={EbookPage} exact />
@@ -177,17 +172,19 @@ export default function Dashboard() {
                         <Route path="/dictionary" component={DictionaryPage} exact />
                         <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={GamesPage} exact />
-                        <Route path="/games/savanna" component={HomePage} />
                         <Route path="/statistics" component={Statistics} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
-                        <Route path="/review" component={HomePage} />
+                        <Route path="/review" component={ReviewPage} />
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/audiocall" component={AudioCallPage} />
+                        <Route path="/games/savanna" component={SavannaPage} />
                     </Switch>
                 </Container>
             </Box>
         </Box>
     );
 }
+
+export default Dashboard;
