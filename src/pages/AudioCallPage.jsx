@@ -49,7 +49,7 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
   const history = useHistory();
 
   const match = useRouteMatch({
-    path: '/games/audiocall/new',
+    path: '/games/audio/new',
     strict: true,
     sensitive: true,
   });
@@ -71,7 +71,7 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
     if (match) {
       setGameWords([]);
       onFinish(false);
-      history.push('/games/audiocall');
+      history.push('/games/audio');
     }
   }, [match, setGameWords, history]);
 

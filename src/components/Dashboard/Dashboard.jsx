@@ -178,7 +178,7 @@ function Dashboard() {
                         <Route path="/sign-up" component={SignupPage} />
                         <Route path="/review" component={ReviewPage} />
                         <Route path="/games/sprint" component={SprintPage} />
-                        <Route path="/games/audiocall" component={AudioCallPage} />
+                        <Route path="/games/audio" component={AudioCallPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
                     </Switch>
                 </Container>
