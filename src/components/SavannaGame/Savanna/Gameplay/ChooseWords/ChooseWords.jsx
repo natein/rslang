@@ -1,15 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography, Box, Button } from '@material-ui/core/';
-import { GAMES } from '../../../../../constants/index';
+import styled from 'styled-components';
+import { Box } from '@material-ui/core/';
 import PropTypes from 'prop-types';
 import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
-
-const breakpoints = createMuiTheme({});
 
 const ChooseWordsWrapper = styled(Box)`
     position: absolute;

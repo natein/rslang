@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography, Box, Button } from '@material-ui/core/';
-import { GAMES } from '../../../constants/index';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
+import styled from 'styled-components';
+import { Box } from '@material-ui/core/';
 import crystalCircle1 from '../../../assets/hud/crystalCircle1.png';
-const breakpoints = createMuiTheme({});
 
 const CrystalWrapper = styled(Box)`
     position: absolute;

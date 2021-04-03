@@ -15,7 +15,6 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-import { connect } from 'react-redux';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';

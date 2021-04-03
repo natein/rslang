@@ -1,9 +1,9 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import Savanna from '../components/SavannaGame/Savanna/index';
 import { loadWords, preloadSavannaTimer } from '../actions/gameActions';
 import PropTypes from 'prop-types';
-import { Box, Button, makeStyles } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import LoadingPage from '../components/LoadingPage';
 import { onFullScreen } from '../helpers';
