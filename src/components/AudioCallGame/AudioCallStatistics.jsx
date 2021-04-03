@@ -63,6 +63,7 @@ const styles = makeStyles((theme) => ({
         fontSize: '34px'
     },
     linkGame: {
+        cursor: 'pointer',
         marginTop: '20px',
         color: '#fff',
         fontWeight: 'bold',
@@ -95,15 +96,14 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
     const correctWords = statistics.current.words.filter((word) => word.correct);
     const wrongtWords = statistics.current.words.filter((word) => !word.correct);
     const correctPerWrong = correctWords.length / wrongtWords.length * 100;
-    console.log(correctPerWrong);
 
     return (
         <>
             <Box component="div" className={classes.table}>
                 <Typography className={classes.resultText} component="h2" variant="h5">
                     {correctPerWrong < 50 && 'В этот раз не получилось, но продолжай тренироваться!'}
-                    {(correctPerWrong > 50 && correctPerWrong < 80) && 'Неплохо, но есть над чем поработать'}
-                    {correctPerWrong > 80 && 'Поздравляем, отличный результат!'}
+                    {(correctPerWrong > 50 && correctPerWrong < 90) && 'Неплохо, но есть над чем поработать'}
+                    {correctPerWrong > 90 && 'Поздравляем, отличный результат!'}
                 </Typography>
                 <Typography className={classes.description} component="h2" variant="h5">
                     <Typography className={classes.green} component="span">
@@ -132,7 +132,7 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
                     ))}
             </Box>
             <Box className={classes.linkGameBox}>
-                <Link to='/games' className={classes.linkGame} onClick={onNewGame}>Играть еще</Link>
+                <span className={classes.linkGame} onClick={onNewGame}>Играть еще</span>
                 <Link to='/games' className={classes.linkGame}>К списку игр</Link>
             </Box>
         </>

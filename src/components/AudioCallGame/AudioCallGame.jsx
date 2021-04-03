@@ -14,6 +14,8 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import success from '../../assets/sounds/correct.mp3';
 import failed from '../../assets/sounds/wrong.mp3';
 
+import { GAMES } from '../../constants';
+
 const styles = makeStyles(() => ({
   card: {
     backgroundColor: '#7986CBA1',
@@ -165,6 +167,24 @@ const styles = makeStyles(() => ({
     position: 'absolute',
     left: '-60px',
     top: '-9px'
+  },
+  sound: {
+    width: '23px',
+    height: '24px',
+    backgroundPosition: '0',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    cursor: 'pointer',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    margin: '20px'
+  },
+  enableSound: {
+    backgroundImage: `url(${GAMES.hud.sound})`,
+  },
+  disableSound: {
+    backgroundImage: `url(${GAMES.hud.disableSound})`,
   }
 }));
 
@@ -174,27 +194,28 @@ const shuffleArray = (array) => {
   array.sort(() => Math.random() - 0.5);
 }
 
-const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary }) => {
+const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary, setGameWords }) => {
   const classes = styles();
   const [current, setCurrent] = useState(0);
   const [list, setList] = useState();
   const [answer, setAnswer] = useState('');
   const [hint, setHint] = useState(false);
+  const [sound, setSound] = useState(true);
 
   const currentWord = words[current];
   const currentAudio = new Audio(`${baseUrl}/${words[current].audio}`);
 
-  const createAnswers = () => {
-    let answers = words.filter((_, idx) => idx !== current);
-    shuffleArray(answers);
-    answers = answers.slice(0, 4);
-    answers.push(words[current]);
-    shuffleArray(answers);
-    setList(answers);
-    currentAudio.play();
-  };
+  // const createAnswers = () => {
+  //   let answers = words.filter((_, idx) => idx !== current);
+  //   shuffleArray(answers);
+  //   answers = answers.slice(0, 4);
+  //   answers.push(words[current]);
+  //   shuffleArray(answers);
+  //   setList(answers);
+  //   currentAudio.play();
+  // };
 
-  const onNext = () => {
+  const onNext = useCallback(() => {
     if (current === words.length - 1) {
       onFinish(true);
       return;
@@ -203,7 +224,7 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
     setCurrent(current + 1);
     setAnswer('');
     setHint(false);
-  };
+  }, [words, onFinish, current]);
 
   const onWordPlay = () => {
     currentAudio.play();
@@ -214,15 +235,15 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
       if (answer) return;
       const isAnswerCorrect = currentWord.id === answerWord.id && !hint;
       if (isAnswerCorrect) {
-        new Audio(success).play();
+        sound && new Audio(success).play();
         statistics.current.words.push({ ...currentWord, correct: true });
       } else {
-        new Audio(failed).play();
+        sound && new Audio(failed).play();
         statistics.current.words.push({ ...currentWord, correct: false });
       }
       setAnswer(answerWord);
       setHint(hint);
-      onAddWordToDictionary(currentWord.id, isAnswerCorrect);
+      onAddWordToDictionary(currentWord.id, currentWord, isAnswerCorrect);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [current, answer]
@@ -230,7 +251,7 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
 
   const ViewAnswer = () => {
     return (
-      <Zoom in={true} style={{ transitionDelay: '0ms' }}>
+      <Zoom in={true}>
         <Box className={classes.viewAnswer}>
           <Box className={classes.viewAnswerImage} style={{ backgroundImage: `url(${baseUrl}/${currentWord.image})` }} />
           <Box className={classes.viewAnswerWord}>
@@ -245,7 +266,18 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
   };
 
   useEffect(() => {
-    createAnswers();
+    let answers = words.filter((_, idx) => idx !== current);
+    shuffleArray(answers);
+    answers = answers.slice(0, 4);
+    answers.push(words[current]);
+    shuffleArray(answers);
+    setList(answers);
+    currentAudio.play();
+
+    return () => {
+      setAnswer('');
+      setHint(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current]);
 
@@ -324,6 +356,8 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
         </Box>
         {!answer && <Button variant="outlined" className={classes.notKnow} onClick={() => onAnswer(currentWord, true)}>не знаю</Button>}
         {answer && <Button variant="outlined" className={classes.next} onClick={() => onNext()}><ArrowRightAltIcon /></Button>}
+
+        <Box className={`${classes.sound} ${sound ? classes.enableSound : classes.disableSound}`} onClick={() => setSound(sound => !sound)}></Box>
       </Box>
     </>
   );

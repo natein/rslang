@@ -17,7 +17,7 @@ const styles = makeStyles((theme) => ({
     top: 0,
     right: 0,
     color: common.white,
-    margin: 0,
+    margin: '20px',
     padding: 0,
     minWidth: 'auto',
   },
@@ -42,7 +42,7 @@ const styles = makeStyles((theme) => ({
 }));
 
 const getUpdateStatiscticsCallback = (isCorrect) => (userWord) => {
-  const sprintStatistics = userWord?.optional?.sprint || { right: 0, wrong: 0 };
+  const sprintStatistics = userWord?.optional?.audio || { right: 0, wrong: 0 };
   if (isCorrect) {
     sprintStatistics.right += 1;
   } else {
@@ -53,14 +53,15 @@ const getUpdateStatiscticsCallback = (isCorrect) => (userWord) => {
     userWord.optional = {};
   }
 
-  userWord.optional.sprint = sprintStatistics;
+  userWord.optional.audio = sprintStatistics;
   return userWord;
 };
-const initialUserWord = { optional: { game: true, sprint: { right: 0, wrong: 0 } } };
+const initialUserWord = { optional: { game: true, audio: { right: 0, wrong: 0 } } };
 
 const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreateUserWord, setGameWords, onUpdateUserWordStatistics }) => {
   const classes = styles();
   const [finished, onFinish] = useState(false);
+  const [ready, onReady] = useState(false);
   const statistics = useRef({ score: 0, words: [] });
   const gameRef = useRef();
   const history = useHistory();
@@ -80,9 +81,19 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
   };
 
   const onNewGame = () => {
+    setGameWords([]);
     onFinish(false);
+    onReady(false);
     statistics.current = { score: 0, words: [] };
   };
+
+  useEffect(() => {
+    onReady(true);
+    return () => {
+      setGameWords([]);
+      onReady(false);
+    }
+  }, [setGameWords]);
 
   useEffect(() => {
     if (match) {
@@ -112,9 +123,10 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
     <Box component="section" ref={gameRef} className={classes.root}>
       {loader && <LoadingPage />}
       {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
-      {!loader && words.length > 0 && !finished && (
+      {!loader && words.length > 0 && !finished && ready && (
         <AudioCallGame
           words={words}
+          setGameWords={setGameWords}
           statistics={statistics}
           onFinish={onFinish}
           onAddWordToDictionary={onAddWordToDictionary}

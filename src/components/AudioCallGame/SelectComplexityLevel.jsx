@@ -56,14 +56,12 @@ const SelectComplexityLevel = ({ onLoadWords }) => {
                 <strong>Мини-игра «Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.</strong>
                 <br />
                 После запуска игры вы услышите слово. Вам нужно выбрать из 5 вариантов правильный перевод. <br />
-                1. Используйте мышь, чтобы выбрать.
-                <br />
-                2. Используйте цифровые клавиши от 1 до 5 для выбора ответа
-                <br />
-                3. Используйте пробел для повтроного звучания слова
-                <br />
-                4. Используйте клавишу Enter для подсказки или для перехода к следующему слову
-                <br />
+                <ol>
+                    <li>Используйте мышь, чтобы выбрать</li>
+                    <li>Используйте цифровые клавиши от 1 до 5 для выбора ответа</li>
+                    <li>Используйте пробел для повтроного звучания слова</li>
+                    <li>Используйте клавишу Enter для подсказки или для перехода к следующему слову</li>
+                </ol>
             </Typography>
             <FormControl variant="outlined" className={classes.formControl}>
                 <Select
@@ -72,22 +70,22 @@ const SelectComplexityLevel = ({ onLoadWords }) => {
                     label="Сложности"
                     className={classes.select}
                 >
-                    <MenuItem key={0} value={0}>
+                    <MenuItem key={0} value={1}>
                         1
                     </MenuItem>
-                    <MenuItem key={1} value={1}>
+                    <MenuItem key={1} value={2}>
                         2
                     </MenuItem>
-                    <MenuItem key={2} value={2}>
+                    <MenuItem key={2} value={3}>
                         3
                     </MenuItem>
-                    <MenuItem key={3} value={3}>
+                    <MenuItem key={3} value={4}>
                         4
                     </MenuItem>
-                    <MenuItem key={4} value={4}>
+                    <MenuItem key={4} value={5}>
                         5
                     </MenuItem>
-                    <MenuItem key={5} value={5}>
+                    <MenuItem key={5} value={6}>
                         6
                     </MenuItem>
                 </Select>
