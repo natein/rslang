@@ -5,6 +5,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import React, { useCallback, useEffect, useState } from 'react';
+import Zoom from '@material-ui/core/Zoom';
 
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
@@ -31,7 +32,9 @@ const styles = makeStyles(() => ({
   },
 
   topBox: {
-    height: '210px'
+    height: '210px',
+    position: 'relative',
+    width: '100%'
   },
   answers: {
     color: '#fff',
@@ -62,7 +65,8 @@ const styles = makeStyles(() => ({
     color: '#ffffff',
     backgroundColor: 'rgba(255,255,255,.2)',
     borderRadius: '50%',
-    padding: '1em'
+    padding: '1em',
+    bottom: '0'
   },
   iconVolumeMini: {
     height: '1.5em',
@@ -70,11 +74,12 @@ const styles = makeStyles(() => ({
     color: '#ffffff',
     backgroundColor: 'rgba(255,255,255,.2)',
     borderRadius: '50%',
-    padding: '0.3em'
+    padding: '0.3em',
   },
   notKnow: {
     color: 'rgba(255,255,255,.6)',
     width: '200px',
+    height: '50px',
     borderColor: 'rgba(255,255,255,.2)',
     fontSize: '12px',
     padding: '10px 40px',
@@ -85,8 +90,9 @@ const styles = makeStyles(() => ({
   next: {
     color: 'rgba(255,255,255,.6)',
     width: '200px',
+    height: '50px',
     backgroundColor: 'rgba(255,255,255,.2)',
-    borderColor: 'rgba(255,255,255,.2)',
+    border: 'none',
     fontSize: '12px',
     padding: '10px 40px',
     '&:hover': {
@@ -129,9 +135,15 @@ const styles = makeStyles(() => ({
     left: '-7px',
     top: '-15px'
   },
+  viewVolume: {
+    position: 'absolute',
+    bottom: '0',
+    left: '50%',
+    transform: 'translate(-50%, 0)'
+  },
   viewAnswer: {
     textAlign: 'center',
-    fontSize: '28px'
+    fontSize: '28px',
   },
   viewAnswerImage: {
     display: 'block',
@@ -144,6 +156,15 @@ const styles = makeStyles(() => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '50% 50%',
     backgroundColor: 'hsla(0,0%,100%,.05)'
+  },
+  viewAnswerWord: {
+    position: 'relative',
+    display: 'inline-block'
+  },
+  volumeMini: {
+    position: 'absolute',
+    left: '-60px',
+    top: '-9px'
   }
 }));
 
@@ -197,7 +218,7 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
     (answerWord, hint = false) => {
       if (answer) return;
 
-      if (currentWord.id === answerWord.id) {
+      if (currentWord.id === answerWord.id && !hint) {
         new Audio(success).play();
         statistics.current.words.push({ ...currentWord, correct: true });
       } else {
@@ -207,7 +228,6 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
       setAnswer(answerWord);
       setHint(hint);
       //onAddWordToDictionary(current.info.id || current.info._id);
-      //onNextWord(current.index + 1);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [current, answer]
@@ -215,15 +235,17 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
 
   const ViewAnswer = () => {
     return (
-      <Box className={classes.viewAnswer}>
-        <Box className={classes.viewAnswerImage} style={{ backgroundImage: `url(${baseUrl}/${currentWord.image})` }} />
-        <Box>
-          <IconButton color="default" component="span" onClick={onWordPlay}>
-            <VolumeUpIcon className={classes.iconVolumeMini} />
-          </IconButton>
-          {currentWord.word}
+      <Zoom in={true} style={{ transitionDelay: '0ms' }}>
+        <Box className={classes.viewAnswer}>
+          <Box className={classes.viewAnswerImage} style={{ backgroundImage: `url(${baseUrl}/${currentWord.image})` }} />
+          <Box className={classes.viewAnswerWord}>
+            <IconButton className={classes.volumeMini} color="default" component="span" onClick={onWordPlay}>
+              <VolumeUpIcon className={classes.iconVolumeMini} />
+            </IconButton>
+            {currentWord.word}
+          </Box>
         </Box>
-      </Box>
+      </Zoom >
     );
   };
 
@@ -237,9 +259,11 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
         <Box className={classes.topBox}>
           {
             !answer &&
-            <IconButton color="default" component="span" onClick={onWordPlay}>
-              <VolumeUpIcon className={classes.iconVolume} />
-            </IconButton>
+            <Box className={classes.viewVolume}>
+              <IconButton color="default" component="span" onClick={onWordPlay}>
+                <VolumeUpIcon className={classes.iconVolume} />
+              </IconButton>
+            </Box>
           }
           {answer && <ViewAnswer />}
         </Box>
