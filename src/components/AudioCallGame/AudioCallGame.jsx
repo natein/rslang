@@ -212,8 +212,8 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
   const onAnswer = useCallback(
     (answerWord, hint = false) => {
       if (answer) return;
-
-      if (currentWord.id === answerWord.id && !hint) {
+      const isAnswerCorrect = currentWord.id === answerWord.id && !hint;
+      if (isAnswerCorrect) {
         new Audio(success).play();
         statistics.current.words.push({ ...currentWord, correct: true });
       } else {
@@ -222,7 +222,7 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
       }
       setAnswer(answerWord);
       setHint(hint);
-      //onAddWordToDictionary(current.info.id || current.info._id);
+      onAddWordToDictionary(currentWord.id, isAnswerCorrect);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [current, answer]
