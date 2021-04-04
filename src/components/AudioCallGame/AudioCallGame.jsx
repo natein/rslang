@@ -205,16 +205,6 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
   const currentWord = words[current];
   const currentAudio = new Audio(`${baseUrl}/${words[current].audio}`);
 
-  // const createAnswers = () => {
-  //   let answers = words.filter((_, idx) => idx !== current);
-  //   shuffleArray(answers);
-  //   answers = answers.slice(0, 4);
-  //   answers.push(words[current]);
-  //   shuffleArray(answers);
-  //   setList(answers);
-  //   currentAudio.play();
-  // };
-
   const onNext = useCallback(() => {
     if (current === words.length - 1) {
       onFinish(true);

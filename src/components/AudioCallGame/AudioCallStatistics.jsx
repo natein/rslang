@@ -20,7 +20,10 @@ const styles = makeStyles((theme) => ({
         border: '1px solid grey',
         backgroundColor: '#fff',
         overflow: 'auto',
-        padding: '30px 50px'
+        padding: '30px 50px',
+        [theme.breakpoints.down('sm')]: {
+            padding: '20px 30px',
+        },
     },
     title: {
         color: 'white',
@@ -60,7 +63,10 @@ const styles = makeStyles((theme) => ({
         color: '#37383c',
         textAlign: 'center',
         marginBottom: '40px',
-        fontSize: '34px'
+        fontSize: '34px',
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '24px',
+        },
     },
     linkGame: {
         cursor: 'pointer',
@@ -69,14 +75,16 @@ const styles = makeStyles((theme) => ({
         fontWeight: 'bold',
         backgroundColor: 'rgba(37,130,231,.3)',
         padding: '10px 20px',
-        margin: '10px 20px',
+        margin: '10px',
         '&:hover': {
             backgroundColor: 'rgba(37,130,231,.5)',
         },
         textDecoration: 'none'
     },
     linkGameBox: {
-        marginTop: '20px'
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     }
 }));
 

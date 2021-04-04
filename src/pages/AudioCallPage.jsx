@@ -42,18 +42,18 @@ const styles = makeStyles((theme) => ({
 }));
 
 const getUpdateStatiscticsCallback = (isCorrect) => (userWord) => {
-  const sprintStatistics = userWord?.optional?.audio || { right: 0, wrong: 0 };
+  const audioStatistics = userWord?.optional?.audio || { right: 0, wrong: 0 };
   if (isCorrect) {
-    sprintStatistics.right += 1;
+    audioStatistics.right += 1;
   } else {
-    sprintStatistics.wrong += 1;
+    audioStatistics.wrong += 1;
   }
 
   if (!userWord.optional) {
     userWord.optional = {};
   }
 
-  userWord.optional.audio = sprintStatistics;
+  userWord.optional.audio = audioStatistics;
   return userWord;
 };
 const initialUserWord = { optional: { game: true, audio: { right: 0, wrong: 0 } } };
@@ -62,7 +62,7 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
   const classes = styles();
   const [finished, onFinish] = useState(false);
   const [ready, onReady] = useState(false);
-  const statistics = useRef({ score: 0, words: [] });
+  const statistics = useRef({ words: [] });
   const gameRef = useRef();
   const history = useHistory();
 
@@ -84,7 +84,7 @@ const AudioCallPage = ({ words = [], loader, onLoadWords, userId, token, onCreat
     setGameWords([]);
     onFinish(false);
     onReady(false);
-    statistics.current = { score: 0, words: [] };
+    statistics.current = { words: [] };
   };
 
   useEffect(() => {
