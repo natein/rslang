@@ -26,8 +26,7 @@ import GamesPage from '../../pages/GamesPage';
 import AudioCallPage from '../../pages/AudioCallPage';
 import SavannaPage from '../../pages/SavannaPage';
 import ReviewPage from '../Review';
-
-import Statistics from '../Statistics/Statistics';
+import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
 
 const drawerWidth = 240;
@@ -172,7 +171,7 @@ function Dashboard() {
                         <Route path="/dictionary" component={DictionaryPage} exact />
                         <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={GamesPage} exact />
-                        <Route path="/statistics" component={Statistics} />
+                        <Route path="/statistics" component={StatisticsPage} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />

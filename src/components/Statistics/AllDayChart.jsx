@@ -58,6 +58,8 @@ const ValueLabel = (props) => {
 const titleStyles = {
     title: {
         whiteSpace: 'pre',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     },
 };
 const TitleText = withStyles(titleStyles)(({ classes, ...props }) => (

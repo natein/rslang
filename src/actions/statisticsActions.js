@@ -73,3 +73,8 @@ export const setUserStatistics = (statistics) => ({
     type: UPDATE_USER_STATISTICS,
     payload: statistics,
 });
+
+
+export const clearUserStatistics = (statistics) => ({
+    type: CLEAR_STATISTICS
+});

@@ -27,6 +27,9 @@ const legendLabelStyles = (theme) => ({
     label: {
         paddingTop: theme.spacing(1),
         whiteSpace: 'nowrap',
+        '&>span': {
+            whiteSpace: 'normal'
+        }
     },
 });
 const legendItemStyles = () => ({
@@ -52,12 +55,14 @@ const demoStyles = () => ({
 
 const ValueLabel = (props) => {
     const { text } = props;
-    return <ValueAxis.Label {...props} text={`${text}%`} />;
+    return <ValueAxis.Label {...props} text={`${text}`} />;
 };
 
 const titleStyles = {
     title: {
         whiteSpace: 'pre',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     },
 };
 const TitleText = withStyles(titleStyles)(({ classes, ...props }) => (
@@ -94,20 +99,20 @@ class AllDayChartCount extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            data: this.recalculateStatistics(props.data, props.learnedWords),
         };
-        this.recalculateStatistics(props.data, props.learnedWords);
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data) {
-            this.recalculateStatistics(this.props.data, this.props.learnedWords);
+            const data = this.recalculateStatistics(this.props.data);
+            this.setState({ data });
         }
     }
 
-    recalculateStatistics = (data, learnedWords) => {
+    recalculateStatistics = (data) => {
         let summ = 0;
-        const allDayStats = Object.getOwnPropertyNames(data)
+        return Object.getOwnPropertyNames(data)
             .sort((first, second) => {
                 const firstDate = new Date(first).getTime();
                 const secondDate = new Date(second).getTime();
@@ -120,9 +125,8 @@ class AllDayChartCount extends React.PureComponent {
             })
             .map((day) => ({
                 date: day,
-                percentage: Math.round((data[day] * 100) / learnedWords),
+                count: data[day],
             }));
-        this.setState({ data: allDayStats });
     };
 
     render() {
@@ -136,8 +140,8 @@ class AllDayChartCount extends React.PureComponent {
                     <ValueAxis labelComponent={ValueLabel} />
 
                     <LineSeries
-                        name="Процент изученных слов в день к общему числу изученных слов"
-                        valueField="percentage"
+                        name="Общее кол-во изучаемых слов на определенный день"
+                        valueField="count"
                         argumentField="date"
                         seriesComponent={LineWithPoints}
                     />
@@ -145,7 +149,7 @@ class AllDayChartCount extends React.PureComponent {
                     <Title text={`Увеличение общего количества  ${'\n'}изученных слов`} textComponent={TitleText} />
                     <Animation />
                     <EventTracker />
-                    <Tooltip contentComponent={({text}) => `${text} %`}/>
+                    <Tooltip />
                 </Chart>
             </Paper>
         );
