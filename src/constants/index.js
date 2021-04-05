@@ -103,7 +103,7 @@ export const GAMES = {
 
     {
       code: 'audio',
-      name: 'Аудивызов',
+      name: 'Аудиовызов',
       coverImage: '',
       backgroundImage: audio,
       component: ''
