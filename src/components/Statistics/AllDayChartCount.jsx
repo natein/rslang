@@ -106,11 +106,17 @@ class AllDayChartCount extends React.PureComponent {
     }
 
     recalculateStatistics = (data, learnedWords) => {
+        let summ = 0;
         const allDayStats = Object.getOwnPropertyNames(data)
             .sort((first, second) => {
                 const firstDate = new Date(first).getTime();
                 const secondDate = new Date(second).getTime();
                 return firstDate > secondDate ? 1 : firstDate < secondDate ? -1 : 0;
+            })
+            .map((day) => {
+                summ += data[day];
+                data[day] = summ;
+                return day;
             })
             .map((day) => ({
                 date: day,
