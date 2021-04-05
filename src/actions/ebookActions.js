@@ -121,7 +121,7 @@ export const onUpdateUserWordStatistics = (wordId, isCorrect, gameName) => (disp
               .catch((err) => {
                   dispatch(onError(err.response ? err.response.data : err.message));
               }),
-      );
+      ).then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName)));
 };
 
 export const createUserWordWithStatistics = (wordId, isCorrect, gameName) => (
