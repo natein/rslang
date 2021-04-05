@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core/';
@@ -9,7 +9,7 @@ import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
 import Crystal from '../../SavannaGame/Hud/Crystal';
 import Keynote from '../../SavannaGame/Hud/Keynote';
-import { useEffect, useCallback, useRef } from 'react';
+import { useRef } from 'react';
 import SavannaStatistics from './SavannaStatistics';
 import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
 import { shuffle } from '../../../helpers/index';
@@ -29,7 +29,6 @@ const Wrapper = styled(Box)`
     right: 0;
     bottom: 0;
 `;
-
 const SavannaOuter = styled(Box)`
     height: 100%;
     display: flex;
@@ -72,7 +71,6 @@ const GameDescriptionText = styled(Typography)`
   }
   `}
 `;
-
 const StartBtn = styled(Button)`
     margin: 0 15px;
     &:hover {
@@ -80,10 +78,11 @@ const StartBtn = styled(Button)`
     }
 `;
 
-function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
+function Savanna({ loadSavannaWords = (f) => f, initLife = (f) => f, setDifficulty = (f) => f, difficultyLvl }) {
     const [isStarted, setIsStarted] = useState(false);
-    const [difficultyLvl, setDifficultyLvl] = React.useState(2);
+
     const [sound, setSound] = React.useState(true);
+    const [timer, setTimer] = React.useState(false);
 
     const [finished, onFinish] = useState(false);
     const statistics = useRef({ words: [] });
@@ -95,18 +94,21 @@ function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
         statistics.current = { words: [] };
     };
 
-    function setSoundHandle(e) {
+    function setSoundHandle() {
         setSound(!sound);
     }
 
-    function setDifficultyHandle(e) {
-        const { target } = e;
-        setDifficultyLvl(target.value);
+    function setTimerHandle() {
+        setTimer(true);
+        setTimeout(() => {
+            setTimer(false);
+        }, GAMES.timeout);
     }
 
     function StartGameHandle() {
         initLife();
-        preloadTimer(difficultyLvl, shuffle(30));
+        setTimerHandle();
+        loadSavannaWords(difficultyLvl, shuffle(30));
         setIsStarted(true);
         statistics.current = { words: [] };
     }
@@ -128,8 +130,7 @@ function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
                                     <GameDescriptionText component="p">{game.description}</GameDescriptionText>
                                 </GameInner>
                                 <GameInner>
-                                    <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficultyHandle} />
-
+                                    <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficulty} />
                                     <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
                                         {GAMES.btnLabel}
                                     </StartBtn>
@@ -141,6 +142,7 @@ function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
                                 {!timer && !finished && <Life />}
                                 {!timer && !finished && (
                                     <ChooseWords
+                                        loadSavannaWords={loadSavannaWords}
                                         statistics={statistics}
                                         onFinish={onFinish}
                                         sound={sound}
@@ -160,16 +162,15 @@ function Savanna({ preloadTimer = (f) => f, timer, initLife = (f) => f }) {
 }
 
 Savanna.propTypes = {
-    timer: PropTypes.bool,
-    onLoadWords: PropTypes.func,
-    preloadTimer: PropTypes.func,
+    loadSavannaWords: PropTypes.func,
+    setDifficulty: PropTypes.func,
+    difficultyLvl: PropTypes.number,
 };
 
 const mapStateToProps = (state) => {
     return {
         gamewords: state.game.savanna.gamewords,
         answer: state.game.savanna.answer,
-        drawer: state.game.savanna.drawer,
     };
 };
 

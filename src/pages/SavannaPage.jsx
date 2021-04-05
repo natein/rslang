@@ -1,16 +1,16 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Savanna from '../components/SavannaGame/Savanna/index';
-import { loadWords, preloadSavannaTimer } from '../actions/gameActions';
+import Savanna from '../components/SavannaGame/Savanna/Savanna';
+import { loadSavannaWords, loadWords } from '../actions/gameActions';
 import PropTypes from 'prop-types';
-import { Box, Button, makeStyles } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import LoadingPage from '../components/LoadingPage';
-import { onFullScreen } from '../helpers';
+import { onFullScreen, shuffle } from '../helpers';
 import styled from 'styled-components';
 
 const SavannaWrapper = styled(Box)`
-    display:flex;
+    display: flex;
 `;
 
 const FullScreenOuter = styled(Button)`
@@ -25,23 +25,30 @@ const FullScreenOuter = styled(Button)`
     margin-top: 15px;
 `;
 
-function SavannaPage({ onLoadWords = (f) => f, preloadTimer = (f) => f, timer, loader }) {
+function SavannaPage({ loadSavannaWords = (f) => f, onLoadWords = (f) => f, loader }) {
     const gameRef = useRef();
+    const [difficultyLvl, setDifficultyLvl] = useState(2);
+
+    function setDifficultyHandle({ target }) {
+        setDifficultyLvl(target.value);
+    }
 
     useEffect(() => {
-        onLoadWords();
-    }, [onLoadWords]);
-
-    function onFullScreenHandle() {
-        onFullScreen(gameRef);
-    }
+        onLoadWords(difficultyLvl, shuffle(30));
+    }, [difficultyLvl, onLoadWords]);
 
     return (
         <SavannaWrapper ref={gameRef}>
             {loader && <LoadingPage />}
-            {!loader && <Savanna preloadTimer={preloadTimer} onLoadWords={onLoadWords} timer={timer} />}
+            {!loader && (
+                <Savanna
+                    setDifficulty={setDifficultyHandle}
+                    difficultyLvl={difficultyLvl}
+                    loadSavannaWords={loadSavannaWords}
+                />
+            )}
 
-            <FullScreenOuter onClick={() => onFullScreenHandle()}>
+            <FullScreenOuter onClick={() => onFullScreen(gameRef)}>
                 <FullscreenIcon fontSize="large" />
             </FullScreenOuter>
         </SavannaWrapper>
@@ -50,20 +57,18 @@ function SavannaPage({ onLoadWords = (f) => f, preloadTimer = (f) => f, timer, l
 
 const mapStateToProps = (state) => {
     return {
-        timer: state.game.timer,
         loader: state.ebook.loader,
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    loadSavannaWords: (group, page) => dispatch(loadSavannaWords(group, page)),
     onLoadWords: (group, page) => dispatch(loadWords(group, page)),
-    preloadTimer: (group, page) => dispatch(preloadSavannaTimer(group, page)),
 });
 
 SavannaPage.propTypes = {
+    loadSavannaWords: PropTypes.func,
     onLoadWords: PropTypes.func,
-    preloadTimer: PropTypes.func,
-    timer: PropTypes.bool,
     loader: PropTypes.bool,
 };
 

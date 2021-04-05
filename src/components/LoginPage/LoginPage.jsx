@@ -38,7 +38,7 @@ const LoginPage = ({ user, error, onLogin, loader }) => {
 
     useEffect(() => {
         if (user?.token) {
-            history.push('/');
+            history.goBack();
         }
     }, [user, history]);
 

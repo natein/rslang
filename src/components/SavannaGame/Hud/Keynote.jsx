@@ -1,5 +1,5 @@
-import styled, { ThemeProvider } from 'styled-components';
-import { Typography, Box, Button } from '@material-ui/core/';
+import styled from 'styled-components';
+import { Box } from '@material-ui/core/';
 
 const TimerInner = styled(Box)`
     &:before {

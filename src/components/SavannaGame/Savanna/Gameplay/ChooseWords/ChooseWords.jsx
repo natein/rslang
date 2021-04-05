@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography, Box, Button } from '@material-ui/core/';
-import { GAMES } from '../../../../../constants/index';
+import styled from 'styled-components';
+import { Box } from '@material-ui/core/';
 import PropTypes from 'prop-types';
 import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
-import { CollectionsBookmarkOutlined } from '@material-ui/icons';
-
-const breakpoints = createMuiTheme({});
+import { GAMES } from '../../../../../constants/index';
 
 const ChooseWordsWrapper = styled(Box)`
     position: absolute;
@@ -106,25 +102,26 @@ const WordsNumber = styled(Box)`
 
 // Done
 // !TODO: После завершения игры показать окно статистики
+// !TODO: Иногда не показывает весь список слов
 
 // Active
+// TODO: Если слова не меняются значит ошибка в запросе
+// TODO: Добавить анимацию появления новых слов
 // TODO: Добавлять слова из игры в словарь
 
 // Refactor
-// TODO: Если слова не меняются значит ошибка в запросе
-// TODO: Иногда не показывает весь список слов
 // TODO: Не забыть проверить адаптивность
 // TODO: Если слово из двух слов то плывет верстка
 
 function ChooseWords({
     onFinish = (f) => f,
+    loadSavannaWords = (f) => f,
+    setLostLife = (f) => f,
     sound,
     gamewords,
     statistics,
     answer,
     difficultyLvl,
-    setLostLife = (f) => f,
-    getSavannaWords = (f) => f,
 }) {
     const refreshTimer = 2000;
     const answerInnerRef = useRef();
@@ -132,8 +129,7 @@ function ChooseWords({
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
-
-    const [current, setCurrent] = useState();
+    const [disabled, setDisabled] = useState(false);
 
     const [correct, setCorrect] = useState(0);
     const [wrong, setWrong] = useState(0);
@@ -194,7 +190,7 @@ function ChooseWords({
 
                     setTimeout(() => {
                         animateOff();
-                        getSavannaWords(difficultyLvl, shuffle(30));
+                        loadSavannaWords(difficultyLvl, shuffle(30));
                         setCorrect(0);
                         setCounter(counter + 1);
                         setLostLife(counter);
@@ -213,7 +209,7 @@ function ChooseWords({
         counter,
         difficultyLvl,
         gamewords,
-        getSavannaWords,
+        loadSavannaWords,
         isFalling,
         setLostLife,
     ]);
@@ -221,6 +217,18 @@ function ChooseWords({
     function checkWordHandle(el, flag = 'no') {
         let wordIdx;
         animateOn();
+
+        if (disabled) {
+            return;
+        }
+
+        setTimeout(() => {
+            setDisabled(false);
+            animateOff();
+            setCorrect(0);
+            loadSavannaWords(difficultyLvl, shuffle(30));
+            setWrong(0);
+        }, refreshTimer);
 
         // Condition for click or keypress
         if (flag === 'yes') {
@@ -249,13 +257,7 @@ function ChooseWords({
                 new Audio(failed).play();
             }
         }
-
-        setTimeout(() => {
-            animateOff();
-            setCorrect(0);
-            getSavannaWords(difficultyLvl, shuffle(30));
-            setWrong(0);
-        }, refreshTimer);
+        setDisabled(true);
     }
 
     return (

@@ -15,7 +15,6 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
-import { connect } from 'react-redux';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
@@ -25,6 +24,8 @@ import AboutTeam from '../AboutTeam';
 import SprintPage from '../../pages/SprintPage';
 import GamesPage from '../../pages/GamesPage';
 import SavannaPage from '../../pages/SavannaPage';
+import ReviewPage from '../Review';
+
 import Statistics from '../Statistics/Statistics';
 import DictionaryPage from '../../pages/DictionaryPage';
 
@@ -128,11 +129,6 @@ function Dashboard() {
                         </Link>
                     </Typography>
                     <TransitionsModal />
-                    {/* <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -179,7 +175,7 @@ function Dashboard() {
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
-                        <Route path="/review" component={HomePage} />
+                        <Route path="/review" component={ReviewPage} />
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
                     </Switch>

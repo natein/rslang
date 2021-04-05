@@ -1,7 +1,7 @@
 import { Box, Button, Divider, makeStyles, Typography } from '@material-ui/core';
 import React, { useCallback, useRef } from 'react';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 
 const styles = makeStyles((theme) => ({
     word: {

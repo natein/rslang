@@ -1,5 +1,7 @@
 const initialState = {
     error: null,
+    review: [],
+    loader: false,
 };
 
 const commonReducer = (state = initialState, action) => {
@@ -7,6 +9,11 @@ const commonReducer = (state = initialState, action) => {
         case 'ERROR': {
             return { ...state, error: action.payload };
         }
+        case 'SET_REVIEW': {
+            return { ...state, review: [...state.review, ...action.payload] };
+        }
+        case 'SET_LOADER_REVIEW':
+            return { ...state, loader: action.payload }
         default: {
             return state;
         }

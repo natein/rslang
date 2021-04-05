@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { Box } from '@material-ui/core/';
 import { TrainOutlined } from '@material-ui/icons';
 
