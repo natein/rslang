@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function GameMenu({onGame}) {
+function GameMenu({ onGame }) {
   const classes = useStyles();
   const [anchorGames, setAnchorGames] = useState(null);
 

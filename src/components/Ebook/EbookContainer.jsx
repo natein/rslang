@@ -67,7 +67,7 @@ function EbookContainer(props) {
       {loader && <LoadingPage />}
       {<EbookGroupMenu {...props} routeGroupPage={routeGroupPage} />}
       {<EbookPageMenu {...props} routeGroupPage={routeGroupPage} />}
-      {<GameMenu onGame={onGame}/>}
+      {<GameMenu onGame={onGame} />}
       {<Settings />}
       {!loader && <Words {...props} onChangeDifficulty={onChangeDifficulty} onDeleteWord={onDeleteWord} audio={audio} />}
     </>

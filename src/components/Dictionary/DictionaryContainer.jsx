@@ -57,7 +57,7 @@ function DictionaryContainer(props) {
       {loader && <LoadingPage />}
       {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} setCurrentPage={setCurrentPage} />}
       {<DictionaryPageMenu countPages={countPages} currentPage={currentPage} paginate={paginate} />}
-      {<GameMenu onGame={onGame}/>}
+      {<GameMenu onGame={onGame} />}
       {<Settings />}
       {!loader && <Words {...props} wordsList={currentPosts} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
     </>

@@ -15,7 +15,7 @@ const ebookReducer = (state = initialState, action) => {
       return { ...state, wordsList: action.payload.map(word => ({ ...word, _id: word.id })) }
 
     case SET_WORDS_AVERAGE:
-      return { ...state, wordsList: action.payload.words || [], totalCount: action.payload.totalCount || 0 }
+      return { ...state, wordsList: action.payload.words.map(word => ({ ...word, id: word._id })) || [], totalCount: action.payload.totalCount || 0 }
 
     case SET_DELETE_WORDS_IN_GROUP:
       return { ...state, wordsGroupDelete: action.payload.words || [] }

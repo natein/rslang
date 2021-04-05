@@ -5,7 +5,7 @@ import { GAMES } from '../constants';
 import gamesBackground from '../assets/games.svg';
 import { useHistory } from 'react-router';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -22,8 +22,7 @@ const useStyles = makeStyles({
         overflow: 'auto',
     },
     game: {
-        minWidth: '400px',
-        minHeight: '400px',
+        minHeight: '250px',
         display: 'flex',
         alignItems: 'stretch',
         margin: '1rem',
@@ -32,7 +31,10 @@ const useStyles = makeStyles({
         boxShadow: '0px 5px 24px 25px rgba(34, 60, 80, 0.2)',
         '&:hover': {
             boxShadow: '0px 5px 24px 25px rgba(255, 99, 71, 0.5)',
-        }
+        },
+        [theme.breakpoints.down('sm')]: {
+            minHeight: '200px',
+        },
     },
     media: {
         position: 'absolute',
@@ -47,8 +49,12 @@ const useStyles = makeStyles({
         color: 'white',
         position: 'relative',
         textAlign: 'center',
+        fontSize: '4rem',
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '2rem'
+        },
     },
-});
+}));
 
 const GamesPage = () => {
     const classes = useStyles();
@@ -59,18 +65,20 @@ const GamesPage = () => {
     };
 
     return (
-        <Grid container className={classes.container}>
+        <Grid container className={classes.container1}>
             {GAMES.list.map((game) => (
-                <Card key={game.code} className={classes.game}>
-                    <CardActionArea onClick={() => onClick(game.code)}>
-                        <CardMedia image={game.backgroundImage} title={game.name} className={classes.media} />
-                        <CardContent>
-                            <Typography variant="h1" color="textSecondary" className={classes.title}>
-                                {game.name}
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
+                <Grid key={game.code} item xs={12} sm={6} md={6}>
+                    <Card className={classes.game}>
+                        <CardActionArea onClick={() => onClick(game.code)}>
+                            <CardMedia image={game.backgroundImage} title={game.name} className={classes.media} />
+                            <CardContent>
+                                <Typography variant="h1" color="textSecondary" className={classes.title}>
+                                    {game.name}
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+                </Grid>
             ))}
         </Grid>
     );
