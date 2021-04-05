@@ -2,6 +2,7 @@ import * as statisticsService from '../api/statisticsService';
 
 export const GET_USER_STATISTICS = 'GET_USER_STATISTICS';
 export const UPDATE_USER_STATISTICS = 'UPDATE_USER_STATISTICS';
+export const CLEAR_STATISTICS = 'CLEAR_STATISTICS';
 
 const GET_INITIAL_GAME_INFO = () => ({
     lastChanged: new Date().toLocaleDateString('ru-RU'),
@@ -41,7 +42,6 @@ const updateStatistics = (statistics, isCorrect, game) => {
     gameInfo.learnedWords += 1;
     gameInfo.correctAnswers += isCorrect ? 1 : 0;
     gameStatistics[game] = gameInfo;
-    console.log(gameStatistics[game])
     statistics.id = undefined;
     return statistics;
 };
