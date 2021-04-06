@@ -44,23 +44,6 @@ const styles = makeStyles((theme) => ({
     },
 }));
 
-const getUpdateStatiscticsCallback = (isCorrect) => (userWord) => {
-    const sprintStatistics = userWord?.optional?.sprint || { right: 0, wrong: 0 };
-    if (isCorrect) {
-        sprintStatistics.right += 1;
-    } else {
-        sprintStatistics.wrong += 1;
-    }
-
-    if (!userWord.optional) {
-        userWord.optional = {};
-    }
-
-    userWord.optional.sprint = sprintStatistics;
-    return userWord;
-};
-const initialUserWord = { optional: { game: true, sprint: { right: 0, wrong: 0 } } };
-
 const SprintPage = ({
     words = [],
     loader,
@@ -107,15 +90,9 @@ const SprintPage = ({
     const onAddWordToDictionary = (wordId, word, isCorrect) => {
         if (userId && token) {
             if (word.userWord) {
-                onUpdateUserWordStatistics(userId, token, wordId, getUpdateStatiscticsCallback(isCorrect));
+                onUpdateUserWordStatistics(wordId, isCorrect);
             } else {
-                onCreateUserWord(
-                    userId,
-                    token,
-                    wordId,
-                    getUpdateStatiscticsCallback(isCorrect)(initialUserWord),
-                    getUpdateStatiscticsCallback(isCorrect),
-                );
+                onCreateUserWord(wordId, isCorrect);
             }
         }
     };
@@ -150,12 +127,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
     setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
-    onCreateUserWord: (userId, token, wordId, userWord, updateStatiscticsCallback) =>
-        dispatch(
-            userWordsActions.createUserWordWithStatistics(userId, wordId, userWord, token, updateStatiscticsCallback),
-        ),
-    onUpdateUserWordStatistics: (userId, token, wordId, updateStatiscticsCallback) =>
-        dispatch(userWordsActions.onUpdateUserWordStatistics(userId, wordId, token, updateStatiscticsCallback)),
+    onCreateUserWord: (wordId, isCorrect) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'sprint')),
+    onUpdateUserWordStatistics: (wordId, isCorrect) => dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'sprint')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);

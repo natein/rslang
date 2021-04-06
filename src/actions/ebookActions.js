@@ -1,5 +1,6 @@
 import { onError } from './commonActions';
 import * as ebookService from '../api/ebookService';
+import * as statisticsActions from './statisticsActions';
 
 export const SET_WORDS = 'SET_WORDS';
 export const SET_WORDS_AVERAGE = 'SET_WORDS_AVERAGE';
@@ -9,6 +10,30 @@ export const DELETE_WORD_USER = 'DELETE_WORD_USER';
 export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
 export const SET_SETTINGS = 'SET_SETTINGS';
+
+const GET_INITIAL_USER_WORD = (gameName) => ({ optional: { game: true, [gameName]: { right: 0, wrong: 0 } } });
+
+const UPDATE_WORD_STATISTICS = (userWord, isCorrect, gameName) => {
+  let wordStatistics;
+  if(userWord?.optional && userWord.optional[gameName]) {
+    wordStatistics = userWord.optional[gameName];
+  } else {
+    wordStatistics = { right: 0, wrong: 0 };
+  }
+
+  if (isCorrect) {
+    wordStatistics.right += 1;
+  } else {
+    wordStatistics.wrong += 1;
+  }
+
+  if (!userWord.optional) {
+      userWord.optional = {};
+  }
+
+  userWord.optional[gameName] = wordStatistics;
+  return userWord;
+};
 
 export const loadWords = (group, page) => (dispatch) => {
   dispatch(setLoader(true));
@@ -83,10 +108,11 @@ export const loadUserDeleteWordAgregateInGroup = (userId, token, group = 0) => (
     .finally(() => dispatch(setLoader(false)));
 }
 
-export const onUpdateUserWordStatistics = (userId, wordId, token, updateStatisticsCallback) => (dispatch) => {
+export const onUpdateUserWordStatistics = (wordId, isCorrect, gameName) => (dispatch, getState) => {
+  const {userId, token} = getState().user;
   return ebookService
       .getUserWord(userId, wordId, token)
-      .then((userWord) => updateStatisticsCallback(userWord))
+      .then((userWord) => UPDATE_WORD_STATISTICS(userWord, isCorrect, gameName))
       .then((userWord) =>
           ebookService
               .updateUserWord(userId, wordId, userWord, userWord, token)
@@ -95,19 +121,22 @@ export const onUpdateUserWordStatistics = (userId, wordId, token, updateStatisti
               .catch((err) => {
                   dispatch(onError(err.response ? err.response.data : err.message));
               }),
-      );
+      ).then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName)));
 };
 
-export const createUserWordWithStatistics = (userId, wordId, userWord, token, updateStatisticsCallback) => (
-  dispatch,
+export const createUserWordWithStatistics = (wordId, isCorrect, gameName) => (
+  dispatch, getState
 ) => {
+  const {userId, token} = getState().user;
+  const userWord = UPDATE_WORD_STATISTICS(GET_INITIAL_USER_WORD(gameName), isCorrect, gameName);
   return ebookService
       .createUserWord(userId, wordId, userWord, token)
       .then((data) => dispatch(setWordUser(data)))
       .then(() => dispatch(onError()))
+      .then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName)))
       .catch((err) => {
           if (err.response?.status === 417) {
-              dispatch(onUpdateUserWordStatistics(userId, wordId, token, updateStatisticsCallback));
+              dispatch(onUpdateUserWordStatistics(wordId, isCorrect, gameName));
           } else {
               dispatch(onError(err.response ? err.response.data : err.message));
           }
