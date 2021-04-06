@@ -102,14 +102,6 @@ const WordsNumber = styled(Box)`
     color: yellow;
 `;
 
-// Done
-
-// Active
-// TODO: Запустить игру со словами из учебника
-
-// Refactor
-// TODO: Не забывать проверить адаптивность
-
 function ChooseWords({
     onFinish = (f) => f,
     setLostLife = (f) => f,
