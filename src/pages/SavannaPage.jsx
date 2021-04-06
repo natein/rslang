@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Savanna from '../components/SavannaGame/Savanna/Savanna';
@@ -9,6 +10,7 @@ import LoadingPage from '../components/LoadingPage';
 import { onFullScreen } from '../helpers';
 import styled from 'styled-components';
 import * as userWordsActions from '../actions/ebookActions';
+import { useRouteMatch } from 'react-router';
 
 const SavannaWrapper = styled(Box)`
     display: flex;
@@ -34,7 +36,14 @@ function SavannaPage({
     error,
     userId,
     token,
+    wordsList,
 }) {
+    const match = useRouteMatch({
+        path: '/games/savanna/new',
+        strict: true,
+        sensitive: true,
+    });
+
     const gameRef = useRef();
     const [difficultyLvl, setDifficultyLvl] = useState(2);
 
@@ -43,7 +52,9 @@ function SavannaPage({
     }
 
     useEffect(() => {
-        loadSavannaWords(difficultyLvl);
+        if (match || !wordsList.length) {
+            loadSavannaWords(difficultyLvl);
+        }
     }, [difficultyLvl, loadSavannaWords]);
 
     const onAddWordToDictionary = (wordId, word, isCorrect) => {
@@ -65,6 +76,7 @@ function SavannaPage({
                     setDifficulty={setDifficultyHandle}
                     onAddWordToDictionary={onAddWordToDictionary}
                     difficultyLvl={difficultyLvl}
+                    match={match}
                 />
             )}
 
@@ -81,6 +93,7 @@ const mapStateToProps = (state) => {
         error: state.common.error,
         userId: state.user.id,
         token: state.user.token,
+        wordsList: state.game.wordsList,
     };
 };
 

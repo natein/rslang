@@ -105,14 +105,21 @@ const WordsNumber = styled(Box)`
 // Done
 
 // Active
-// TODO: Добавлять слова из игры в словарь
-// TODO: Если слово из двух слов то плывет верстка
 // TODO: Запустить игру со словами из учебника
 
 // Refactor
-// TODO: Не забыть проверить адаптивность
+// TODO: Не забывать проверить адаптивность
 
-function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamewords, statistics }) {
+function ChooseWords({
+    onFinish = (f) => f,
+    setLostLife = (f) => f,
+    onAddWordToDictionary = (f) => f,
+    sound,
+    gamewords,
+    statistics,
+    match,
+    wordsList,
+}) {
     const REFRESH = 2000;
     const answerInnerRef = useRef();
     const wordsOuterRef = useRef();
@@ -139,7 +146,8 @@ function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamew
     }, []);
 
     const updateWords = useCallback(() => {
-        const fourWords = takeFourWords(gamewords);
+        const isNewWords = match ? gamewords : wordsList;
+        const fourWords = takeFourWords(isNewWords);
         setInGameWords(fourWords);
         const answerWord = fourWords[parseInt(shuffle(3))];
         setAnswer(answerWord?.word);
@@ -196,6 +204,10 @@ function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamew
                         setCorrect(0);
                         updateWords();
                         updateLifeCounter();
+
+                        const wordId = inGameWords[answerIdx].id || inGameWords[answerIdx]._id;
+                        onAddWordToDictionary(wordId, inGameWords[answerIdx], false);
+
                         onFinish(counter === GAMES.lifes);
                     }, REFRESH);
                 }
@@ -239,8 +251,15 @@ function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamew
         }
 
         const checkWord = inGameWords[wordIdx.innerText].word;
+        const word = inGameWords[wordIdx.innerText];
 
-        if (checkWord === answer) {
+        const isCorrectClick = checkWord === answer;
+
+        const wordId = word.id || word._id;
+
+        onAddWordToDictionary(wordId, word, isCorrectClick);
+
+        if (isCorrectClick) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);
             statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: true });
             if (sound) {
@@ -284,7 +303,14 @@ function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamew
 }
 
 ChooseWords.propTypes = {
+    onFinish: PropTypes.func,
+    setLostLife: PropTypes.func,
+    onAddWordToDictionary: PropTypes.func,
+    sound: PropTypes.bool,
     gamewords: PropTypes.array,
+    statistics: PropTypes.object,
+    match: PropTypes.bool,
+    wordsList: PropTypes.array,
 };
 
 export default ChooseWords;

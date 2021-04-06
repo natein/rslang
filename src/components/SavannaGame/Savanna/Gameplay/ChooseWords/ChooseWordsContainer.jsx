@@ -6,9 +6,12 @@ import { setLostLife } from '../../../../../actions/gameActions';
 function ChooseWordsContainer({
     onFinish = (f) => f,
     setLostLife = (f) => f,
+    onAddWordToDictionary = (f) => f,
     sound,
     gamewords,
     statistics,
+    match,
+    wordsList,
 }) {
     return (
         <>
@@ -17,7 +20,10 @@ function ChooseWordsContainer({
                 onFinish={onFinish}
                 setLostLife={setLostLife}
                 gamewords={gamewords}
+                wordsList={wordsList}
                 statistics={statistics}
+                onAddWordToDictionary={onAddWordToDictionary}
+                match={match}
             />
         </>
     );
@@ -26,14 +32,17 @@ function ChooseWordsContainer({
 ChooseWordsContainer.propTypes = {
     onFinish: PropTypes.func,
     setLostLife: PropTypes.func,
+    onAddWordToDictionary: PropTypes.func,
     sound: PropTypes.bool,
     gamewords: PropTypes.array,
     statistics: PropTypes.object,
+    match: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
     return {
         gamewords: state.game.savanna.gamewords,
+        wordsList: state.game.wordsList,
     };
 };
 

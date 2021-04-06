@@ -146,7 +146,6 @@ function Dashboard() {
                 <Divider />
                 <List>{mainListItems}</List>
                 <Divider />
-                <List>{secondaryListItems}</List>
             </Drawer>
             <Box
                 component="main"
