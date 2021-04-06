@@ -10,7 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import { connect } from 'react-redux';
-import { onSetReview } from '../../actions/commonActions';
+import { onSetReview } from '../../actions/reviewActions';
+import { putReview } from '../../api/reviewService';
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -46,7 +47,7 @@ const CssTextField = withStyles({
     },
 })(TextField);
 
-function FormDialog({ setReview, user }) {
+function FormDialog({ user }) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [val, setVal] = React.useState(false);
@@ -68,12 +69,12 @@ function FormDialog({ setReview, user }) {
 
     const handleLog = () => {
         if (value.length > 10) {
-            setReview({
+            putReview({
                 review: value,
                 date: new Date().toLocaleDateString(),
                 name: user.name,
                 avatar: user.avatar,
-            });
+            })
             handleClose();
         }
         if (value.length <= 10) {

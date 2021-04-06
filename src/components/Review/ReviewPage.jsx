@@ -6,6 +6,8 @@ import LastReview from './LastReview';
 import FormDialog from './FormDialog';
 import LoadingPage from '../LoadingPage';
 
+import { loadReview } from '../../actions/reviewActions';
+
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
@@ -14,13 +16,18 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const ReviewPage = ({ loader }) => {
+const ReviewPage = ({ loader, review, onLoadReview }) => {
     const classes = useStyles();
+
+    React.useEffect(() => {
+        onLoadReview();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className={classes.reviewCont}>
             {loader && <LoadingPage />}
-            {!loader && <LastReview />}
+            {!loader && <LastReview review={review} />}
             <FormDialog />
         </div>
     );
@@ -28,6 +35,11 @@ const ReviewPage = ({ loader }) => {
 
 const mapStateToProps = (state) => ({
     loader: state.common.loader,
+    review: state.common.review,
 });
 
-export default connect(mapStateToProps)(ReviewPage);
+const mapDispatchToProps = (dispatch) => ({
+    onLoadReview: () => dispatch(loadReview()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewPage);

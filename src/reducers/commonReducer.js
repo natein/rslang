@@ -10,7 +10,7 @@ const commonReducer = (state = initialState, action) => {
             return { ...state, error: action.payload };
         }
         case 'SET_REVIEW': {
-            return { ...state, review: [...state.review, ...action.payload] };
+            return { ...state, review: action.payload };
         }
         case 'SET_LOADER_REVIEW':
             return { ...state, loader: action.payload }
