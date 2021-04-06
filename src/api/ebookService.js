@@ -18,6 +18,30 @@ export const getUserWord = (userId, wordId, token) => {
 };
 
 
+export const getGroupWords = (group, pages = 5) => {
+  const requests = [];
+  const data = [];
+
+  for (let i = pages; i--;) {
+    const url = `${baseUrl}/words?page=${i}&group=${group - 1}`;
+    requests.push(axios.get(url))
+  }
+
+  return axios
+    .all([...requests])
+    .then(
+      axios.spread((...responses) => {
+        for (let i = pages; i--;) {
+          data.push(...responses[i].data)
+        }
+        return data;
+      })
+    )
+    .catch(error => {
+      console.error(error.response);
+    });
+};
+
 export const createUserWord = (userId, wordId, word, token) => {
   const url = `${baseUrl}/users/${userId}/words/${wordId}`;
   return axios.post(url, word, {

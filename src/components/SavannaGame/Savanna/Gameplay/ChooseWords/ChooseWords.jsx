@@ -3,10 +3,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Box } from '@material-ui/core/';
 import PropTypes from 'prop-types';
-import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
+import { findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
 import { GAMES } from '../../../../../constants/index';
+import { takeFourWords, shuffle } from '../../../../../helpers/index';
+import Zoom from '@material-ui/core/Zoom';
 
 const ChooseWordsWrapper = styled(Box)`
     position: absolute;
@@ -101,35 +103,26 @@ const WordsNumber = styled(Box)`
 `;
 
 // Done
-// !TODO: После завершения игры показать окно статистики
-// !TODO: Иногда не показывает весь список слов
 
 // Active
-// TODO: Если слова не меняются значит ошибка в запросе
-// TODO: Добавить анимацию появления новых слов
 // TODO: Добавлять слова из игры в словарь
+// TODO: Если слово из двух слов то плывет верстка
+// TODO: Запустить игру со словами из учебника
 
 // Refactor
 // TODO: Не забыть проверить адаптивность
-// TODO: Если слово из двух слов то плывет верстка
 
-function ChooseWords({
-    onFinish = (f) => f,
-    loadSavannaWords = (f) => f,
-    setLostLife = (f) => f,
-    sound,
-    gamewords,
-    statistics,
-    answer,
-    difficultyLvl,
-}) {
-    const refreshTimer = 2000;
+function ChooseWords({ onFinish = (f) => f, setLostLife = (f) => f, sound, gamewords, statistics }) {
+    const REFRESH = 2000;
     const answerInnerRef = useRef();
     const wordsOuterRef = useRef();
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
     const [disabled, setDisabled] = useState(false);
+
+    const [answer, setAnswer] = useState('');
+    const [inGameWords, setInGameWords] = useState([]);
 
     const [correct, setCorrect] = useState(0);
     const [wrong, setWrong] = useState(0);
@@ -145,11 +138,21 @@ function ChooseWords({
         setIsStart(false);
     }, []);
 
+    const updateWords = useCallback(() => {
+        const fourWords = takeFourWords(gamewords);
+        setInGameWords(fourWords);
+        const answerWord = fourWords[parseInt(shuffle(3))];
+        setAnswer(answerWord?.word);
+    }, []);
+
+    const updateLifeCounter = useCallback(() => {
+        setCounter(counter + 1);
+        setLostLife(counter);
+    }, [counter]);
+
     useEffect(() => {
-        // Becouse preloadSavannaTimer async
-        setTimeout(() => {
-            setIsFalling(true);
-        }, 0);
+        setIsFalling(true);
+        updateWords();
     }, []);
 
     useEffect(() => {
@@ -184,34 +187,32 @@ function ChooseWords({
             function answerInnerTransitionEnd() {
                 if (isFalling) {
                     animateOn();
-                    const answerIdx = findAnswerIdx(gamewords, answer);
+                    const answerIdx = findAnswerIdx(inGameWords, answer);
                     setCorrect(answerIdx + 1);
-                    statistics.current.words.push({ ...gamewords[answerIdx], correct: false });
+                    statistics.current.words.push({ ...inGameWords[answerIdx], correct: false });
 
                     setTimeout(() => {
                         animateOff();
-                        loadSavannaWords(difficultyLvl, shuffle(30));
                         setCorrect(0);
-                        setCounter(counter + 1);
-                        setLostLife(counter);
+                        updateWords();
+                        updateLifeCounter();
                         onFinish(counter === GAMES.lifes);
-                    }, refreshTimer);
+                    }, REFRESH);
                 }
             }
             current.addEventListener('transitionend', answerInnerTransitionEnd, false);
             return () => current.removeEventListener('transitionend', answerInnerTransitionEnd);
         }
     }, [
-        animateOff,
-        animateOn,
-        answer,
         answerInnerRef,
-        counter,
-        difficultyLvl,
-        gamewords,
-        loadSavannaWords,
         isFalling,
-        setLostLife,
+        animateOn,
+        inGameWords,
+        answer,
+        correct,
+        animateOff,
+        updateWords,
+        updateLifeCounter,
     ]);
 
     function checkWordHandle(el, flag = 'no') {
@@ -225,10 +226,10 @@ function ChooseWords({
         setTimeout(() => {
             setDisabled(false);
             animateOff();
+            updateWords();
             setCorrect(0);
-            loadSavannaWords(difficultyLvl, shuffle(30));
             setWrong(0);
-        }, refreshTimer);
+        }, REFRESH);
 
         // Condition for click or keypress
         if (flag === 'yes') {
@@ -237,21 +238,20 @@ function ChooseWords({
             [wordIdx] = el.currentTarget.children;
         }
 
-        const checkWord = gamewords[wordIdx.innerText].word;
+        const checkWord = inGameWords[wordIdx.innerText].word;
 
         if (checkWord === answer) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);
-            statistics.current.words.push({ ...gamewords[wordIdx.innerText], correct: true });
+            statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: true });
             if (sound) {
                 new Audio(success).play();
             }
         } else {
-            setCorrect(findAnswerIdx(gamewords, answer) + 1);
+            setCorrect(findAnswerIdx(inGameWords, answer) + 1);
             setWrong(parseFloat(wordIdx.innerText) + 1);
-            setCounter(counter + 1);
-            setLostLife(counter);
+            updateLifeCounter();
             onFinish(counter === GAMES.lifes);
-            statistics.current.words.push({ ...gamewords[wordIdx.innerText], correct: false });
+            statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: false });
 
             if (sound) {
                 new Audio(failed).play();
@@ -269,21 +269,22 @@ function ChooseWords({
             >
                 <AnswerWord>{answer}</AnswerWord>
             </AnswerQuestionInner>
-            <WordsOuter ref={wordsOuterRef}>
-                {gamewords.map((item, i) => (
-                    <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
-                        {item.wordTranslate}
-                        <WordsNumber component="span">{i}</WordsNumber>
-                    </WordsInner>
-                ))}
-            </WordsOuter>
+            <Zoom in={true}>
+                <WordsOuter ref={wordsOuterRef}>
+                    {inGameWords.map((item, i) => (
+                        <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
+                            {item.wordTranslate}
+                            <WordsNumber component="span">{i}</WordsNumber>
+                        </WordsInner>
+                    ))}
+                </WordsOuter>
+            </Zoom>
         </ChooseWordsWrapper>
     );
 }
 
 ChooseWords.propTypes = {
     gamewords: PropTypes.array,
-    answer: PropTypes.string,
 };
 
 export default ChooseWords;

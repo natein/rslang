@@ -1,13 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Savanna from '../components/SavannaGame/Savanna/Savanna';
-import { loadSavannaWords, loadWords } from '../actions/gameActions';
+import { loadSavannaWords } from '../actions/gameActions';
 import PropTypes from 'prop-types';
 import { Box, Button } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import LoadingPage from '../components/LoadingPage';
-import { onFullScreen, shuffle } from '../helpers';
+import { onFullScreen } from '../helpers';
 import styled from 'styled-components';
+import * as userWordsActions from '../actions/ebookActions';
 
 const SavannaWrapper = styled(Box)`
     display: flex;
@@ -25,7 +26,15 @@ const FullScreenOuter = styled(Button)`
     margin-top: 15px;
 `;
 
-function SavannaPage({ loadSavannaWords = (f) => f, onLoadWords = (f) => f, loader }) {
+function SavannaPage({
+    loadSavannaWords = (f) => f,
+    onCreateUserWord = (f) => f,
+    onUpdateUserWordStatistics = (f) => f,
+    loader,
+    error,
+    userId,
+    token,
+}) {
     const gameRef = useRef();
     const [difficultyLvl, setDifficultyLvl] = useState(2);
 
@@ -34,17 +43,28 @@ function SavannaPage({ loadSavannaWords = (f) => f, onLoadWords = (f) => f, load
     }
 
     useEffect(() => {
-        onLoadWords(difficultyLvl, shuffle(30));
-    }, [difficultyLvl, onLoadWords]);
+        loadSavannaWords(difficultyLvl);
+    }, [difficultyLvl, loadSavannaWords]);
+
+    const onAddWordToDictionary = (wordId, word, isCorrect) => {
+        if (userId && token) {
+            if (word.userWord) {
+                onUpdateUserWordStatistics(wordId, isCorrect);
+            } else {
+                onCreateUserWord(wordId, isCorrect);
+            }
+        }
+    };
 
     return (
         <SavannaWrapper ref={gameRef}>
             {loader && <LoadingPage />}
-            {!loader && (
+            {error && <>Ошибка: {error}</>}
+            {!loader && !error && (
                 <Savanna
                     setDifficulty={setDifficultyHandle}
+                    onAddWordToDictionary={onAddWordToDictionary}
                     difficultyLvl={difficultyLvl}
-                    loadSavannaWords={loadSavannaWords}
                 />
             )}
 
@@ -58,18 +78,28 @@ function SavannaPage({ loadSavannaWords = (f) => f, onLoadWords = (f) => f, load
 const mapStateToProps = (state) => {
     return {
         loader: state.ebook.loader,
+        error: state.common.error,
+        userId: state.user.id,
+        token: state.user.token,
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    loadSavannaWords: (group, page) => dispatch(loadSavannaWords(group, page)),
-    onLoadWords: (group, page) => dispatch(loadWords(group, page)),
+    loadSavannaWords: (group) => dispatch(loadSavannaWords(group)),
+    onCreateUserWord: (wordId, isCorrect) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'savanna')),
+    onUpdateUserWordStatistics: (wordId, isCorrect) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'savanna')),
 });
 
 SavannaPage.propTypes = {
     loadSavannaWords: PropTypes.func,
-    onLoadWords: PropTypes.func,
+    onCreateUserWord: PropTypes.func,
+    onUpdateUserWordStatistics: PropTypes.func,
     loader: PropTypes.bool,
+    error: PropTypes.string,
+    userId: PropTypes.string,
+    token: PropTypes.string,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavannaPage);

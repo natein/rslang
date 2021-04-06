@@ -4,8 +4,8 @@ import * as wordsService from '../api/ebookService';
 
 export const GAME_WORDS_LOADED = 'GAME_WORDS_LOADED';
 export const GET_SAVANNA_WORDS = 'GET_SAVANNA_WORDS';
-export const INIT_LIFE = 'INIT_LIFE';
-export const LOST_LIFE = 'LOST_LIFE';
+export const INIT_SAVANNA_LIFE = 'INIT_SAVANNA_LIFE';
+export const LOST_SAVANNA_LIFE = 'LOST_SAVANNA_LIFE';
 
 export const loadWords = (group = 0, page = 0) => (dispatch) => {
     dispatch(setLoader(true));
@@ -16,17 +16,16 @@ export const loadWords = (group = 0, page = 0) => (dispatch) => {
         .finally(() => dispatch(dispatch(setLoader(false))));
 };
 
-export const loadSavannaWords = (group = 1, page = 1) => (dispatch) => {
-    return wordsService.getWords(group, page)
+export const loadSavannaWords = (group) => (dispatch) => {
+    dispatch(setLoader(true));
+    return wordsService.getGroupWords(group)
         .then((words) => dispatch(getWordsSavanna(words)))
         .then(() => dispatch(onError()))
-        .catch((err) => {
-            dispatch(onError(err.response ? err.response.data : err.message))
-            dispatch(getWordsSavanna())
-        })
+        .catch((err) => { dispatch(onError(err.response ? err.response.data : err.message))})
+        .finally(() => dispatch(dispatch(setLoader(false))));
 };
 
 export const onWordsLoaded = (words) => ({ type: GAME_WORDS_LOADED, payload: words })
 export const getWordsSavanna = (words) => ({ type: GET_SAVANNA_WORDS, payload: words })
-export const initLife = () => ({ type: INIT_LIFE, })
-export const setLostLife = (id) => ({ type: LOST_LIFE, payload: id })
+export const initLife = () => ({ type: INIT_SAVANNA_LIFE, })
+export const setLostLife = (id) => ({ type: LOST_SAVANNA_LIFE, payload: id })
