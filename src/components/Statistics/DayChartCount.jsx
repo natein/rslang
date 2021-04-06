@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Chart, ArgumentAxis, ValueAxis, AreaSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
+import { Chart, ArgumentAxis, ValueAxis, AreaSeries, Title, Legend, Tooltip } from '@devexpress/dx-react-chart-material-ui';
 
-import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
+import { ArgumentScale, Animation, EventTracker } from '@devexpress/dx-react-chart';
 import { scalePoint } from 'd3-scale';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -92,6 +92,8 @@ export default class DayChartCount extends React.PureComponent {
                         labelComponent={LegendLabel}
                     />
                     <Title text="Общая дневная статистика" />
+                    <EventTracker />
+                    <Tooltip />
                 </Chart>
             </Paper>
         );
