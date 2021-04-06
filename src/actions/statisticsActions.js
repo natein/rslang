@@ -1,4 +1,5 @@
 import * as statisticsService from '../api/statisticsService';
+import * as ebookActions from './ebookActions';
 
 export const GET_USER_STATISTICS = 'GET_USER_STATISTICS';
 export const UPDATE_USER_STATISTICS = 'UPDATE_USER_STATISTICS';
@@ -48,10 +49,14 @@ const updateStatistics = (statistics, isCorrect, game) => {
 
 export const getUserStatistics = () => (dispatch, getState) => {
     const userInfo = getState().user;
+    dispatch(ebookActions.setLoader(true));
     return statisticsService
         .getUserStatistics(userInfo.userId, userInfo.token)
         .then((data) => dispatch(setUserStatistics(data)))
-        .catch((error) => {});
+        .catch((error) => {
+            console.log(error)
+        })
+        .finally(() => dispatch(ebookActions.setLoader(false)));
 };
 
 export const updateUserStatistics = (isCorrect, game) => (dispatch, getState) => {
