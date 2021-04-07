@@ -140,11 +140,13 @@ function ChooseWords({
     const updateWords = useCallback(() => {
         const isNewWords = match ? gamewords : wordsList;
         const fourWords = takeFourWords(isNewWords);
-
         setInGameWords(fourWords);
+
+        console.log(inGameWords);
+
         const answerWord = fourWords[parseInt(shuffle(3))];
         setAnswer(answerWord?.word);
-    }, []);
+    }, [inGameWords]);
 
     const updateLifeCounter = useCallback(() => {
         setCounter(counter + 1);
@@ -280,7 +282,12 @@ function ChooseWords({
             <Zoom in={true}>
                 <WordsOuter ref={wordsOuterRef}>
                     {inGameWords.map((item, i) => (
-                        <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
+                        <WordsInner
+                            correct={correct}
+                            wrong={wrong}
+                            onClick={(e) => checkWordHandle(e)}
+                            key={item.id || item._id}
+                        >
                             {item.wordTranslate}
                             <WordsNumber component="span">{i}</WordsNumber>
                         </WordsInner>
