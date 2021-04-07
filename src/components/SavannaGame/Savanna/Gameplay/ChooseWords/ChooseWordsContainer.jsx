@@ -30,9 +30,9 @@ function ChooseWordsContainer({
 }
 
 ChooseWordsContainer.propTypes = {
-    onFinish: PropTypes.func,
-    setLostLife: PropTypes.func,
-    onAddWordToDictionary: PropTypes.func,
+    onFinish: PropTypes.func.isRequired,
+    setLostLife: PropTypes.func.isRequired,
+    onAddWordToDictionary: PropTypes.func.isRequired,
     sound: PropTypes.bool,
     gamewords: PropTypes.array,
     statistics: PropTypes.object,

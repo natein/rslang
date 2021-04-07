@@ -1,6 +1,5 @@
 export function takeFourWords(arr = []) {
-    const result = arr.slice();
-    return result.splice(0, 4).sort(() => Math.random() - 0.5)
+    return arr.slice().sort(() => Math.random() - 0.5).splice(0, 4);
 }
 
 export function onFullScreen(ref) {

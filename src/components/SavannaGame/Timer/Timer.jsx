@@ -90,6 +90,4 @@ function Timer() {
     );
 }
 
-Timer.propTypes = {};
-
 export default Timer;

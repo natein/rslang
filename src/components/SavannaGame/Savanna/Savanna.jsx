@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Box, Button } from '@material-ui/core/';
@@ -143,10 +143,10 @@ function Savanna({
                                 </GameInner>
                             </>
                         ) : (
-                            <>
-                                {!timer && !finished && <Sound setSound={setSoundHandle} />}
-                                {!timer && !finished && <Life />}
-                                {!timer && !finished && (
+                            !timer && !finished && (
+                                <>
+                                    <Sound setSound={setSoundHandle} />
+                                    <Life />
                                     <ChooseWords
                                         onAddWordToDictionary={onAddWordToDictionary}
                                         statistics={statistics}
@@ -154,9 +154,9 @@ function Savanna({
                                         sound={sound}
                                         match={match}
                                     />
-                                )}
-                                {!timer && !finished && <Crystal />}
-                            </>
+                                    <Crystal />
+                                </>
+                            )
                         )}
 
                         {!timer && finished && <SavannaStatistics statistics={statistics} onNewGame={onNewGame} />}
@@ -168,12 +168,12 @@ function Savanna({
 }
 
 Savanna.propTypes = {
-    initLife: PropTypes.func,
-    setDifficulty: PropTypes.func,
+    initLife: PropTypes.func.isRequired,
+    setDifficulty: PropTypes.func.isRequired,
     difficultyLvl: PropTypes.number,
-    onAddWordToDictionary: PropTypes.func,
-    match: PropTypes.bool,
-    wordsList: PropTypes.array
+    onAddWordToDictionary: PropTypes.func.isRequired,
+    match: PropTypes.object,
+    wordsList: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {

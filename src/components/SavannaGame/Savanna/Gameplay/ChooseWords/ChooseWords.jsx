@@ -35,15 +35,15 @@ const AnswerQuestionInner = styled(Box)`
     transform: translate(0);
     transition: transform 5s ease-in;
 
-    ${({ start }) =>
-        start &&
+    ${(props) =>
+        props.$start &&
         `
     transition: all .5s ease;
     opacity: 0;
   `}
 
-    ${({ falling }) =>
-        falling &&
+    ${(props) =>
+        props.$falling &&
         `
     transform: translateY(50%);
     transition: all 5s linear;
@@ -140,6 +140,7 @@ function ChooseWords({
     const updateWords = useCallback(() => {
         const isNewWords = match ? gamewords : wordsList;
         const fourWords = takeFourWords(isNewWords);
+
         setInGameWords(fourWords);
         const answerWord = fourWords[parseInt(shuffle(3))];
         setAnswer(answerWord?.word);
@@ -166,7 +167,7 @@ function ChooseWords({
                 case '2':
                 case '3':
                     const wordEl = wordsOuterRef.current.children[parseFloat(e.key)];
-                    checkWordHandle(wordEl, 'yes');
+                    checkWordHandle(wordEl, true);
                     break;
                 default:
                     return;
@@ -219,7 +220,7 @@ function ChooseWords({
         updateLifeCounter,
     ]);
 
-    function checkWordHandle(el, flag = 'no') {
+    function checkWordHandle(el, isPress = false) {
         let wordIdx;
         animateOn();
 
@@ -236,7 +237,7 @@ function ChooseWords({
         }, REFRESH);
 
         // Condition for click or keypress
-        if (flag === 'yes') {
+        if (isPress) {
             [wordIdx] = el.children;
         } else {
             [wordIdx] = el.currentTarget.children;
@@ -273,11 +274,7 @@ function ChooseWords({
 
     return (
         <ChooseWordsWrapper>
-            <AnswerQuestionInner
-                ref={answerInnerRef}
-                start={isStart ? 'true' : null}
-                falling={isFalling ? 'true' : null}
-            >
+            <AnswerQuestionInner ref={answerInnerRef} $start={isStart} $falling={isFalling}>
                 <AnswerWord>{answer}</AnswerWord>
             </AnswerQuestionInner>
             <Zoom in={true}>
@@ -295,13 +292,13 @@ function ChooseWords({
 }
 
 ChooseWords.propTypes = {
-    onFinish: PropTypes.func,
-    setLostLife: PropTypes.func,
-    onAddWordToDictionary: PropTypes.func,
+    onFinish: PropTypes.func.isRequired,
+    setLostLife: PropTypes.func.isRequired,
+    onAddWordToDictionary: PropTypes.func.isRequired,
     sound: PropTypes.bool,
     gamewords: PropTypes.array,
     statistics: PropTypes.object,
-    match: PropTypes.bool,
+    match: PropTypes.object,
     wordsList: PropTypes.array,
 };
 

@@ -106,13 +106,14 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 SavannaPage.propTypes = {
-    loadSavannaWords: PropTypes.func,
-    onCreateUserWord: PropTypes.func,
-    onUpdateUserWordStatistics: PropTypes.func,
+    loadSavannaWords: PropTypes.func.isRequired,
+    onCreateUserWord: PropTypes.func.isRequired,
+    onUpdateUserWordStatistics: PropTypes.func.isRequired,
     loader: PropTypes.bool,
     error: PropTypes.string,
     userId: PropTypes.string,
     token: PropTypes.string,
+    match: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavannaPage);
