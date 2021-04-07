@@ -96,32 +96,23 @@ export const GAMES = {
       code: 'savanna',
       name: 'Саванна',
       description: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
-      coverImage: '',
       backgroundImage: SavannaBackground,
-      component: ''
+      minWords: 4
     },
-
     {
       code: 'audio',
       name: 'Аудиовызов',
-      coverImage: '',
       backgroundImage: audio,
-      component: ''
     },
-
     {
       code: 'sprint',
       name: 'Спринт',
-      coverImage: '',
       backgroundImage: sprintGame,
-      component: ''
     },
     {
       code: 'our-game',
       name: 'Своя игра',
-      coverImage: '',
       backgroundImage: ourGame,
-      component: ''
     }
   ]
 }

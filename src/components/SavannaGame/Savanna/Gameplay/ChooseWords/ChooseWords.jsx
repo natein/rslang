@@ -7,8 +7,10 @@ import { findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
 import { GAMES } from '../../../../../constants/index';
-import { takeFourWords, shuffle } from '../../../../../helpers/index';
+import { takeWords } from '../../../../../helpers/index';
 import Zoom from '@material-ui/core/Zoom';
+
+const [game] = GAMES.list;
 
 const ChooseWordsWrapper = styled(Box)`
     position: absolute;
@@ -139,9 +141,9 @@ function ChooseWords({
 
     const updateWords = useCallback(() => {
         const isNewWords = match ? gamewords : wordsList;
-        const fourWords = takeFourWords(isNewWords);
+        const fourWords = takeWords(isNewWords);
         setInGameWords(fourWords);
-        const answerWord = fourWords[parseInt(shuffle(3))];
+        const [answerWord] = takeWords(fourWords);
         setAnswer(answerWord?.word);
     }, [inGameWords, answer]);
 
@@ -197,10 +199,10 @@ function ChooseWords({
                         updateWords();
                         updateLifeCounter();
 
-                        const wordId = inGameWords[answerIdx].id || inGameWords[answerIdx]._id;
-                        onAddWordToDictionary(wordId, inGameWords[answerIdx], false);
+                        const word = inGameWords[answerIdx];
+                        onAddWordToDictionary(word.id, word, false);
 
-                        onFinish(counter === GAMES.lifes);
+                        onFinish(counter === GAMES.lifes || inGameWords.length < game.minWords );
                     }, REFRESH);
                 }
             }
@@ -247,9 +249,7 @@ function ChooseWords({
 
         const isCorrectClick = checkWord === answer;
 
-        const wordId = word.id || word._id;
-
-        onAddWordToDictionary(wordId, word, isCorrectClick);
+        onAddWordToDictionary(word.id, word, isCorrectClick);
 
         if (isCorrectClick) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);
@@ -261,7 +261,7 @@ function ChooseWords({
             setCorrect(findAnswerIdx(inGameWords, answer) + 1);
             setWrong(parseFloat(wordIdx.innerText) + 1);
             updateLifeCounter();
-            onFinish(counter === GAMES.lifes);
+            onFinish(counter === GAMES.lifes || inGameWords.length < game.minWords);
             statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: false });
 
             if (sound) {
@@ -283,7 +283,7 @@ function ChooseWords({
                             correct={correct}
                             wrong={wrong}
                             onClick={(e) => checkWordHandle(e)}
-                            key={item.id || item._id}
+                            key={item.id}
                         >
                             {item.wordTranslate}
                             <WordsNumber component="span">{i}</WordsNumber>
