@@ -6,7 +6,7 @@ function EbookPage({ match: { params } }) {
 
   return (
     <div>
-      <h1>Учебник</h1>
+      <h1 style={{ color: 'white' }}>Учебник</h1>
       <Ebook group={group} page={page} />
     </div>
   );

@@ -15,6 +15,23 @@ import { putReview } from '../../api/reviewService';
 
 const useStyles = makeStyles(() => ({
     button: {
+        color: 'white',
+        minWidth: 150,
+        margin: '1rem',
+        boxShadow: '0px 2px 0px white',
+        border: '1px double white',
+        borderRadius: '15px 15px 15px 15px',
+        fontFamily: 'Segoe script, cursive',
+        '&:focus': {
+            boxShadow: '0px 2px 0px white',
+        },
+        '&:hover': {
+            color: 'white',
+            border: '1px double white',
+            boxShadow: '0 5px 5px white',
+        },
+    },
+    buttonDialog: {
         color: '#0D7E94',
         minWidth: 150,
         margin: '1rem',
@@ -113,10 +130,10 @@ function FormDialog({ user }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary" className={classes.button}>
+                    <Button onClick={handleClose} color="primary" className={classes.buttonDialog}>
                         Отмена
                     </Button>
-                    <Button onClick={handleLog} color="primary" className={classes.button}>
+                    <Button onClick={handleLog} color="primary" className={classes.buttonDialog}>
                         Отправить
                     </Button>
                 </DialogActions>

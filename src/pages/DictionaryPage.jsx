@@ -9,7 +9,7 @@ function DictionaryPage({ match: { params } }) {
 
   return (
     <div>
-      <h1>Словарь</h1>
+      <h1 style={{ color: 'white' }}>Словарь</h1>
       {user.token && <Dictionary type={type} page={page} />}
       {!user.token && <div>Необходимо авторизоваться</div>}
     </div>

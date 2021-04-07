@@ -7,12 +7,10 @@ import Button from './Button';
 import ModalInfo from './ModalAbout';
 import Typography from './Typography';
 import ProductHeroLayout from './ProductHeroLayout';
-import backgroundImage from '../../assets/main_bg.jpg';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     background: {
-        backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#7fc7d9',
     },
     button: {
@@ -61,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
+        // padding: theme.spacing(2, 4, 3),
     },
 }));
 
@@ -84,8 +82,6 @@ function HomePage() {
 
     return (
         <ProductHeroLayout backgroundClassName={classes.background}>
-            {/* Increase the network loading priority of the background image. */}
-            <img style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
             <Typography color="inherit" align="center" variant="h2" marked="center" className={classes.title}>
                 RSLang
             </Typography>

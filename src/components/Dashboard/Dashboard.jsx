@@ -28,6 +28,8 @@ import SavannaPage from '../../pages/SavannaPage';
 import ReviewPage from '../Review';
 import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
+import backgroundImage from '../../assets/main_page.jpg';
+
 
 const drawerWidth = 240;
 
@@ -36,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24, // keep right padding when drawer closed
         justifyContent: 'space-between',
         backgroundColor: 'tomato',
+        opacity: '0.9',
     },
     toolbarIcon: {
         display: 'flex',
@@ -155,10 +158,13 @@ function Dashboard() {
                     flexGrow: 1,
                     height: '100vh',
                     overflow: 'auto',
+                    
                 }}
                 style={{
+                    backgroundImage: `url(${backgroundImage})`,
                     margin: '4rem auto 0',
                     width: '100%',
+                    backgroundSize: '100% 100%',
                 }}
                 className={classes.main}
             >
