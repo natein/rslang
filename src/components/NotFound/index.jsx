@@ -26,7 +26,7 @@ function NotFound({ error }) {
         <NotFoundWrapper>
             <ErrorOutlineIcon color='secondary' fontSize='large'/>
             <Container component="h1">Что-то пошло не так. Проверьте url запроса</Container>
-            <Container component="span" color>
+            <Container component="span" color='secondary'>
                 {error}
             </Container>
             <BtnWrapper>
