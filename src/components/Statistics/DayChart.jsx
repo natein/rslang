@@ -1,36 +1,54 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Chart, ArgumentAxis, ValueAxis, BarSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
+import {
+    Chart,
+    ArgumentAxis,
+    ValueAxis,
+    BarSeries,
+    Title,
+    Legend,
+    Tooltip,
+} from '@devexpress/dx-react-chart-material-ui';
 import { withStyles } from '@material-ui/core/styles';
-import { Stack, Animation } from '@devexpress/dx-react-chart';
+import { Stack, Animation, EventTracker } from '@devexpress/dx-react-chart';
 
-// import { olimpicMedals as data } from '../../../demo-data/data-vizualization';
-const data = [
+const INITIAL_DATA = [
     {
-        country: 'Саванна',
-        gold: 36,
-        silver: 38,
-        bronze: 36,
+        gameName: 'Саванна',
+        learnedWords: 0,
+        correctAnswers: 0,
+        longestSeries: 0,
     },
     {
-        country: 'Аудиовызов',
-        gold: 120,
-        silver: 21,
-        bronze: 28,
+        gameName: 'Аудиовызов',
+        learnedWords: 0,
+        correctAnswers: 0,
+        longestSeries: 0,
     },
     {
-        country: 'Спринт',
-        gold: 23,
-        silver: 21,
-        bronze: 28,
+        gameName: 'Спринт',
+        learnedWords: 0,
+        correctAnswers: 0,
+        longestSeries: 0,
     },
     {
-        country: 'Своя игра',
-        gold: 19,
-        silver: 13,
-        bronze: 15,
+        gameName: 'Своя игра',
+        learnedWords: 0,
+        correctAnswers: 0,
+        longestSeries: 0,
     },
 ];
+
+const gamesMapping = {
+    sprint: 'Спринт',
+    savanna: 'Саванна',
+    audio: 'Аудиовызов',
+    own: 'Своя игра'
+};
+
+const getGameName = (gameCode) => {
+    return gamesMapping[gameCode] || gamesMapping.own;
+}
 
 const legendStyles = () => ({
     root: {
@@ -50,15 +68,35 @@ const legendLabelStyles = () => ({
 });
 const legendLabelBase = ({ classes, ...restProps }) => <Legend.Label className={classes.label} {...restProps} />;
 const Label = withStyles(legendLabelStyles, { name: 'LegendLabel' })(legendLabelBase);
-
 export default class DayChart extends React.PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            data,
+            data: this.recalculateStatistics(props.data) || INITIAL_DATA,
         };
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data) {
+            const data = this.recalculateStatistics(this.props.data);
+            this.setState({ data });
+        }
+    }
+
+    recalculateStatistics = (data) => {
+        if (data) {
+            const today = new Date().toLocaleDateString('ru-RU');
+            const result = Object.getOwnPropertyNames(data)
+                .filter((game) => data[game].lastChanged === today)
+                .map((game) => {
+                    const stats = data[game];
+                    stats.gameName = getGameName(game);
+                    return stats
+                })
+                return result;
+        }
+    };
 
     render() {
         const { data: chartData } = this.state;
@@ -69,18 +107,30 @@ export default class DayChart extends React.PureComponent {
                     <ArgumentAxis />
                     <ValueAxis />
 
-                    <BarSeries name="Изученные слова" valueField="gold" argumentField="country" color="#ffd700" />
-                    <BarSeries name="Правильные ответы" valueField="silver" argumentField="country" color="#c0c0c0" />
+                    <BarSeries
+                        name="Изученные слова"
+                        valueField="learnedWords"
+                        argumentField="gameName"
+                        color="#ffd700"
+                    />
+                    <BarSeries
+                        name="Правильные ответы"
+                        valueField="correctAnswers"
+                        argumentField="gameName"
+                        color="#c0c0c0"
+                    />
                     <BarSeries
                         name="Серия правильных ответов"
-                        valueField="bronze"
-                        argumentField="country"
+                        valueField="longestSeriesOfCorrectAnswers"
+                        argumentField="gameName"
                         color="#cd7f32"
                     />
                     <Animation />
                     <Legend position="bottom" rootComponent={Root} labelComponent={Label} />
                     <Title text={`Дневная статистика на ${new Date().toLocaleDateString()}`} />
                     <Stack />
+                    <EventTracker />
+                    <Tooltip />
                 </Chart>
             </Paper>
         );

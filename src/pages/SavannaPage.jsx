@@ -1,16 +1,19 @@
-import { useEffect, useRef } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import Savanna from '../components/SavannaGame/Savanna/index';
-import { loadWords, preloadSavannaTimer } from '../actions/gameActions';
+import Savanna from '../components/SavannaGame/Savanna/Savanna';
+import { loadSavannaWords } from '../actions/gameActions';
 import PropTypes from 'prop-types';
 import { Box, Button } from '@material-ui/core';
 import FullscreenIcon from '@material-ui/icons/Fullscreen';
 import LoadingPage from '../components/LoadingPage';
 import { onFullScreen } from '../helpers';
 import styled from 'styled-components';
+import * as userWordsActions from '../actions/ebookActions';
+import { useRouteMatch } from 'react-router';
 
 const SavannaWrapper = styled(Box)`
-    display:flex;
+    display: flex;
 `;
 
 const FullScreenOuter = styled(Button)`
@@ -25,23 +28,59 @@ const FullScreenOuter = styled(Button)`
     margin-top: 15px;
 `;
 
-function SavannaPage({ onLoadWords = (f) => f, preloadTimer = (f) => f, timer, loader }) {
+function SavannaPage({
+    loadSavannaWords = (f) => f,
+    onCreateUserWord = (f) => f,
+    onUpdateUserWordStatistics = (f) => f,
+    loader,
+    error,
+    userId,
+    token,
+    wordsList,
+}) {
+    const match = useRouteMatch({
+        path: '/games/savanna/new',
+        strict: true,
+        sensitive: true,
+    });
+
     const gameRef = useRef();
+    const [difficultyLvl, setDifficultyLvl] = useState(2);
+
+    function setDifficultyHandle({ target }) {
+        setDifficultyLvl(target.value);
+    }
 
     useEffect(() => {
-        onLoadWords();
-    }, [onLoadWords]);
+        if (match || !wordsList.length) {
+            loadSavannaWords(difficultyLvl);
+        }
+    }, [difficultyLvl, loadSavannaWords]);
 
-    function onFullScreenHandle() {
-        onFullScreen(gameRef);
-    }
+    const onAddWordToDictionary = (wordId, word, isCorrect) => {
+        if (userId && token) {
+            if (word.userWord) {
+                onUpdateUserWordStatistics(wordId, isCorrect);
+            } else {
+                onCreateUserWord(wordId, isCorrect);
+            }
+        }
+    };
 
     return (
         <SavannaWrapper ref={gameRef}>
             {loader && <LoadingPage />}
-            {!loader && <Savanna preloadTimer={preloadTimer} onLoadWords={onLoadWords} timer={timer} />}
+            {error && <>Ошибка: {error}</>}
+            {!loader && !error && (
+                <Savanna
+                    setDifficulty={setDifficultyHandle}
+                    onAddWordToDictionary={onAddWordToDictionary}
+                    difficultyLvl={difficultyLvl}
+                    match={match}
+                />
+            )}
 
-            <FullScreenOuter onClick={() => onFullScreenHandle()}>
+            <FullScreenOuter onClick={() => onFullScreen(gameRef)}>
                 <FullscreenIcon fontSize="large" />
             </FullScreenOuter>
         </SavannaWrapper>
@@ -50,21 +89,31 @@ function SavannaPage({ onLoadWords = (f) => f, preloadTimer = (f) => f, timer, l
 
 const mapStateToProps = (state) => {
     return {
-        timer: state.game.timer,
         loader: state.ebook.loader,
+        error: state.common.error,
+        userId: state.user.id,
+        token: state.user.token,
+        wordsList: state.game.wordsList,
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onLoadWords: (group, page) => dispatch(loadWords(group, page)),
-    preloadTimer: (group, page) => dispatch(preloadSavannaTimer(group, page)),
+    loadSavannaWords: (group) => dispatch(loadSavannaWords(group)),
+    onCreateUserWord: (wordId, isCorrect) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'savanna')),
+    onUpdateUserWordStatistics: (wordId, isCorrect) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'savanna')),
 });
 
 SavannaPage.propTypes = {
-    onLoadWords: PropTypes.func,
-    preloadTimer: PropTypes.func,
-    timer: PropTypes.bool,
+    loadSavannaWords: PropTypes.func.isRequired,
+    onCreateUserWord: PropTypes.func.isRequired,
+    onUpdateUserWordStatistics: PropTypes.func.isRequired,
     loader: PropTypes.bool,
+    error: PropTypes.string,
+    userId: PropTypes.string,
+    token: PropTypes.string,
+    match: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavannaPage);

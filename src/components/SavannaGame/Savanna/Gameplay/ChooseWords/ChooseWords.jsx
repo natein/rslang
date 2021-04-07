@@ -3,9 +3,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Box } from '@material-ui/core/';
 import PropTypes from 'prop-types';
-import { shuffle, findAnswerIdx } from '../../../../../helpers/index';
+import { findAnswerIdx } from '../../../../../helpers/index';
 import success from '../../../../../assets/sounds/correct.mp3';
 import failed from '../../../../../assets/sounds/wrong.mp3';
+import { GAMES } from '../../../../../constants/index';
+import { takeFourWords, shuffle } from '../../../../../helpers/index';
+import Zoom from '@material-ui/core/Zoom';
 
 const ChooseWordsWrapper = styled(Box)`
     position: absolute;
@@ -32,15 +35,15 @@ const AnswerQuestionInner = styled(Box)`
     transform: translate(0);
     transition: transform 5s ease-in;
 
-    ${({ start }) =>
-        start &&
+    ${(props) =>
+        props.$start &&
         `
     transition: all .5s ease;
     opacity: 0;
   `}
 
-    ${({ falling }) =>
-        falling &&
+    ${(props) =>
+        props.$falling &&
         `
     transform: translateY(50%);
     transition: all 5s linear;
@@ -99,34 +102,26 @@ const WordsNumber = styled(Box)`
     color: yellow;
 `;
 
-// Question: Два event listener и изменение стейта в последнем
-
-// Done
-// !TODO: Вне зависимости от правильного ответа подгружать новые слова, после каждого клика и по таймеру.
-// !TODO: Правильное слово всегда стоит на первом индексе
-// !TODO: Подсветка правильного слова если слово было выбрано не правильно или не выбрано совсем
-// !TODO: После падения показать правильное слово и отнять жизнь, так же отнять жизнь если не правильно кликнул.
-// !TODO: Выбор ответов с помощью клавиатуры
-// !TODO: Включение и отключение звуков
-// !TODO: Снизу добавить анимирующийся камень
-// !TODO: Добавить к таймеру текст что можно управлять с клавиатуры
-
-// Active
-// TODO: После завершения игры показать окно статистики
-
-// Refactor
-// TODO: Иногда не показывает весь список слов
-// TODO: Иногда не срабатывает изменение слов после падения
-// TODO: Не забыть проверить адаптивность
-// TODO: Если слово из двух слов то плывет верстка
-
-function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f) => f, getSavannaWords = (f) => f }) {
-    const refreshTimer = 2000;
+function ChooseWords({
+    onFinish = (f) => f,
+    setLostLife = (f) => f,
+    onAddWordToDictionary = (f) => f,
+    sound,
+    gamewords,
+    statistics,
+    match,
+    wordsList,
+}) {
+    const REFRESH = 2000;
     const answerInnerRef = useRef();
     const wordsOuterRef = useRef();
 
     const [isStart, setIsStart] = useState(false);
     const [isFalling, setIsFalling] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+
+    const [answer, setAnswer] = useState('');
+    const [inGameWords, setInGameWords] = useState([]);
 
     const [correct, setCorrect] = useState(0);
     const [wrong, setWrong] = useState(0);
@@ -142,11 +137,23 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
         setIsStart(false);
     }, []);
 
+    const updateWords = useCallback(() => {
+        const isNewWords = match ? gamewords : wordsList;
+        const fourWords = takeFourWords(isNewWords);
+
+        setInGameWords(fourWords);
+        const answerWord = fourWords[parseInt(shuffle(3))];
+        setAnswer(answerWord?.word);
+    }, []);
+
+    const updateLifeCounter = useCallback(() => {
+        setCounter(counter + 1);
+        setLostLife(counter);
+    }, [counter]);
+
     useEffect(() => {
-        // Becouse preloadSavannaTimer async
-        setTimeout(() => {
-            setIsFalling(true);
-        }, 0);
+        setIsFalling(true);
+        updateWords();
     }, []);
 
     useEffect(() => {
@@ -160,7 +167,7 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
                 case '2':
                 case '3':
                     const wordEl = wordsOuterRef.current.children[parseFloat(e.key)];
-                    checkWordHandle(wordEl, 'yes');
+                    checkWordHandle(wordEl, true);
                     break;
                 default:
                     return;
@@ -181,94 +188,118 @@ function ChooseWords({ sound, gamewords, answer, difficultyLvl, setLostLife = (f
             function answerInnerTransitionEnd() {
                 if (isFalling) {
                     animateOn();
-
-                    setCorrect(findAnswerIdx(gamewords, answer) + 1);
+                    const answerIdx = findAnswerIdx(inGameWords, answer);
+                    setCorrect(answerIdx + 1);
+                    statistics.current.words.push({ ...inGameWords[answerIdx], correct: false });
 
                     setTimeout(() => {
                         animateOff();
-                        getSavannaWords(difficultyLvl, shuffle(30));
                         setCorrect(0);
-                        setCounter(counter + 1);
-                        setLostLife(counter);
-                    }, refreshTimer);
+                        updateWords();
+                        updateLifeCounter();
+
+                        const wordId = inGameWords[answerIdx].id || inGameWords[answerIdx]._id;
+                        onAddWordToDictionary(wordId, inGameWords[answerIdx], false);
+
+                        onFinish(counter === GAMES.lifes);
+                    }, REFRESH);
                 }
             }
             current.addEventListener('transitionend', answerInnerTransitionEnd, false);
             return () => current.removeEventListener('transitionend', answerInnerTransitionEnd);
         }
     }, [
-        animateOff,
-        animateOn,
-        answer,
         answerInnerRef,
-        counter,
-        difficultyLvl,
-        gamewords,
-        getSavannaWords,
         isFalling,
-        setLostLife,
+        animateOn,
+        inGameWords,
+        answer,
+        correct,
+        animateOff,
+        updateWords,
+        updateLifeCounter,
     ]);
 
-    function checkWordHandle(el, flag = 'no') {
+    function checkWordHandle(el, isPress = false) {
         let wordIdx;
         animateOn();
 
+        if (disabled) {
+            return;
+        }
+
+        setTimeout(() => {
+            setDisabled(false);
+            animateOff();
+            updateWords();
+            setCorrect(0);
+            setWrong(0);
+        }, REFRESH);
+
         // Condition for click or keypress
-        if (flag === 'yes') {
+        if (isPress) {
             [wordIdx] = el.children;
         } else {
             [wordIdx] = el.currentTarget.children;
         }
 
-        const checkWord = gamewords[wordIdx.innerText].word;
+        const checkWord = inGameWords[wordIdx.innerText].word;
+        const word = inGameWords[wordIdx.innerText];
 
-        if (checkWord === answer) {
+        const isCorrectClick = checkWord === answer;
+
+        const wordId = word.id || word._id;
+
+        onAddWordToDictionary(wordId, word, isCorrectClick);
+
+        if (isCorrectClick) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);
+            statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: true });
             if (sound) {
                 new Audio(success).play();
             }
         } else {
-            setCorrect(findAnswerIdx(gamewords, answer) + 1);
+            setCorrect(findAnswerIdx(inGameWords, answer) + 1);
             setWrong(parseFloat(wordIdx.innerText) + 1);
-            setCounter(counter + 1);
-            setLostLife(counter);
+            updateLifeCounter();
+            onFinish(counter === GAMES.lifes);
+            statistics.current.words.push({ ...inGameWords[wordIdx.innerText], correct: false });
+
             if (sound) {
                 new Audio(failed).play();
             }
         }
-
-        setTimeout(() => {
-            animateOff();
-            setCorrect(0);
-            getSavannaWords(difficultyLvl, shuffle(30));
-            setWrong(0);
-        }, refreshTimer);
+        setDisabled(true);
     }
 
     return (
         <ChooseWordsWrapper>
-            <AnswerQuestionInner
-                ref={answerInnerRef}
-                start={isStart ? 'true' : null}
-                falling={isFalling ? 'true' : null}
-            >
+            <AnswerQuestionInner ref={answerInnerRef} $start={isStart} $falling={isFalling}>
                 <AnswerWord>{answer}</AnswerWord>
             </AnswerQuestionInner>
-            <WordsOuter ref={wordsOuterRef}>
-                {gamewords.map((item, i) => (
-                    <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
-                        {item.wordTranslate}
-                        <WordsNumber component="span">{i}</WordsNumber>
-                    </WordsInner>
-                ))}
-            </WordsOuter>
+            <Zoom in={true}>
+                <WordsOuter ref={wordsOuterRef}>
+                    {inGameWords.map((item, i) => (
+                        <WordsInner correct={correct} wrong={wrong} onClick={(e) => checkWordHandle(e)} key={i}>
+                            {item.wordTranslate}
+                            <WordsNumber component="span">{i}</WordsNumber>
+                        </WordsInner>
+                    ))}
+                </WordsOuter>
+            </Zoom>
         </ChooseWordsWrapper>
     );
 }
 
 ChooseWords.propTypes = {
+    onFinish: PropTypes.func.isRequired,
+    setLostLife: PropTypes.func.isRequired,
+    onAddWordToDictionary: PropTypes.func.isRequired,
+    sound: PropTypes.bool,
     gamewords: PropTypes.array,
-    answer: PropTypes.string,
+    statistics: PropTypes.object,
+    match: PropTypes.object,
+    wordsList: PropTypes.array,
 };
 
 export default ChooseWords;

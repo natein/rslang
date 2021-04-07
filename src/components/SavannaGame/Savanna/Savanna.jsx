@@ -9,10 +9,12 @@ import Sound from '../../SavannaGame/Hud/Sound';
 import Life from '../../SavannaGame/Hud/Life';
 import Crystal from '../../SavannaGame/Hud/Crystal';
 import Keynote from '../../SavannaGame/Hud/Keynote';
-
+import { useRef } from 'react';
+import SavannaStatistics from '../../AudioCallGame/AudioCallStatistics';
 import ChooseWords from './Gameplay/ChooseWords/ChooseWordsContainer';
-import { shuffle } from '../../../helpers/index';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { initLife } from '../../../actions/gameActions';
 
 const [game] = GAMES.list;
 
@@ -26,7 +28,6 @@ const Wrapper = styled(Box)`
     right: 0;
     bottom: 0;
 `;
-
 const SavannaOuter = styled(Box)`
     height: 100%;
     display: flex;
@@ -69,7 +70,6 @@ const GameDescriptionText = styled(Typography)`
   }
   `}
 `;
-
 const StartBtn = styled(Button)`
     margin: 0 15px;
     &:hover {
@@ -77,23 +77,44 @@ const StartBtn = styled(Button)`
     }
 `;
 
-function Savanna({ preloadTimer = (f) => f, timer }) {
+function Savanna({
+    initLife = (f) => f,
+    setDifficulty = (f) => f,
+    difficultyLvl,
+    onAddWordToDictionary = (f) => f,
+    match,
+    wordsList,
+}) {
+    const statistics = useRef({ words: [] });
     const [isStarted, setIsStarted] = useState(false);
-    const [difficultyLvl, setDifficultyLvl] = React.useState(2);
-    const [sound, setSound] = React.useState(true);
+    const [finished, onFinish] = useState(false);
 
-    function setSoundHandle(e) {
+    const [sound, setSound] = React.useState(true);
+    const [timer, setTimer] = React.useState(false);
+
+    const onNewGame = () => {
+        onFinish(false);
+        setIsStarted(false);
+        initLife();
+        statistics.current = { words: [] };
+    };
+
+    function setSoundHandle() {
         setSound(!sound);
     }
 
-    function setDifficultyHandle(e) {
-        const { target } = e;
-        setDifficultyLvl(target.value);
+    function setTimerHandle() {
+        setTimer(true);
+        setTimeout(() => {
+            setTimer(false);
+        }, GAMES.timeout);
     }
 
     function StartGameHandle() {
-        preloadTimer(difficultyLvl, shuffle(30));
+        initLife();
+        setTimerHandle();
         setIsStarted(true);
+        statistics.current = { words: [] };
     }
 
     return (
@@ -113,21 +134,32 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
                                     <GameDescriptionText component="p">{game.description}</GameDescriptionText>
                                 </GameInner>
                                 <GameInner>
-                                    <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficultyHandle} />
-
+                                    {(match || !wordsList.length) && (
+                                        <Difficulty difficultyLvl={difficultyLvl} setDifficulty={setDifficulty} />
+                                    )}
                                     <StartBtn onClick={() => StartGameHandle()} variant="outlined" color="inherit">
                                         {GAMES.btnLabel}
                                     </StartBtn>
                                 </GameInner>
                             </>
                         ) : (
-                            <>
-                                {!timer && <Sound setSound={setSoundHandle} />}
-                                {!timer && <Life />}
-                                {!timer && <ChooseWords sound={sound} difficultyLvl={difficultyLvl} />}
-                                {!timer && <Crystal />}
-                            </>
+                            !timer && !finished && (
+                                <>
+                                    <Sound setSound={setSoundHandle} />
+                                    <Life />
+                                    <ChooseWords
+                                        onAddWordToDictionary={onAddWordToDictionary}
+                                        statistics={statistics}
+                                        onFinish={onFinish}
+                                        sound={sound}
+                                        match={match}
+                                    />
+                                    <Crystal />
+                                </>
+                            )
                         )}
+
+                        {!timer && finished && <SavannaStatistics statistics={statistics} onNewGame={onNewGame} />}
                     </SavannaOuter>
                 </Wrapper>
             </ThemeProvider>
@@ -136,9 +168,23 @@ function Savanna({ preloadTimer = (f) => f, timer }) {
 }
 
 Savanna.propTypes = {
-    timer: PropTypes.bool,
-    onLoadWords: PropTypes.func,
-    preloadTimer: PropTypes.func,
+    initLife: PropTypes.func.isRequired,
+    setDifficulty: PropTypes.func.isRequired,
+    difficultyLvl: PropTypes.number,
+    onAddWordToDictionary: PropTypes.func.isRequired,
+    match: PropTypes.object,
+    wordsList: PropTypes.array,
 };
 
-export default Savanna;
+const mapStateToProps = (state) => {
+    return {
+        gamewords: state.game.savanna.gamewords,
+        wordsList: state.game.wordsList,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    initLife: () => dispatch(initLife()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Savanna);

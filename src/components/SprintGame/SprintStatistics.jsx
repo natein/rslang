@@ -79,7 +79,7 @@ const SprintStatistics = ({ statistics, onNewGame }) => {
     const classes = styles();
 
     const audio = useRef();
-
+    
     const onAudioPlay = useCallback((audioPath) => {
         audio.current?.pause();
         audio.current = new Audio(`${baseUrl}/${audioPath}`);

@@ -1,43 +1,19 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Chart, ArgumentAxis, ValueAxis, LineSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
+import {
+    Chart,
+    ArgumentAxis,
+    ValueAxis,
+    LineSeries,
+    Title,
+    Legend,
+    ScatterSeries,
+    Tooltip,
+} from '@devexpress/dx-react-chart-material-ui';
 import { withStyles } from '@material-ui/core/styles';
-import { Animation } from '@devexpress/dx-react-chart';
+import { Animation, EventTracker } from '@devexpress/dx-react-chart';
 
-const data = [
-    {
-        year: '19.03',
-        words: 29,
-    },
-    {
-        year: '20.03',
-        words: 32,
-    },
-    {
-        year: '21.03',
-        words: 35,
-    },
-    {
-        year: '22.03',
-        words: 32,
-    },
-    {
-        year: '23.03',
-        words: 28,
-    },
-    {
-        year: '24.03',
-        words: 27,
-    },
-    {
-        year: '25.03',
-        words: 28,
-    },
-    {
-        year: '26.03',
-        words: 26,
-    },
-];
+import { symbol, symbolCircle } from 'd3-shape';
 
 const format = () => (tick) => tick;
 const legendStyles = () => ({
@@ -82,20 +58,65 @@ const ValueLabel = (props) => {
 const titleStyles = {
     title: {
         whiteSpace: 'pre',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
     },
 };
 const TitleText = withStyles(titleStyles)(({ classes, ...props }) => (
     <Title.Text {...props} className={classes.title} />
 ));
 
+const Point = (props) => {
+    const { arg, val, color } = props;
+    return (
+        <path
+            fill={color}
+            transform={`translate(${arg} ${val})`}
+            d={symbol()
+                .size([10 ** 2])
+                .type(symbolCircle)()}
+            style={{
+                stroke: 'white',
+                strokeWidth: '1px',
+            }}
+        />
+    );
+};
+
+const LineWithPoints = (props) => {
+    return (
+        <>
+            <LineSeries.Path {...props} />
+            <ScatterSeries.Path {...props} pointComponent={Point} />
+        </>
+    );
+};
+
 class AllDayChart extends React.PureComponent {
     constructor(props) {
         super(props);
-
         this.state = {
-            data,
+            data: this.recalculateStatistics(props.data),
         };
     }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data) {
+            this.recalculateStatistics(this.props.data);
+            this.setState({ data: this.recalculateStatistics(this.props.data) });
+        }
+    }
+
+    recalculateStatistics = (data) => {
+        return Object.getOwnPropertyNames(data).sort((first, second) => {
+            const firstDate = new Date(first).getTime();
+            const secondDate = new Date(second).getTime();
+            return firstDate > secondDate ? 1 : firstDate < secondDate ? -1 : 0;
+        }).map((day) => ({
+            date: day,
+            words: data[day],
+        }));
+    };
 
     render() {
         const { data: chartData } = this.state;
@@ -104,13 +125,21 @@ class AllDayChart extends React.PureComponent {
         return (
             <Paper>
                 <Chart data={chartData} className={classes.chart}>
-                    <ArgumentAxis tickFormat={format} />
-                    <ValueAxis max={50} labelComponent={ValueLabel} />
+                    <ArgumentAxis tickFormat={format}/>
+                    <ValueAxis labelComponent={ValueLabel}/>
 
-                    <LineSeries name="Кол-во" valueField="words" argumentField="year" color="red" />
+                    <LineSeries
+                        name="Количесто изученных слов в день"
+                        valueField="words"
+                        argumentField="date"
+                        color="red"
+                        seriesComponent={LineWithPoints}
+                    />
                     <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
                     <Title text={`Изученные слова за ${'\n'}каждый день`} textComponent={TitleText} />
                     <Animation />
+                    <EventTracker />
+                    <Tooltip />
                 </Chart>
             </Paper>
         );

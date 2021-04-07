@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems } from './listItems';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
@@ -26,8 +26,7 @@ import GamesPage from '../../pages/GamesPage';
 import AudioCallPage from '../../pages/AudioCallPage';
 import SavannaPage from '../../pages/SavannaPage';
 import ReviewPage from '../Review';
-
-import Statistics from '../Statistics/Statistics';
+import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
 
 const drawerWidth = 240;
@@ -147,7 +146,6 @@ function Dashboard() {
                 <Divider />
                 <List>{mainListItems}</List>
                 <Divider />
-                <List>{secondaryListItems}</List>
             </Drawer>
             <Box
                 component="main"
@@ -172,7 +170,7 @@ function Dashboard() {
                         <Route path="/dictionary" component={DictionaryPage} exact />
                         <Route path="/dictionary/:type" component={DictionaryPage} />
                         <Route path="/games" component={GamesPage} exact />
-                        <Route path="/statistics" component={Statistics} />
+                        <Route path="/statistics" component={StatisticsPage} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
