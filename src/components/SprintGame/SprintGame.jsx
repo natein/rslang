@@ -63,6 +63,20 @@ const styles = makeStyles((theme) => ({
     button: {
         margin: theme.spacing(1),
     },
+
+    bonus: {
+        position: 'absolute',
+        top: '-5rem',
+        left: '-5rem',
+        color: '#ffb121',
+        fontWeight: 'bold',
+        transition: 'all 1s ease-in-out',
+        '&.animation': {
+            transform: 'scale(3)',
+            top: '5rem',
+            left: '5rem'
+        }
+    }
 }));
 
 const theme = createMuiTheme({
@@ -171,7 +185,6 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
             <Typography component="h1" variant="h4" gutterBottom>
                 Текущий результат {statistics.current.score}
             </Typography>
-
             <Card variant="outlined" className={classes.card}>
                 <CardContent className={classes.content}>
                     <Timer currentTime={timer} initialTime={roundTime} />
@@ -208,9 +221,34 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                     </Button>
                 </CardActions>
             </Card>
+            <PointsPerAnswerCloud className={classes.bonus} points={answerScore + bonus}/>
         </>
     );
 };
+
+const PointsPerAnswerCloud = ({points, className}) => {
+    const elementRef = useRef();
+    const [animationClass, setAnimationClass] = useState(null);
+    useEffect(() => {
+        setAnimationClass((prev) => prev !== null ? 'animation' : '');
+    }, [points]);
+
+    const onTransitionEnd = () => {
+        setAnimationClass('');
+    };
+
+    useEffect(() => {
+        const element = elementRef.current;
+        elementRef.current.addEventListener('transitionend', onTransitionEnd, false);
+        return () => element.removeEventListener('transitionend', onTransitionEnd);
+    }, []);
+
+    return (
+        <Box ref={elementRef} className={`${className} ${animationClass}`}>
+            <Typography component="h3" variant="h4">+{points}</Typography>
+        </Box>
+    );
+}
 
 const Timer = ({ currentTime, initialTime }) => {
     const classes = styles();
