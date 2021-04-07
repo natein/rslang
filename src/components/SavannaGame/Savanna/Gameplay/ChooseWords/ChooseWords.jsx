@@ -141,12 +141,9 @@ function ChooseWords({
         const isNewWords = match ? gamewords : wordsList;
         const fourWords = takeFourWords(isNewWords);
         setInGameWords(fourWords);
-
-        console.log(inGameWords);
-
         const answerWord = fourWords[parseInt(shuffle(3))];
         setAnswer(answerWord?.word);
-    }, [inGameWords]);
+    }, [inGameWords, answer]);
 
     const updateLifeCounter = useCallback(() => {
         setCounter(counter + 1);
