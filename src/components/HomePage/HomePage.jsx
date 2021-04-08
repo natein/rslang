@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     button: {
         color: 'white',
         minWidth: 150,
+        fontWeight: 900,
         margin: '1rem',
         boxShadow: '0px 2px 0px white',
         border: '1px double white',

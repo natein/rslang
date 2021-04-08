@@ -1,4 +1,4 @@
-import { Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Button, Container, makeStyles, TextField, Typography, Link } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useEffect, useRef, useState } from 'react';
 import ImageUpload from './ImageUpload';
@@ -21,8 +21,23 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginTop: theme.spacing(1),
     },
-    submit: {
+    button: {
         margin: theme.spacing(3, 0, 2),
+        color: 'white',
+        minWidth: 150,
+        fontWeight: 900,
+        boxShadow: '0px 2px 0px white',
+        border: '1px double white',
+        borderRadius: '15px 15px 15px 15px',
+        fontFamily: 'Segoe script, cursive',
+        '&:focus': {
+            boxShadow: '0px 2px 0px white',
+        },
+        '&:hover': {
+            color: 'white',
+            border: '1px double white',
+            boxShadow: '0 5px 5px white',
+        },
     },
 }));
 
@@ -56,7 +71,7 @@ const SignUpPage = ({ user, error, onUserCreate, loader }) => {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{ color: 'white' }}>
                     Регистрация
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
@@ -85,10 +100,24 @@ const SignUpPage = ({ user, error, onUserCreate, loader }) => {
                         value={password}
                         onChange={onInputChange}
                     />
-                    <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>
+                    <Button
+                        color="secondary"
+                        variant="outlined"
+                        className={classes.button}
+                        fullWidth
+                        type="submit"
+                    >
                         Зарегистрироваться
                     </Button>
-
+                    <Link
+                        component="button"
+                        variant="body2"
+                        onClick={() => {
+                            history.push('/login');
+                        }}
+                    >
+                        Страница логина
+                    </Link>
                     {error && <Alert severity="error">{error}</Alert>}
                 </form>
             </div>

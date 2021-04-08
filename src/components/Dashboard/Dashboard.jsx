@@ -8,7 +8,6 @@ import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
@@ -29,7 +28,7 @@ import ReviewPage from '../Review';
 import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
 import backgroundImage from '../../assets/main_page.jpg';
-
+import img from '../../assets/logo1.png';
 
 const drawerWidth = 240;
 
@@ -103,6 +102,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         position: 'relative',
     },
+    logoPick: {
+        width: '130px',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        },
+        transform: 'scale(1.5)',
+    },
 }));
 
 function Dashboard() {
@@ -126,11 +132,9 @@ function Dashboard() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                        <Link className={classes.titleLink} to="/">
-                            RSLang
-                        </Link>
-                    </Typography>
+                    <Link to="/">
+                        <img className={classes.logoPick} src={img} alt="RSlang" />
+                    </Link>
                     <TransitionsModal />
                 </Toolbar>
             </AppBar>
@@ -158,7 +162,6 @@ function Dashboard() {
                     flexGrow: 1,
                     height: '100vh',
                     overflow: 'auto',
-                    
                 }}
                 style={{
                     backgroundImage: `url(${backgroundImage})`,

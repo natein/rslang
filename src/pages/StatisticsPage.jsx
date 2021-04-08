@@ -8,10 +8,10 @@ const StatisticsPage = ({ userId }) => (
         {!!userId && <Statistics />}
         {!userId && (
             <>
-                <Typography variant="h4" component="h1">
+                <Typography variant="h4" component="h1" style={{ color: 'white' }}>
                     Статистика
                 </Typography>
-                <Typography component="p">
+                <Typography component="p" style={{ color: 'white' }}>
                     Только авторизированные пользователи могут просматривать статистику!
                 </Typography>
             </>

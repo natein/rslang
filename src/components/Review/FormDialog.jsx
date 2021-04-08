@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
     button: {
         color: 'white',
         minWidth: 150,
+        fontWeight: 900,
         margin: '1rem',
         boxShadow: '0px 2px 0px white',
         border: '1px double white',
@@ -29,6 +30,11 @@ const useStyles = makeStyles(() => ({
             color: 'white',
             border: '1px double white',
             boxShadow: '0 5px 5px white',
+        },
+        '&:disabled': {
+            color: 'gray',
+            border: '1px double gray',
+            boxShadow: '0 5px 5px gray',
         },
     },
     buttonDialog: {

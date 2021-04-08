@@ -9,6 +9,7 @@ const useStyles = makeStyles(() => ({
     button: {
         color: '#0D7E94',
         minWidth: 150,
+        fontWeight: 900,
         margin: '1rem',
         boxShadow: '0px 2px 0px #0D7E94',
         border: '1px double #0D7E94',
