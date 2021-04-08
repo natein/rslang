@@ -163,10 +163,7 @@ const Word = ({ word, onAudioPlay }) => {
                 <Box component="span" className={classes.wordText}>
                     {word.word}
                 </Box>
-                <Box component="span" className={classes.wordTranslate}>
-                    {' '}
-                    —{' '}
-                </Box>
+                <Box component="span" className={classes.wordTranslate}> - </Box>
                 <Box component="span" className={classes.wordTranslate}>
                     {word.wordTranslate}
                 </Box>
