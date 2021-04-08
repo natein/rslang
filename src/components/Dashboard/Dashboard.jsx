@@ -29,6 +29,8 @@ import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
 import backgroundImage from '../../assets/main_page.jpg';
 import img from '../../assets/logo1.png';
+import NotFound from '../NotFound'
+
 
 const drawerWidth = 240;
 
@@ -187,6 +189,7 @@ function Dashboard() {
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/audio" component={AudioCallPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
+                        <Route path="*" component={NotFound} />
                     </Switch>
                 </Container>
             </Box>
