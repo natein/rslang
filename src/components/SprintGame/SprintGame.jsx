@@ -151,6 +151,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                 new Audio(failed).play();
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
+                setBonus(0);
             }
             onAddWordToDictionary(current.info.id, current.info, isAnswerCorrect);
             onNextWord(current.index + 1);
@@ -231,7 +232,7 @@ const PointsPerAnswerCloud = ({points, className}) => {
     const elementRef = useRef();
     const [animationClass, setAnimationClass] = useState(null);
     useEffect(() => {
-        setAnimationClass((prev) => prev !== null ? 'animation' : '');
+        setAnimationClass((prev) => prev !== null && points !== 20 ? 'animation' : '');
     }, [points]);
 
     const onTransitionEnd = () => {
