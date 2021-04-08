@@ -12,7 +12,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
+import Crystal from '../Crystal';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ProgressBar from './ProgressBar';
@@ -221,6 +221,7 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
                     </Button>
                 </CardActions>
             </Card>
+            <Crystal />
             <PointsPerAnswerCloud className={classes.bonus} points={answerScore + bonus}/>
         </>
     );

@@ -4,28 +4,15 @@ import { connect } from 'react-redux';
 import Savanna from '../components/SavannaGame/Savanna/Savanna';
 import { loadSavannaWords } from '../actions/gameActions';
 import PropTypes from 'prop-types';
-import { Box, Button } from '@material-ui/core';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
+import { Box } from '@material-ui/core';
 import LoadingPage from '../components/LoadingPage';
-import { onFullScreen } from '../helpers';
 import styled from 'styled-components';
 import * as userWordsActions from '../actions/ebookActions';
 import { useRouteMatch } from 'react-router';
+import FullScreen from '../components/FullScreen';
 
 const SavannaWrapper = styled(Box)`
     display: flex;
-`;
-
-const FullScreenOuter = styled(Button)`
-    top: 0;
-    color: white;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    min-width: auto;
-    margin-right: 30px;
-    margin-top: 15px;
 `;
 
 function SavannaPage({
@@ -79,10 +66,7 @@ function SavannaPage({
                     match={match}
                 />
             )}
-
-            <FullScreenOuter onClick={() => onFullScreen(gameRef)}>
-                <FullscreenIcon fontSize="large" />
-            </FullScreenOuter>
+            <FullScreen reference={gameRef} />
         </SavannaWrapper>
     );
 }

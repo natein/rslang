@@ -79,7 +79,7 @@ export default class DayChart extends React.PureComponent {
 
     componentDidUpdate(prevProps) {
         if (prevProps.data !== this.props.data) {
-            const data = this.recalculateStatistics(this.props.data);
+            const data = this.recalculateStatistics(this.props.data) || INITIAL_DATA;
             this.setState({ data });
         }
     }
