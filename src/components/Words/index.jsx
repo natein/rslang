@@ -9,11 +9,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import SchoolIcon from '@material-ui/icons/School';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import FolderIcon from '@material-ui/icons/Folder';
 import PublishIcon from '@material-ui/icons/Publish';
 import { SECTIONS_EBOOK } from '../../constants';
 import WordsAudio from '../WordsAudio';
+import WordsStats from '../WordsStats';
 
 const baseUrl = process.env.REACT_APP_API || '';
 
@@ -170,11 +170,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                             </IconButton>
                           </Tooltip>
                         }
-                        <Tooltip title="Статистика по слову">
-                          <IconButton color="default" className={classes.iconStatButton} component="span">
-                            <BarChartIcon />
-                          </IconButton>
-                        </Tooltip>
+                        {word.userWord && <WordsStats word={word} />}
                       </>
                     }
                     {
@@ -193,11 +189,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                             <PublishIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Статистика по слову">
-                          <IconButton color="default" className={classes.iconStatButton} component="span">
-                            <BarChartIcon />
-                          </IconButton>
-                        </Tooltip>
+                        <WordsStats word={word} />
                       </>
                     }
 
