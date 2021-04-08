@@ -10,7 +10,7 @@ import Zoom from '@material-ui/core/Zoom';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
+import Crystal from '../Crystal';
 import success from '../../assets/sounds/correct.mp3';
 import failed from '../../assets/sounds/wrong.mp3';
 
@@ -348,6 +348,7 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
         {answer && <Button variant="outlined" className={classes.next} onClick={() => onNext()}><ArrowRightAltIcon /></Button>}
 
         <Box className={`${classes.sound} ${sound ? classes.enableSound : classes.disableSound}`} onClick={() => setSound(sound => !sound)}></Box>
+        <Crystal />
       </Box>
     </>
   );

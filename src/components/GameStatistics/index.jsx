@@ -45,19 +45,19 @@ const styles = makeStyles((theme) => ({
     red: {
         color: '#ed593b',
         marginLeft: '0.5rem',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
     },
     green: {
         color: '#28c38a',
         marginLeft: '0.5rem',
-        textTransform: 'uppercase'
+        textTransform: 'uppercase',
     },
     wordText: {
         color: '#2582e7',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     wordTranslate: {
-        color: '#37383c'
+        color: '#37383c',
     },
     resultText: {
         color: '#37383c',
@@ -79,16 +79,16 @@ const styles = makeStyles((theme) => ({
         '&:hover': {
             backgroundColor: 'rgba(37,130,231,.5)',
         },
-        textDecoration: 'none'
+        textDecoration: 'none',
     },
     linkGameBox: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
-    }
+        justifyContent: 'center',
+    },
 }));
 
-const AudioCallStatistics = ({ statistics, onNewGame }) => {
+const GameStatistics = ({ statistics, onNewGame }) => {
     const baseUrl = process.env.REACT_APP_API || '';
     const classes = styles();
 
@@ -103,14 +103,14 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
 
     const correctWords = statistics.current.words.filter((word) => word.correct);
     const wrongtWords = statistics.current.words.filter((word) => !word.correct);
-    const correctPerWrong = correctWords.length / wrongtWords.length * 100;
+    const correctPerWrong = (correctWords.length / wrongtWords.length) * 100;
 
     return (
         <>
             <Box component="div" className={classes.table}>
                 <Typography className={classes.resultText} component="h2" variant="h5">
                     {correctPerWrong < 50 && 'В этот раз не получилось, но продолжай тренироваться!'}
-                    {(correctPerWrong > 50 && correctPerWrong < 90) && 'Неплохо, но есть над чем поработать'}
+                    {correctPerWrong > 50 && correctPerWrong < 90 && 'Неплохо, но есть над чем поработать'}
                     {correctPerWrong > 90 && 'Поздравляем, отличный результат!'}
                 </Typography>
                 <Typography className={classes.description} component="h2" variant="h5">
@@ -140,8 +140,12 @@ const AudioCallStatistics = ({ statistics, onNewGame }) => {
                     ))}
             </Box>
             <Box className={classes.linkGameBox}>
-                <span className={classes.linkGame} onClick={onNewGame}>Играть еще</span>
-                <Link to='/games' className={classes.linkGame}>К списку игр</Link>
+                <span className={classes.linkGame} onClick={onNewGame}>
+                    Играть еще
+                </span>
+                <Link to="/games" className={classes.linkGame}>
+                    К списку игр
+                </Link>
             </Box>
         </>
     );
@@ -156,12 +160,19 @@ const Word = ({ word, onAudioPlay }) => {
                 <VolumeUpIcon />
             </IconButton>
             <Box component="div" className={classes.wordInfo1}>
-                <Box component="span" className={classes.wordText}>{word.word}</Box>
-                <Box component="span" className={classes.wordTranslate}> — </Box>
-                <Box component="span" className={classes.wordTranslate}>{word.wordTranslate}</Box>
+                <Box component="span" className={classes.wordText}>
+                    {word.word}
+                </Box>
+                <Box component="span" className={classes.wordTranslate}>
+                    {' '}
+                    —{' '}
+                </Box>
+                <Box component="span" className={classes.wordTranslate}>
+                    {word.wordTranslate}
+                </Box>
             </Box>
         </Box>
     );
 };
 
-export default AudioCallStatistics;
+export default GameStatistics;
