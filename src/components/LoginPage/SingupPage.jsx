@@ -1,4 +1,6 @@
 import { Button, Container, makeStyles, TextField, Typography, Link } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { common } from '@material-ui/core/colors';
 import { Alert } from '@material-ui/lab';
 import { useEffect, useRef, useState } from 'react';
 import ImageUpload from './ImageUpload';
@@ -39,7 +41,26 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: '0 3px 3px white',
         },
     },
+
+    input: {
+        color: 'white',
+        borderColor: 'white',
+        '& > fieldset': {
+            borderColor: 'white'
+        },
+        '& > .MuiInputLabel-root': {
+            color: 'white'
+        }
+    },
 }));
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: common.white,
+        },
+    },
+});
 
 const SignUpPage = ({ user, error, onUserCreate, loader }) => {
     const classes = useStyles();
@@ -76,37 +97,47 @@ const SignUpPage = ({ user, error, onUserCreate, loader }) => {
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <ImageUpload ref={avatarRef} />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        color="secondary"
-                        fullWidth
-                        id="username"
-                        label="пользовательский email"
-                        autoFocus
-                        value={username}
-                        onChange={onInputChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        color="secondary"
-                        fullWidth
-                        label="пароль"
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={onInputChange}
-                    />
-                    <Button
-                        color="secondary"
-                        variant="outlined"
-                        className={classes.button}
-                        fullWidth
-                        type="submit"
-                    >
+                    <ThemeProvider theme={theme}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            color="primary"
+                            fullWidth
+                            id="username"
+                            label="пользовательский email"
+                            autoFocus
+                            classes={{
+                                root: classes.input,
+                            }}
+                            value={username}
+                            onChange={onInputChange}
+                            InputProps={{
+                                className: classes.input,
+                                focused: classes.input,
+                            }}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            color="primary"
+                            fullWidth
+                            label="пароль"
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={onInputChange}
+                            classes={{
+                                root: classes.input,
+                            }}
+                            InputProps={{
+                                className: classes.input,
+                                focused: classes.input,
+                            }}
+                        />
+                    </ThemeProvider>
+                    <Button color="secondary" variant="outlined" className={classes.button} fullWidth type="submit">
                         Зарегистрироваться
                     </Button>
                     <Link
