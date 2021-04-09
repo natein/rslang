@@ -58,9 +58,9 @@ const data = [
 export default function CardsAbout() {
     const classes = useStyles();
 
-    return data.map((el) => {
+    return data.map((el, i) => {
         return (
-            <Card className={classes.root}>
+            <Card className={classes.root} key={ data.length - i }>
                     <CardActionArea className={classes.cardCont}>
                         <CardMedia
                             component="img"

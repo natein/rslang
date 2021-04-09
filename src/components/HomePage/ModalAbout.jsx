@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Button from './Button';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
 import CardsAbout from './ModalAboutCard';
+import CardsVideo from './ModalAboutVideo';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
 const useStyles = makeStyles(() => ({
@@ -28,7 +29,8 @@ const useStyles = makeStyles(() => ({
     },
     contAbout: {
         display: 'flex',
-        maxWidth: '700px',
+        maxWidth: 700,
+        height: 400,
         flexWrap: 'wrap',
         flexDirection: 'row',
         justifyContent: 'center',
@@ -44,6 +46,8 @@ export default function ModalInfo() {
     const classes = useStyles();
     const history = useHistory();
 
+    const [check, setCheck] = useState(true);
+
     return (
         <>
             <h2 id="transition-modal-title">Как всё устроенно</h2>
@@ -52,7 +56,7 @@ export default function ModalInfo() {
                 индивидуального прогресса и мини-игр.
             </p>
             <div className={classes.contAbout}>
-                <CardsAbout />
+                {check ? <CardsAbout /> : <CardsVideo /> }
             </div>
 
             <Button
@@ -72,9 +76,9 @@ export default function ModalInfo() {
                 size="small"
                 className={classes.button}
                 component="a"
-                onClick={() => console.log('!')}
+                onClick={() => setCheck(!check)}
             >
-                Видео
+                {check ? 'Видео' : 'Инфо'}
             </Button>
         </>
     );
