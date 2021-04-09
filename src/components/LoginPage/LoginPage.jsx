@@ -27,15 +27,15 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 900,
         boxShadow: '0px 2px 0px white',
         border: '1px double white',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        borderRadius: '10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px white',
         },
         '&:hover': {
             color: 'white',
             border: '1px double white',
-            boxShadow: '0 5px 5px white',
+            boxShadow: '0 3px 3px white',
         },
     },
 }));

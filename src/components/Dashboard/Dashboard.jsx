@@ -170,6 +170,7 @@ function Dashboard() {
                     margin: '4rem auto 0',
                     width: '100%',
                     backgroundSize: '100% 100%',
+                    backgroundAttachment: 'fixed',
                 }}
                 className={classes.main}
             >

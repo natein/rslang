@@ -16,7 +16,7 @@ function LastReview({ review }) {
                             </Grid>
                             <Grid justifycontent="left" item xs zeroMinWidth>
                                 <h4 style={{ margin: 0, textAlign: 'left' }}>{review.name}</h4>
-                                <p style={{ textAlign: 'left', fontFamily: 'Segoe script, cursive', fontSize: 'larger' }}>
+                                <p style={{ textAlign: 'left', fontFamily: 'Gilroy, Arial, sans-serif', fontSize: 'larger' }}>
                                     {review.review}
                                 </p>
                                 <p style={{ textAlign: 'left', color: 'gray' }}>{review.date}</p>

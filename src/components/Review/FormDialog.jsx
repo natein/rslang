@@ -21,20 +21,20 @@ const useStyles = makeStyles(() => ({
         margin: '1rem',
         boxShadow: '0px 2px 0px white',
         border: '1px double white',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        borderRadius: '10px 10px 10px 10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px white',
         },
         '&:hover': {
             color: 'white',
             border: '1px double white',
-            boxShadow: '0 5px 5px white',
+            boxShadow: '0 3px 3px white',
         },
         '&:disabled': {
             color: 'gray',
             border: '1px double gray',
-            boxShadow: '0 5px 5px gray',
+            boxShadow: '0 3px 3px gray',
         },
     },
     buttonDialog: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
         boxShadow: '0px 2px 0px #0D7E94',
         border: '1px double #0D7E94',
         borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px #0D7E94',
         },

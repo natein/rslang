@@ -20,23 +20,23 @@ const useStyles = makeStyles((theme) => ({
         margin: '1rem',
         boxShadow: '0px 2px 0px white',
         border: '1px double white',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        borderRadius: '10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px white',
         },
         '&:hover': {
             color: 'white',
             border: '1px double white',
-            boxShadow: '0 5px 5px white',
+            boxShadow: '0 3px 3px white',
         },
     },
     h5: {
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         textShadow: '2px 2px 3px #aba8a8',
     },
     more: {
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         textShadow: '0 0 10px #FFFFFF',
         marginTop: theme.spacing(2),
     },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontSize: '5rem',
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         position: 'relative',
         textShadow: '1px 3px 0 #969696, 2px 7px 5px #aba8a8',
         marginBottom: theme.spacing(10),
@@ -58,9 +58,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
+        maxWidth: 700,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
-        // padding: theme.spacing(2, 4, 3),
+        padding: theme.spacing(2, 4, 3),
+        textAlignLast: 'center',
     },
 }));
 

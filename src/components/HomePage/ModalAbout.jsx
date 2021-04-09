@@ -4,25 +4,36 @@ import Button from './Button';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router';
+import CardsAbout from './ModalAboutCard';
+import CardActionArea from '@material-ui/core/CardActionArea';
+
 
 const useStyles = makeStyles(() => ({
     button: {
-        color: '#0D7E94',
-        minWidth: 150,
+        color: 'dimgray',
+        minWidth: 180,
         fontWeight: 900,
-        margin: '1rem',
-        boxShadow: '0px 2px 0px #0D7E94',
-        border: '1px double #0D7E94',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        margin: '0.4rem',
+        boxShadow: '0px 2px 0px dimgray',
+        border: '1px double dimgray',
+        borderRadius: '10px 10px 10px 10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
-            boxShadow: '0px 2px 0px #0D7E94',
+            boxShadow: '0px 2px 0px darkslategray',
         },
         '&:hover': {
-            color: '#0D7E94',
-            border: '1px double #0D7E94',
-            boxShadow: '0 5px 5px #0D7E94',
+            color: 'black',
+            border: '1px double darkslategray',
+            boxShadow: '0 3px 3px darkslategray',
         },
+    },
+    contAbout: {
+        display: 'flex',
+        maxWidth: '700px',
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 }));
 
@@ -34,6 +45,10 @@ export default function ModalInfo() {
         <>
             <h2 id="transition-modal-title">Информация о проекте</h2>
             <p id="transition-modal-description">Вся необходимая информация будет здесь.</p>
+            <div className={classes.contAbout}>
+            <CardsAbout />
+            </div>
+
             <Button
                 color="primary"
                 variant="outlined"
@@ -42,6 +57,7 @@ export default function ModalInfo() {
                 component="a"
                 onClick={() => history.push('/about')}
             >
+                            <CardActionArea />
                 Разработчики
             </Button>
             <Button
