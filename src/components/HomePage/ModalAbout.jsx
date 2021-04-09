@@ -7,7 +7,6 @@ import { useHistory } from 'react-router';
 import CardsAbout from './ModalAboutCard';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
-
 const useStyles = makeStyles(() => ({
     button: {
         color: 'dimgray',
@@ -35,6 +34,10 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    info: {
+        textAlign: 'center',
+        fontWeight: 700,
+    },
 }));
 
 export default function ModalInfo() {
@@ -43,10 +46,13 @@ export default function ModalInfo() {
 
     return (
         <>
-            <h2 id="transition-modal-title">Информация о проекте</h2>
-            <p id="transition-modal-description">Вся необходимая информация будет здесь.</p>
+            <h2 id="transition-modal-title">Как всё устроенно</h2>
+            <p id="transition-modal-description" className={classes.info}>
+                Приложение для изучения иностранных слов с техникой интервального повторения, отслеживания
+                индивидуального прогресса и мини-игр.
+            </p>
             <div className={classes.contAbout}>
-            <CardsAbout />
+                <CardsAbout />
             </div>
 
             <Button
@@ -57,7 +63,7 @@ export default function ModalInfo() {
                 component="a"
                 onClick={() => history.push('/about')}
             >
-                            <CardActionArea />
+                <CardActionArea />
                 Разработчики
             </Button>
             <Button
