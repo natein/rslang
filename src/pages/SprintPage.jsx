@@ -65,7 +65,7 @@ const SprintPage = ({
         if (match) {
             setGameWords([]);
             onFinish(false);
-            history.push('/games/sprint');
+            history.replace('/games/sprint');
         }
     }, [match, setGameWords, history]);
 

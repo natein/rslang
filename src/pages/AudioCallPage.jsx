@@ -86,7 +86,7 @@ const AudioCallPage = ({
         if (match) {
             setGameWords([]);
             onFinish(false);
-            history.push('/games/audio');
+            history.replace('/games/audio');
         }
     }, [match, setGameWords, history]);
 
