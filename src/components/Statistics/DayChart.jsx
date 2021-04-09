@@ -17,24 +17,28 @@ const INITIAL_DATA = [
         gameName: 'Саванна',
         learnedWords: 0,
         correctAnswers: 0,
+        wrongAnswers: 0,
         longestSeries: 0,
     },
     {
         gameName: 'Аудиовызов',
         learnedWords: 0,
         correctAnswers: 0,
+        wrongAnswers: 0,
         longestSeries: 0,
     },
     {
         gameName: 'Спринт',
         learnedWords: 0,
         correctAnswers: 0,
+        wrongAnswers: 0,
         longestSeries: 0,
     },
     {
         gameName: 'Своя игра',
         learnedWords: 0,
         correctAnswers: 0,
+        wrongAnswers: 0,
         longestSeries: 0,
     },
 ];
@@ -93,7 +97,10 @@ export default class DayChart extends React.PureComponent {
                     const stats = data[game];
                     stats.gameName = getGameName(game);
                     return stats
-                })
+                }).map((data) => {
+                    data.correctAnswersPercent = Math.round(data.correctAnswers * 100 / (data.correctAnswers + data.wrongAnswers)) || 0;
+                    return data;
+                });
                 return result;
         }
     };
@@ -114,8 +121,8 @@ export default class DayChart extends React.PureComponent {
                         color="#ffd700"
                     />
                     <BarSeries
-                        name="Правильные ответы"
-                        valueField="correctAnswers"
+                        name="Правильные ответы(%)"
+                        valueField="correctAnswersPercent"
                         argumentField="gameName"
                         color="#c0c0c0"
                     />

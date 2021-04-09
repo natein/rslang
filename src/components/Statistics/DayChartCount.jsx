@@ -6,7 +6,7 @@ import { ArgumentScale, Animation, EventTracker } from '@devexpress/dx-react-cha
 import { scalePoint } from 'd3-scale';
 import { withStyles } from '@material-ui/core/styles';
 
-const INITIAL_POINT = { date: 'Start', learnedWordsCount: 0, correctAnswersCount: 0 };
+const INITIAL_POINT = { date: 'Start', learnedWordsCount: 0, correctAnswersPercent: 0 };
 
 const chartRootStyles = {
     chart: {
@@ -59,10 +59,12 @@ export default class DayChartCount extends React.PureComponent {
                 (accumulator, game) => ({
                     learnedWordsCount: accumulator.learnedWordsCount + data[game].learnedWords,
                     correctAnswersCount: accumulator.correctAnswersCount + data[game].correctAnswers,
+                    wrongAnswersCount: accumulator.wrongAnswersCount + data[game].wrongAnswers,
                 }),
-                { learnedWordsCount: 0, correctAnswersCount: 0 },
+                { learnedWordsCount: 0, correctAnswersCount: 0, wrongAnswersCount: 0 },
             );
         result.date = 'Current';
+        result.correctAnswersPercent = Math.round(result.correctAnswersCount * 100 / (result.correctAnswersCount + result.wrongAnswersCount)) || 0;
         return result;
     };
 
@@ -82,8 +84,8 @@ export default class DayChartCount extends React.PureComponent {
                     <ArgumentAxis />
                     <ValueAxis />
 
+                    <AreaSeries name="Правильные ответы(%)" valueField="correctAnswersPercent" argumentField="date" />
                     <AreaSeries name="Изученные слова" valueField="learnedWordsCount" argumentField="date" />
-                    <AreaSeries name="Правильные ответы" valueField="correctAnswersCount" argumentField="date" />
                     <Animation />
                     <Legend
                         position="bottom"

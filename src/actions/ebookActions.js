@@ -11,7 +11,9 @@ export const WORD_PLAYING = 'WORD_PLAYING';
 export const SET_LOADER = 'SET_LOADER';
 export const SET_SETTINGS = 'SET_SETTINGS';
 
-const GET_INITIAL_USER_WORD = (gameName) => ({ optional: { game: true, [gameName]: { right: 0, wrong: 0 } } });
+const GET_INITIAL_USER_WORD = (gameName) => ({
+  optional: { game: true, [gameName]: { right: 0, wrong: 0 }, lastChanged: new Date().toLocaleDateString('ru-RU') },
+});
 
 const UPDATE_WORD_STATISTICS = (userWord, isCorrect, gameName) => {
   let wordStatistics;
@@ -110,18 +112,23 @@ export const loadUserDeleteWordAgregateInGroup = (userId, token, group = 0) => (
 
 export const onUpdateUserWordStatistics = (wordId, isCorrect, gameName) => (dispatch, getState) => {
   const {userId, token} = getState().user;
+  const today = new Date().toLocaleDateString('ru-RU');
   return ebookService
       .getUserWord(userId, wordId, token)
       .then((userWord) => UPDATE_WORD_STATISTICS(userWord, isCorrect, gameName))
-      .then((userWord) =>
-          ebookService
-              .updateUserWord(userId, wordId, userWord, userWord, token)
+      .then(async (userWord) => {
+          const updatedUserWord = {...userWord, optional: {...userWord, lastChanged: new Date().toLocaleDateString('ru-RU')}};
+          await ebookService
+              .updateUserWord(userId, wordId, updatedUserWord, updatedUserWord, token)
               .then((data) => dispatch(setWordUser(data)))
               .then(() => dispatch(onError()))
               .catch((err) => {
                   dispatch(onError(err.response ? err.response.data : err.message));
-              }),
-      ).then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName)));
+              });
+          return userWord;
+      }).then((userWord) => {
+        return dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, today !== userWord.optional.lastChanged))
+      });
 };
 
 export const createUserWordWithStatistics = (wordId, isCorrect, gameName) => (
@@ -133,7 +140,7 @@ export const createUserWordWithStatistics = (wordId, isCorrect, gameName) => (
       .createUserWord(userId, wordId, userWord, token)
       .then((data) => dispatch(setWordUser(data)))
       .then(() => dispatch(onError()))
-      .then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName)))
+      .then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, true)))
       .catch((err) => {
           if (err.response?.status === 417) {
               dispatch(onUpdateUserWordStatistics(wordId, isCorrect, gameName));

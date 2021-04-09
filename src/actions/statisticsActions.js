@@ -8,6 +8,7 @@ const GET_INITIAL_GAME_INFO = () => ({
     lastChanged: new Date().toLocaleDateString('ru-RU'),
     learnedWords: 0,
     correctAnswers: 0,
+    wrongAnswers: 0,
     longestSeries: 0,
 });
 
@@ -26,9 +27,9 @@ const GET_INITIAL_STATISTICS = () => ({
     },
 });
 
-const updateStatistics = (statistics, isCorrect, game) => {
+const updateStatistics = (statistics, isCorrect, game, isNewWord) => {
     const today = new Date().toLocaleDateString('ru-RU');
-    statistics.learnedWords += 1;
+    statistics.learnedWords += isNewWord ? 1 : 0;
     const { wordStatistics, gameStatistics } = statistics.optional;
     if (wordStatistics[today]) {
         wordStatistics[today] += 1;
@@ -39,8 +40,9 @@ const updateStatistics = (statistics, isCorrect, game) => {
     if (today !== gameInfo.lastChanged) {
         gameInfo = GET_INITIAL_GAME_INFO();
     }
-    gameInfo.learnedWords += 1;
+    gameInfo.learnedWords += isNewWord ? 1 : 0;
     gameInfo.correctAnswers += isCorrect ? 1 : 0;
+    gameInfo.wrongAnswers += !isCorrect ? 1 : 0;
     gameStatistics[game] = gameInfo;
     statistics.id = undefined;
     return statistics;
@@ -54,7 +56,7 @@ export const getUserStatistics = () => (dispatch, getState) => {
         .catch((error) => {});
 };
 
-export const updateUserStatistics = (isCorrect, game) => (dispatch, getState) => {
+export const updateUserStatistics = (isCorrect, game, isNewWord) => (dispatch, getState) => {
     const userInfo = getState().user;
     return statisticsService
         .getUserStatistics(userInfo.userId, userInfo.token)
@@ -64,7 +66,7 @@ export const updateUserStatistics = (isCorrect, game) => (dispatch, getState) =>
             }
             throw error;
         })
-        .then((statistics) => updateStatistics(statistics, isCorrect, game))
+        .then((statistics) => updateStatistics(statistics, isCorrect, game, isNewWord))
         .then((statistics) => statisticsService.updateUserStatistics(userInfo.userId, userInfo.token, statistics))
         .catch((error) => console.log(error));
 };
@@ -75,6 +77,6 @@ export const setUserStatistics = (statistics) => ({
 });
 
 
-export const clearUserStatistics = (statistics) => ({
+export const clearUserStatistics = () => ({
     type: CLEAR_STATISTICS
 });
