@@ -12,9 +12,9 @@ const team = [
     photo: aleksei,
     role: 'Developer',
     tasks: [
-      'It is a long established fact',
-      'when an unknown printer',
-      'release of Letraset'
+      'Login/Signup pages including backend changes',
+      'Sprint game',
+      'Integrate statistic page with backend'
     ],
   },
   {
