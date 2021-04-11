@@ -1,48 +1,52 @@
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ChooseWords from './ChooseWords';
-import { getSavannaWords, setLostLife } from '../../../../../actions/gameActions';
+import { setLostLife } from '../../../../../actions/gameActions';
 
 function ChooseWordsContainer({
+    onFinish = (f) => f,
+    setLostLife = (f) => f,
+    onAddWordToDictionary = (f) => f,
     sound,
     gamewords,
-    answer,
-    difficultyLvl,
-    setLostLife = (f) => f,
-    getSavannaWords = (f) => f,
+    statistics,
+    match,
+    wordsList,
 }) {
-    useEffect(() => {});
-
     return (
         <>
             <ChooseWords
                 sound={sound}
-                difficultyLvl={difficultyLvl}
-                getSavannaWords={getSavannaWords}
+                onFinish={onFinish}
                 setLostLife={setLostLife}
                 gamewords={gamewords}
-                answer={answer}
+                wordsList={wordsList}
+                statistics={statistics}
+                onAddWordToDictionary={onAddWordToDictionary}
+                match={match}
             />
         </>
     );
 }
 
 ChooseWordsContainer.propTypes = {
+    onFinish: PropTypes.func.isRequired,
+    setLostLife: PropTypes.func.isRequired,
+    onAddWordToDictionary: PropTypes.func.isRequired,
+    sound: PropTypes.bool,
     gamewords: PropTypes.array,
-    answer: PropTypes.string,
+    statistics: PropTypes.object,
+    match: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
     return {
         gamewords: state.game.savanna.gamewords,
-        answer: state.game.savanna.answer,
-        drawer: state.game.savanna.drawer,
+        wordsList: state.game.wordsList,
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    getSavannaWords: (group, page) => dispatch(getSavannaWords(group, page)),
     setLostLife: (id) => dispatch(setLostLife(id)),
 });
 

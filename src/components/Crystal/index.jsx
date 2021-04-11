@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Box } from '@material-ui/core/';
-import crystalCircle1 from '../../../assets/hud/crystalCircle1.png';
+import crystalCircle1 from '../../assets/hud/crystalCircle1.png';
 
 const CrystalWrapper = styled(Box)`
     position: absolute;

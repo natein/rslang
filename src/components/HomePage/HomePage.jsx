@@ -7,37 +7,36 @@ import Button from './Button';
 import ModalInfo from './ModalAbout';
 import Typography from './Typography';
 import ProductHeroLayout from './ProductHeroLayout';
-import backgroundImage from '../../assets/main_bg.jpg';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
     background: {
-        backgroundImage: `url(${backgroundImage})`,
         backgroundColor: '#7fc7d9',
     },
     button: {
         color: 'white',
         minWidth: 150,
+        fontWeight: 900,
         margin: '1rem',
         boxShadow: '0px 2px 0px white',
         border: '1px double white',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        borderRadius: '10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px white',
         },
         '&:hover': {
             color: 'white',
             border: '1px double white',
-            boxShadow: '0 5px 5px white',
+            boxShadow: '0 3px 3px white',
         },
     },
     h5: {
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         textShadow: '2px 2px 3px #aba8a8',
     },
     more: {
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         textShadow: '0 0 10px #FFFFFF',
         marginTop: theme.spacing(2),
     },
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontSize: '5rem',
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         position: 'relative',
         textShadow: '1px 3px 0 #969696, 2px 7px 5px #aba8a8',
         marginBottom: theme.spacing(10),
@@ -59,9 +58,11 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
+        maxWidth: 700,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+        textAlignLast: 'center',
     },
 }));
 
@@ -84,8 +85,6 @@ function HomePage() {
 
     return (
         <ProductHeroLayout backgroundClassName={classes.background}>
-            {/* Increase the network loading priority of the background image. */}
-            <img style={{ display: 'none' }} src={backgroundImage} alt="increase priority" />
             <Typography color="inherit" align="center" variant="h2" marked="center" className={classes.title}>
                 RSLang
             </Typography>

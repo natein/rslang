@@ -4,14 +4,12 @@ import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import LanguageIcon from '@material-ui/icons/Language';
 import PeopleIcon from '@material-ui/icons/People';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 
 const link = {
@@ -77,44 +75,6 @@ export const mainListItems = (
                     <FeedbackIcon />
                 </ListItemIcon>
                 <ListItemText primary="Отзывы" />
-            </ListItem>
-        </Link>
-    </div>
-);
-
-export const secondaryListItems = (
-    <div>
-        <ListSubheader inset>Раздел игр</ListSubheader>
-        <Link to="/" style={link}>
-            <ListItem button>
-                <ListItemIcon>
-                    <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Своя игра" />
-            </ListItem>
-        </Link>
-        <Link to="/games/sprint/new" style={link}>
-            <ListItem button>
-                <ListItemIcon>
-                    <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Спринт" />
-            </ListItem>
-        </Link>
-        <Link to="/" style={link}>
-            <ListItem button>
-                <ListItemIcon>
-                    <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Аудиовызов" />
-            </ListItem>
-        </Link>
-        <Link to="/games/savanna" style={link}>
-            <ListItem button>
-                <ListItemIcon>
-                    <AssignmentIcon />
-                </ListItemIcon>
-                <ListItemText primary="Саванна" />
             </ListItem>
         </Link>
     </div>

@@ -1,29 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import SprintGame from '../components/SprintGame';
-import FullscreenIcon from '@material-ui/icons/Fullscreen';
-import { Box, Button, makeStyles } from '@material-ui/core';
-import { common } from '@material-ui/core/colors';
-import SprintStatistics from '../components/SprintGame/SprintStatistics';
-import SelectComplexityLevel from '../components/SprintGame/SelectComplexityLevel';
+import { Box, makeStyles } from '@material-ui/core';
+import SprintStatistics from '../components/GameStatistics';
+import SelectComplexityLevel from '../components/SelectGameComplexity';
 import LoadingPage from '../components/LoadingPage';
 import * as gameActions from '../actions/gameActions';
 import { useHistory, useRouteMatch } from 'react-router';
 import * as userWordsActions from '../actions/ebookActions';
 import { GAMES } from '../constants';
+import FullScreen from '../components/FullScreen';
 
 const sprintGame = GAMES.list.find((game) => game.code === 'sprint').backgroundImage;
 
 const styles = makeStyles((theme) => ({
-    fullscreen: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        color: common.white,
-        margin: 0,
-        padding: 0,
-        minWidth: 'auto',
-    },
     root: {
         position: 'absolute',
         top: 0,
@@ -43,23 +33,6 @@ const styles = makeStyles((theme) => ({
         padding: theme.spacing(5),
     },
 }));
-
-const getUpdateStatiscticsCallback = (isCorrect) => (userWord) => {
-    const sprintStatistics = userWord?.optional?.sprint || { right: 0, wrong: 0 };
-    if (isCorrect) {
-        sprintStatistics.right += 1;
-    } else {
-        sprintStatistics.wrong += 1;
-    }
-
-    if (!userWord.optional) {
-        userWord.optional = {};
-    }
-
-    userWord.optional.sprint = sprintStatistics;
-    return userWord;
-};
-const initialUserWord = { optional: { game: true, sprint: { right: 0, wrong: 0 } } };
 
 const SprintPage = ({
     words = [],
@@ -83,14 +56,6 @@ const SprintPage = ({
         sensitive: true,
     });
 
-    const onFullScreen = () => {
-        if (!!document.fullscreenElement) {
-            document.exitFullscreen();
-        } else {
-            gameRef.current.requestFullscreen();
-        }
-    };
-
     const onNewGame = () => {
         onFinish(false);
         statistics.current = { score: 0, words: [] };
@@ -100,22 +65,16 @@ const SprintPage = ({
         if (match) {
             setGameWords([]);
             onFinish(false);
-            history.push('/games/sprint');
+            history.replace('/games/sprint');
         }
     }, [match, setGameWords, history]);
 
     const onAddWordToDictionary = (wordId, word, isCorrect) => {
         if (userId && token) {
             if (word.userWord) {
-                onUpdateUserWordStatistics(userId, token, wordId, getUpdateStatiscticsCallback(isCorrect));
+                onUpdateUserWordStatistics(wordId, isCorrect);
             } else {
-                onCreateUserWord(
-                    userId,
-                    token,
-                    wordId,
-                    getUpdateStatiscticsCallback(isCorrect)(initialUserWord),
-                    getUpdateStatiscticsCallback(isCorrect),
-                );
+                onCreateUserWord(wordId, isCorrect);
             }
         }
     };
@@ -123,7 +82,7 @@ const SprintPage = ({
     return (
         <Box id="sprint-game-board" component="section" ref={gameRef} className={classes.root}>
             {loader && <LoadingPage />}
-            {!loader && words.length === 0 && <SelectComplexityLevel onLoadWords={onLoadWords} />}
+            {!loader && words.length === 0 && <SelectComplexityLevel gameName="sprint" onLoadWords={onLoadWords} />}
             {!loader && words.length > 0 && !finished && (
                 <SprintGame
                     words={words}
@@ -133,9 +92,7 @@ const SprintPage = ({
                 />
             )}
             {!loader && !!finished && <SprintStatistics statistics={statistics} onNewGame={onNewGame} />}
-            <Button className={classes.fullscreen} onClick={onFullScreen}>
-                <FullscreenIcon fontSize="large" />
-            </Button>
+            <FullScreen reference={gameRef} />
         </Box>
     );
 };
@@ -150,12 +107,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
     setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
-    onCreateUserWord: (userId, token, wordId, userWord, updateStatiscticsCallback) =>
-        dispatch(
-            userWordsActions.createUserWordWithStatistics(userId, wordId, userWord, token, updateStatiscticsCallback),
-        ),
-    onUpdateUserWordStatistics: (userId, token, wordId, updateStatiscticsCallback) =>
-        dispatch(userWordsActions.onUpdateUserWordStatistics(userId, wordId, token, updateStatiscticsCallback)),
+    onCreateUserWord: (wordId, isCorrect) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'sprint')),
+    onUpdateUserWordStatistics: (wordId, isCorrect) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'sprint')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);

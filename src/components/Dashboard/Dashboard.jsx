@@ -8,13 +8,12 @@ import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems } from './listItems';
 import HomePage from '../HomePage/HomePage';
 import EbookPage from '../../pages/EbookPage';
 import TransitionsModal from './UserIcon';
@@ -26,9 +25,12 @@ import GamesPage from '../../pages/GamesPage';
 import AudioCallPage from '../../pages/AudioCallPage';
 import SavannaPage from '../../pages/SavannaPage';
 import ReviewPage from '../Review';
-
-import Statistics from '../Statistics/Statistics';
+import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
+import backgroundImage from '../../assets/main_page.jpg';
+import img from '../../assets/logo1.png';
+import NotFound from '../NotFound'
+
 
 const drawerWidth = 240;
 
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24, // keep right padding when drawer closed
         justifyContent: 'space-between',
         backgroundColor: 'tomato',
+        opacity: '0.9',
     },
     toolbarIcon: {
         display: 'flex',
@@ -101,6 +104,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         position: 'relative',
     },
+    logoPick: {
+        width: '130px',
+        [theme.breakpoints.down('sm')]: {
+            textAlign: 'center',
+        },
+        transform: 'scale(1.5)',
+    },
 }));
 
 function Dashboard() {
@@ -124,11 +134,9 @@ function Dashboard() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-                        <Link className={classes.titleLink} to="/">
-                            RSLang
-                        </Link>
-                    </Typography>
+                    <Link to="/">
+                        <img className={classes.logoPick} src={img} alt="RSlang" />
+                    </Link>
                     <TransitionsModal />
                 </Toolbar>
             </AppBar>
@@ -147,7 +155,6 @@ function Dashboard() {
                 <Divider />
                 <List>{mainListItems}</List>
                 <Divider />
-                <List>{secondaryListItems}</List>
             </Drawer>
             <Box
                 component="main"
@@ -159,8 +166,11 @@ function Dashboard() {
                     overflow: 'auto',
                 }}
                 style={{
+                    backgroundImage: `url(${backgroundImage})`,
                     margin: '4rem auto 0',
                     width: '100%',
+                    backgroundSize: '100% 100%',
+                    backgroundAttachment: 'fixed',
                 }}
                 className={classes.main}
             >
@@ -170,7 +180,7 @@ function Dashboard() {
                         <Route path="/ebook" component={EbookPage} />
                         <Route path="/dictionary" component={DictionaryPage} />
                         <Route path="/games" component={GamesPage} exact />
-                        <Route path="/statistics" component={Statistics} />
+                        <Route path="/statistics" component={StatisticsPage} />
                         <Route path="/about" component={AboutTeam} />
                         <Route path="/login" component={LoginPage} />
                         <Route path="/sign-up" component={SignupPage} />
@@ -178,6 +188,7 @@ function Dashboard() {
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/audio" component={AudioCallPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
+                        <Route path="*" component={NotFound} />
                     </Switch>
                 </Container>
             </Box>

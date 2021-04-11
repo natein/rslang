@@ -15,13 +15,36 @@ import { putReview } from '../../api/reviewService';
 
 const useStyles = makeStyles(() => ({
     button: {
+        color: 'white',
+        minWidth: 150,
+        fontWeight: 900,
+        margin: '1rem',
+        boxShadow: '0px 2px 0px white',
+        border: '1px double white',
+        borderRadius: '10px 10px 10px 10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
+        '&:focus': {
+            boxShadow: '0px 2px 0px white',
+        },
+        '&:hover': {
+            color: 'white',
+            border: '1px double white',
+            boxShadow: '0 3px 3px white',
+        },
+        '&:disabled': {
+            color: 'gray',
+            border: '1px double gray',
+            boxShadow: '0 3px 3px gray',
+        },
+    },
+    buttonDialog: {
         color: '#0D7E94',
         minWidth: 150,
         margin: '1rem',
         boxShadow: '0px 2px 0px #0D7E94',
         border: '1px double #0D7E94',
         borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Segoe script, cursive',
+        fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
             boxShadow: '0px 2px 0px #0D7E94',
         },
@@ -113,10 +136,10 @@ function FormDialog({ user }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary" className={classes.button}>
+                    <Button onClick={handleClose} color="primary" className={classes.buttonDialog}>
                         Отмена
                     </Button>
-                    <Button onClick={handleLog} color="primary" className={classes.button}>
+                    <Button onClick={handleLog} color="primary" className={classes.buttonDialog}>
                         Отправить
                     </Button>
                 </DialogActions>

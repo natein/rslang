@@ -27,8 +27,12 @@ const ReviewPage = ({ loader, review, onLoadReview }) => {
     return (
         <div className={classes.reviewCont}>
             {loader && <LoadingPage />}
-            {!loader && <LastReview review={review} />}
-            <FormDialog />
+            {!loader && (
+                <>
+                    <LastReview review={review} />
+                    <FormDialog />
+                </>
+            )}
         </div>
     );
 };

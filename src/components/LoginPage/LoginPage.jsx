@@ -1,4 +1,6 @@
 import { Button, Container, Link, makeStyles, TextField, Typography } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { common } from '@material-ui/core/colors';
 import { Alert } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import * as userActions from '../../actions/userActions';
@@ -20,10 +22,44 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginTop: theme.spacing(1),
     },
-    submit: {
+    button: {
         margin: theme.spacing(3, 0, 2),
+        color: 'white',
+        minWidth: 150,
+        fontWeight: 900,
+        boxShadow: '0px 2px 0px white',
+        border: '1px double white',
+        borderRadius: '10px',
+        fontFamily: 'Gilroy, Arial, sans-serif',
+        '&:focus': {
+            boxShadow: '0px 2px 0px white',
+        },
+        '&:hover': {
+            color: 'white',
+            border: '1px double white',
+            boxShadow: '0 3px 3px white',
+        },
+    },
+
+    input: {
+        color: 'white',
+        borderColor: 'white',
+        '& > fieldset': {
+            borderColor: 'white'
+        },
+        '& > .MuiInputLabel-root': {
+            color: 'white'
+        }
     },
 }));
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: common.white,
+        },
+    },
+});
 
 const LoginPage = ({ user, error, onLogin, loader }) => {
     const classes = useStyles();
@@ -53,35 +89,51 @@ const LoginPage = ({ user, error, onLogin, loader }) => {
     return (
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{ color: 'white' }}>
                     Вход в аккаунт
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        color="secondary"
-                        required
-                        fullWidth
-                        id="username"
-                        label="пользовательский email"
-                        autoFocus
-                        value={username}
-                        onChange={onInputChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        color="secondary"
-                        required
-                        fullWidth
-                        label="пароль"
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={onInputChange}
-                    />
-                    <Button type="submit" fullWidth variant="contained" color="secondary" className={classes.submit}>
+                    <ThemeProvider theme={theme}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            color="primary"
+                            required
+                            fullWidth
+                            id="username"
+                            label="пользовательский email"
+                            autoFocus
+                            value={username}
+                            onChange={onInputChange}
+                            classes={{
+                                root: classes.input,
+                            }}
+                            InputProps={{
+                                className: classes.input,
+                                focused: classes.input,
+                            }}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            color="primary"
+                            required
+                            fullWidth
+                            label="пароль"
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={onInputChange}
+                            classes={{
+                                root: classes.input,
+                            }}
+                            InputProps={{
+                                className: classes.input,
+                                focused: classes.input,
+                            }}
+                        />
+                    </ThemeProvider>
+                    <Button color="secondary" variant="outlined" className={classes.button} fullWidth type="submit">
                         Войти
                     </Button>
                     <Link

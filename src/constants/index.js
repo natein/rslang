@@ -69,8 +69,6 @@ export const SECTIONS_EBOOK = [
   },
 ];
 
-
-
 export const GAMES = {
   difficultyTitle: 'Сложность',
   timeout: 3000,
@@ -95,37 +93,35 @@ export const GAMES = {
     {
       code: 'savanna',
       name: 'Саванна',
-      description: 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
-      coverImage: '',
+      description: '«Саванна» - это тренировка которая развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь.',
       backgroundImage: SavannaBackground,
-      component: ''
+      minWords: 4
     },
-
     {
       code: 'audio',
       name: 'Аудиовызов',
-      coverImage: '',
+      description: '«Аудиовызов» - это тренировка, которая улучшает восприятие речи на слух.',
       backgroundImage: audio,
-      component: ''
+      help: [
+        'Используйте мышь, чтобы выбрать.', 'Используйте цифровые клавиши от 1 до 5 для выбора ответа', 'Используйте пробел для повтроного звучания слова', 'Используйте клавишу Enter для подсказки или для перехода к следующему слову'
+      ]
     },
-
     {
       code: 'sprint',
       name: 'Спринт',
-      coverImage: '',
+      description: '«Спринт» - это тренировка для повторения заученных слов из вашего словаря.',
       backgroundImage: sprintGame,
-      component: ''
+      help: [
+        'Используйте мышь, чтобы выбрать.', 'Используйте клавиши влево или вправо'
+      ]
     },
     {
       code: 'our-game',
       name: 'Своя игра',
-      coverImage: '',
       backgroundImage: ourGame,
-      component: ''
     }
   ]
 }
-
 
 export const SECTIONS_DICTIONARY = [
   {

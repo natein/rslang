@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Box } from '@material-ui/core/';
 import { GAMES } from '../../../constants/index';
+import PropTypes from 'prop-types';
 
 const SoundWrapper = styled(Box)`
     position: absolute;
@@ -41,6 +42,8 @@ function Sound({ setSound = (f) => f }) {
     );
 }
 
-Sound.propTypes = {};
+Sound.propTypes = {
+    setSound: PropTypes.func.isRequired,
+};
 
 export default Sound;

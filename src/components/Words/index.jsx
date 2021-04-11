@@ -69,6 +69,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center'
   },
+  wordMain: {
+    display: 'flex',
+    color: 'white',
+    alignItems: 'center'
+  },
   volume: {
     marginLeft: theme.spacing(1),
     cursor: 'pointer'
@@ -107,7 +112,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
       <Grid container>
         {
           wordsList.length === 0
-            ? <Typography component="h5" variant="h5" className={classes.word}>Не найдено слов</Typography>
+            ? <Typography component="h5" variant="h5" className={classes.wordMain}>Не найдено слов</Typography>
             : wordsList.map(word => (
               <Grid key={word._id} item xs={12} sm={12} md={12}>
                 <Card className={`${classes.root}`} variant="outlined">

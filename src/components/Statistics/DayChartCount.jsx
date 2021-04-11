@@ -1,15 +1,12 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
-import { Chart, ArgumentAxis, ValueAxis, AreaSeries, Title, Legend } from '@devexpress/dx-react-chart-material-ui';
+import { Chart, ArgumentAxis, ValueAxis, AreaSeries, Title, Legend, Tooltip } from '@devexpress/dx-react-chart-material-ui';
 
-import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
+import { ArgumentScale, Animation, EventTracker } from '@devexpress/dx-react-chart';
 import { scalePoint } from 'd3-scale';
 import { withStyles } from '@material-ui/core/styles';
 
-const data = [
-    { year: 'Start', allWord: 0, trueWord: 0 },
-    { year: 'Now', allWord: 190, trueWord: 90 },
-];
+const INITIAL_POINT = { date: 'Start', learnedWordsCount: 0, correctAnswersPercent: 0 };
 
 const chartRootStyles = {
     chart: {
@@ -50,8 +47,32 @@ export default class DayChartCount extends React.PureComponent {
         super(props);
 
         this.state = {
-            data,
+            data: [INITIAL_POINT, this.processGamesDayStatistics(props.data)],
         };
+    }
+
+    processGamesDayStatistics = (data) => {
+        const today = new Date().toLocaleDateString('ru-RU');
+        const result = Object.getOwnPropertyNames(data)
+            .filter((game) => data[game].lastChanged === today)
+            .reduce(
+                (accumulator, game) => ({
+                    learnedWordsCount: accumulator.learnedWordsCount + data[game].learnedWords,
+                    correctAnswersCount: accumulator.correctAnswersCount + data[game].correctAnswers,
+                    wrongAnswersCount: accumulator.wrongAnswersCount + data[game].wrongAnswers,
+                }),
+                { learnedWordsCount: 0, correctAnswersCount: 0, wrongAnswersCount: 0 },
+            );
+        result.date = 'Current';
+        result.correctAnswersPercent = Math.round(result.correctAnswersCount * 100 / (result.correctAnswersCount + result.wrongAnswersCount)) || 0;
+        return result;
+    };
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.data !== this.props.data) {
+            const data = [INITIAL_POINT, this.processGamesDayStatistics(this.props.data)];
+            this.setState({ data });
+        }
     }
 
     render() {
@@ -63,8 +84,8 @@ export default class DayChartCount extends React.PureComponent {
                     <ArgumentAxis />
                     <ValueAxis />
 
-                    <AreaSeries name="Изученные слова" valueField="allWord" argumentField="year" />
-                    <AreaSeries name="Правильные ответы" valueField="trueWord" argumentField="year" />
+                    <AreaSeries name="Правильные ответы(%)" valueField="correctAnswersPercent" argumentField="date" />
+                    <AreaSeries name="Изученные слова" valueField="learnedWordsCount" argumentField="date" />
                     <Animation />
                     <Legend
                         position="bottom"
@@ -73,6 +94,8 @@ export default class DayChartCount extends React.PureComponent {
                         labelComponent={LegendLabel}
                     />
                     <Title text="Общая дневная статистика" />
+                    <EventTracker />
+                    <Tooltip />
                 </Chart>
             </Paper>
         );

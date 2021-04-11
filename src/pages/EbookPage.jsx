@@ -13,7 +13,7 @@ function EbookPage({ location }) {
 
   return (
     <div>
-      <h1>Учебник</h1>
+      <h1 style={{ color: 'white' }}>Учебник</h1>
       <Ebook group={group} page={page} />
     </div>
   );
