@@ -79,15 +79,15 @@ export const getUserWordAgregate = (userId, token, group, page, isHard, isDelete
   }
 
   if (type === 'study') {
-    filter = `{ "$and": [{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord.optional.game": true }] }, { "userWord.optional.isDelete": null }] }`;
+    filter = `{ "$and": [{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord.optional.game": true }] }, { "userWord.optional.isDelete": null }, {"group": ${group - 1}}] }`;
   }
 
   if (type === 'hard') {
-    filter = `{ "$and": [{ "userWord.difficulty": "hard" }, { "userWord.optional.isDelete": null }] }`;
+    filter = `{ "$and": [{ "userWord.difficulty": "hard" }, { "userWord.optional.isDelete": null }, {"group": ${group - 1}}] }`;
   }
 
   if (type === 'delete') {
-    filter = `{ "$and": [{ "userWord.optional.isDelete": true }] }`;
+    filter = `{ "$and": [{ "userWord.optional.isDelete": true }, {"group": ${group - 1}}] }`;
   }
 
   return axios.get(url, {

@@ -79,8 +79,8 @@ function WordsStats({ word }) {
                     <TableCell component="th" scope="row">
                       {item.name}
                     </TableCell>
-                    <TableCell align="center">{word.userWord.optional[item.code]?.right ?? 0}</TableCell>
-                    <TableCell align="center">{word.userWord.optional[item.code]?.wrong ?? 0}</TableCell>
+                    <TableCell align="center">{word?.userWord?.optional[item.code]?.right ?? 0}</TableCell>
+                    <TableCell align="center">{word?.userWord?.optional[item.code]?.wrong ?? 0}</TableCell>
                   </TableRow>
                 )
               }

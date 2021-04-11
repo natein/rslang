@@ -170,7 +170,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                             </IconButton>
                           </Tooltip>
                         }
-                        {word.userWord && <WordsStats word={word} />}
+                        {<WordsStats word={word} />}
                       </>
                     }
                     {
@@ -189,7 +189,7 @@ function Words({ wordsList, audio, onChangeDifficulty, onDeleteWord, user, dicti
                             <PublishIcon />
                           </IconButton>
                         </Tooltip>
-                        <WordsStats word={word} />
+                        {<WordsStats word={word} />}
                       </>
                     }
 

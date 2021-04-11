@@ -54,11 +54,24 @@ function EbookPageMenu({ group, page, routeGroupPage, wordsGroupDelete }) {
   const handleClosePage = (page, type = '') => {
     setAnchorPage(null);
     if (page >= 1 && page <= EBOOK_COUNT_PAGES) {
+      let route = true;
       if (pages[page - 1] === COUNT_WORDS_ON_PAGE) {
-        if (type === 'next') page += 1;
-        if (type === 'prev') page -= 1;
+        if (type === 'next') {
+          if (page !== 30) page += 1;
+          else {
+            page = 29;
+            route = false;
+          }
+        }
+        if (type === 'prev') {
+          if (page !== 1) page -= 1;
+          else {
+            page = 2;
+            route = false;
+          }
+        }
       }
-      routeGroupPage(group, page);
+      if (route) routeGroupPage(group, page);
     }
   };
 

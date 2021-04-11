@@ -167,10 +167,8 @@ function Dashboard() {
                 <Container maxWidth="lg" style={{ minHeight: '100%', padding: '1rem' }}>
                     <Switch>
                         <Route path="/" component={HomePage} exact />
-                        <Route path="/ebook" component={EbookPage} exact />
-                        <Route path="/ebook/:group/:page" component={EbookPage} />
-                        <Route path="/dictionary" component={DictionaryPage} exact />
-                        <Route path="/dictionary/:type" component={DictionaryPage} />
+                        <Route path="/ebook" component={EbookPage} />
+                        <Route path="/dictionary" component={DictionaryPage} />
                         <Route path="/games" component={GamesPage} exact />
                         <Route path="/statistics" component={Statistics} />
                         <Route path="/about" component={AboutTeam} />

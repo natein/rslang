@@ -1,8 +1,15 @@
 import Ebook from '../components/Ebook';
 
-function EbookPage({ match: { params } }) {
-  const group = params.group ? +params.group : 1;
-  const page = params.page ? +params.page : 1;
+function EbookPage({ location }) {
+  const query = new URLSearchParams(location.search);
+  const groupQuery = +query.get('group');
+  const pageQuery = +query.get('page');
+
+  const page = pageQuery > 0 ? pageQuery : 1;
+  const group = groupQuery > 0 ? groupQuery : 1;
+
+  //const group = params.group ? +params.group : 1;
+  //const page = params.page ? +params.page : 1;
 
   return (
     <div>
