@@ -1,17 +1,28 @@
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
+import { makeStyles } from '@material-ui/core/styles';
 import { loadUserWordAgregate, deleteUserWord } from '../../actions/ebookActions';
+import Box from '@material-ui/core/Box';
 import Words from '../Words';
 import LoadingPage from '../LoadingPage';
-import DictionaryGroupMenu from '../WordsPanel/DictionaryGroupMenu';
 import GameMenu from '../WordsPanel/GameMenu';
 import Settings from '../WordsPanel/Settings';
 import DictionaryPageMenu from '../WordsPanel/DictionaryPageMenu';
+import DictionarySectionMenu from '../WordsPanel/DictionarySectionMenu';
+import DictionaryGroupMenu from '../WordsPanel/DictionaryGroupMenu';
 import { COUNT_WORDS_ON_PAGE } from '../../constants/index';
 import * as gameActions from '../../actions/gameActions';
 
+const useStyles = makeStyles((theme) => ({
+  section: {
+    marginBottom: '20px',
+  },
+}));
+
 function DictionaryContainer(props) {
+  const classes = useStyles();
+
   const {
     wordsList,
     loader,
@@ -19,33 +30,32 @@ function DictionaryContainer(props) {
     loadUserWordAgregate,
     deleteUserWord,
     type,
+    group,
+    page,
     totalCount,
     onGameStart
   } = props;
 
-  const [currentPage, setCurrentPage] = useState(1);
-
   const history = useHistory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const routeTypePage = useCallback((typeNext) => history.push(`/dictionary/${typeNext}`), [type]);
+
+  const routeType = useCallback((typeNext) => history.push(`/dictionary?type=${typeNext}`), [history]);
+  const routeGroup = useCallback((groupNext) => history.push(`/dictionary?type=${type}&group=${groupNext}`), [history, type]);
+  const routePage = useCallback((pageNext) => history.push(`/dictionary?type=${type}&group=${group}&page=${pageNext}`), [history, type, group]);
 
   const audio = useRef(new Audio());
 
   useEffect(() => {
-    loadUserWordAgregate(user.userId, user.token, null, null, false, false, type);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+    loadUserWordAgregate(user.userId, user.token, group, null, false, false, type);
+  }, [type, group, loadUserWordAgregate, user]);
 
   const onRecoverWord = (word) => {
     deleteUserWord(user.userId, word._id, user.token);
   }
 
   const countPages = Math.ceil(totalCount / COUNT_WORDS_ON_PAGE);
-  const indexOfLastPost = currentPage * COUNT_WORDS_ON_PAGE;
+  const indexOfLastPost = page * COUNT_WORDS_ON_PAGE;
   const indexOfFirstPost = indexOfLastPost - COUNT_WORDS_ON_PAGE;
   const currentPosts = wordsList.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const onGame = useCallback((gameId) => {
     onGameStart(wordsList);
@@ -55,11 +65,16 @@ function DictionaryContainer(props) {
   return (
     <>
       {loader && <LoadingPage />}
-      {<DictionaryGroupMenu {...props} routeTypePage={routeTypePage} setCurrentPage={setCurrentPage} />}
-      {<DictionaryPageMenu countPages={countPages} currentPage={currentPage} paginate={paginate} />}
-      {<GameMenu onGame={onGame} />}
-      {<Settings />}
-      {!loader && <Words {...props} wordsList={currentPosts} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
+      <Box className={classes.section}>
+        {<DictionarySectionMenu {...props} routeType={routeType} routePage={routePage} />}
+      </Box>
+      <Box>
+        {<DictionaryGroupMenu {...props} group={group} routeGroup={routeGroup} />}
+        {<DictionaryPageMenu countPages={countPages} page={page} routePage={routePage} />}
+        {<GameMenu onGame={onGame} />}
+        {<Settings />}
+        {!loader && <Words {...props} wordsList={currentPosts} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
+      </Box>
     </>
   );
 }

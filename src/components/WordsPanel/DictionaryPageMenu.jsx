@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DictionaryPageMenu({ currentPage, countPages, paginate }) {
+function DictionaryPageMenu({ page, countPages, paginate, routePage }) {
   const classes = useStyles();
   const [anchorPage, setAnchorPage] = useState(null);
 
@@ -50,7 +50,7 @@ function DictionaryPageMenu({ currentPage, countPages, paginate }) {
 
   const handleClosePage = (page) => {
     setAnchorPage(null);
-    if (page >= 1 && page <= countPages) paginate(page);
+    if (page >= 1 && page <= countPages) routePage(page);
   };
 
   return (
@@ -58,17 +58,17 @@ function DictionaryPageMenu({ currentPage, countPages, paginate }) {
       <ButtonGroup className={`${classes.button} ${classes.pageButton}`} variant="contained" aria-label="button group">
         <Button
           startIcon={<ChevronLeftIcon />}
-          onClick={() => handleClosePage(currentPage - 1)}></Button>
+          onClick={() => handleClosePage(page - 1)}></Button>
         <Button
           startIcon={<BookmarkBorderIcon />}
           aria-controls="page-menu"
           aria-haspopup="true"
           onClick={handleClickPage}>
-          Страница {currentPage}
+          Страница {page}
         </Button>
         <Button
           startIcon={<ChevronRightIcon />}
-          onClick={() => handleClosePage(currentPage + 1)}></Button>
+          onClick={() => handleClosePage(page + 1)}></Button>
       </ButtonGroup>
       <Menu
         id="page-menu"

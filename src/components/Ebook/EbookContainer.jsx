@@ -25,8 +25,8 @@ function EbookContainer(props) {
     wordsList
   } = props;
   const history = useHistory();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook/${groupNext}/${pageNext}`), [group]);
+
+  const routeGroupPage = useCallback((groupNext, pageNext) => history.push(`/ebook?group=${groupNext}&page=${pageNext}`), [history]);
 
   const audio = useRef(new Audio());
 

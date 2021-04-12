@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FolderIcon from '@material-ui/icons/Folder';
 import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
-import { SECTIONS_EBOOK } from '../../constants';
+import { SECTIONS_DICTIONARY } from '../../constants';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function DictionaryGroupMenu({ group, routeGroup }) {
+function DictionarySectionMenu({ type, routeType }) {
   const classes = useStyles();
   const [anchorSection, setAnchorSection] = useState(null);
 
@@ -50,16 +50,17 @@ function DictionaryGroupMenu({ group, routeGroup }) {
     setAnchorSection(event.currentTarget);
   };
 
-  const handleCloseSection = (group) => {
+  const handleCloseSection = (type) => {
     setAnchorSection(null);
-    if (group >= 1) routeGroup(group)
+    if (type) {
+      routeType(type);
+    }
   };
 
   return (
     <>
       <ButtonGroup>
         <Button
-          style={{ backgroundColor: `${SECTIONS_EBOOK[group - 1].backgroundBtn}` }}
           startIcon={<FolderOpenIcon />}
           className={classes.button}
           variant="contained"
@@ -67,7 +68,7 @@ function DictionaryGroupMenu({ group, routeGroup }) {
           aria-controls="section-menu"
           aria-haspopup="true"
           onClick={handleClickSection}>
-          {`${SECTIONS_EBOOK[group - 1].name}`}
+          {SECTIONS_DICTIONARY.find(item => item.type === type).name}
         </Button>
       </ButtonGroup>
       <Menu
@@ -79,12 +80,12 @@ function DictionaryGroupMenu({ group, routeGroup }) {
         onClose={() => handleCloseSection()}
       >
         {
-          SECTIONS_EBOOK.map(item =>
+          SECTIONS_DICTIONARY.map(item =>
             <MenuItem
-              key={item.group}
-              onClick={() => handleCloseSection(item.group + 1)}
+              key={item.type}
+              onClick={() => handleCloseSection(item.type)}
             >
-              <FolderIcon className={classes.menuItemSectionIcon} style={{ color: `${item.backgroundBtn}` }} /> {item.name}
+              <FolderIcon className={classes.menuItemSectionIcon} /> {item.name}
             </MenuItem>
           )
         }
@@ -93,4 +94,4 @@ function DictionaryGroupMenu({ group, routeGroup }) {
   );
 }
 
-export default DictionaryGroupMenu;
+export default DictionarySectionMenu;

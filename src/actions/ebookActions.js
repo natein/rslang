@@ -17,7 +17,7 @@ const GET_INITIAL_USER_WORD = (gameName) => ({
 
 const UPDATE_WORD_STATISTICS = (userWord, isCorrect, gameName) => {
   let wordStatistics;
-  if(userWord?.optional && userWord.optional[gameName]) {
+  if (userWord?.optional && userWord.optional[gameName]) {
     wordStatistics = userWord.optional[gameName];
   } else {
     wordStatistics = { right: 0, wrong: 0 };
@@ -30,7 +30,7 @@ const UPDATE_WORD_STATISTICS = (userWord, isCorrect, gameName) => {
   }
 
   if (!userWord.optional) {
-      userWord.optional = {};
+    userWord.optional = {};
   }
 
   userWord.optional[gameName] = wordStatistics;
@@ -111,43 +111,43 @@ export const loadUserDeleteWordAgregateInGroup = (userId, token, group = 0) => (
 }
 
 export const onUpdateUserWordStatistics = (wordId, isCorrect, gameName) => (dispatch, getState) => {
-  const {userId, token} = getState().user;
+  const { userId, token } = getState().user;
   const today = new Date().toLocaleDateString('ru-RU');
   return ebookService
-      .getUserWord(userId, wordId, token)
-      .then((userWord) => UPDATE_WORD_STATISTICS(userWord, isCorrect, gameName))
-      .then(async (userWord) => {
-          const updatedUserWord = {...userWord, optional: {...userWord, lastChanged: new Date().toLocaleDateString('ru-RU')}};
-          await ebookService
-              .updateUserWord(userId, wordId, updatedUserWord, updatedUserWord, token)
-              .then((data) => dispatch(setWordUser(data)))
-              .then(() => dispatch(onError()))
-              .catch((err) => {
-                  dispatch(onError(err.response ? err.response.data : err.message));
-              });
-          return userWord;
-      }).then((userWord) => {
-        return dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, today !== userWord.optional.lastChanged))
-      });
+    .getUserWord(userId, wordId, token)
+    .then((userWord) => UPDATE_WORD_STATISTICS(userWord, isCorrect, gameName))
+    .then(async (userWord) => {
+      const updatedUserWord = { ...userWord, optional: { ...userWord, lastChanged: new Date().toLocaleDateString('ru-RU') } };
+      await ebookService
+        .updateUserWord(userId, wordId, updatedUserWord, updatedUserWord, token)
+        .then((data) => dispatch(setWordUser(data)))
+        .then(() => dispatch(onError()))
+        .catch((err) => {
+          dispatch(onError(err.response ? err.response.data : err.message));
+        });
+      return userWord;
+    }).then((userWord) => {
+      return dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, today !== userWord.optional.lastChanged))
+    });
 };
 
 export const createUserWordWithStatistics = (wordId, isCorrect, gameName) => (
   dispatch, getState
 ) => {
-  const {userId, token} = getState().user;
+  const { userId, token } = getState().user;
   const userWord = UPDATE_WORD_STATISTICS(GET_INITIAL_USER_WORD(gameName), isCorrect, gameName);
   return ebookService
-      .createUserWord(userId, wordId, userWord, token)
-      .then((data) => dispatch(setWordUser(data)))
-      .then(() => dispatch(onError()))
-      .then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, true)))
-      .catch((err) => {
-          if (err.response?.status === 417) {
-              dispatch(onUpdateUserWordStatistics(wordId, isCorrect, gameName));
-          } else {
-              dispatch(onError(err.response ? err.response.data : err.message));
-          }
-      });
+    .createUserWord(userId, wordId, userWord, token)
+    .then((data) => dispatch(setWordUser(data)))
+    .then(() => dispatch(onError()))
+    .then(() => dispatch(statisticsActions.updateUserStatistics(isCorrect, gameName, true)))
+    .catch((err) => {
+      if (err.response?.status === 417) {
+        dispatch(onUpdateUserWordStatistics(wordId, isCorrect, gameName));
+      } else {
+        dispatch(onError(err.response ? err.response.data : err.message));
+      }
+    });
 };
 
 export const setWords = (words) => {
