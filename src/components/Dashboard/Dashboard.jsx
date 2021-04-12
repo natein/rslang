@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -31,7 +31,6 @@ import DictionaryPage from '../../pages/DictionaryPage';
 import backgroundImage from '../../assets/main_page.jpg';
 import NotFound from '../NotFound'
 import styled from 'styled-components';
-import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router';
 
 const drawerWidth = 240;
@@ -129,7 +128,7 @@ function Dashboard() {
         setOpen(!open);
     };
     const history = useHistory();
-    
+
     return (
         <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
