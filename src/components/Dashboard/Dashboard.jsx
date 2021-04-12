@@ -11,6 +11,7 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { mainListItems } from './listItems';
@@ -28,11 +29,19 @@ import ReviewPage from '../Review';
 import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
 import backgroundImage from '../../assets/main_page.jpg';
-import img from '../../assets/logo1.png';
 import NotFound from '../NotFound'
-
+import styled from 'styled-components';
+import { useRouteMatch } from 'react-router';
+import { useHistory } from 'react-router';
 
 const drawerWidth = 240;
+
+const Logo = styled(Typography)`
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.5rem;
+`;
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
@@ -119,7 +128,8 @@ function Dashboard() {
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
+    const history = useHistory();
+    
     return (
         <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
@@ -134,9 +144,9 @@ function Dashboard() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Link to="/">
-                        <img className={classes.logoPick} src={img} alt="RSlang" />
-                    </Link>
+                        <Logo onClick={() => history.push('/')} component='span'>
+                            RSlang
+                        </Logo>
                     <TransitionsModal />
                 </Toolbar>
             </AppBar>
