@@ -128,7 +128,7 @@ export default class DayChart extends React.PureComponent {
                     />
                     <BarSeries
                         name="Серия правильных ответов"
-                        valueField="longestSeriesOfCorrectAnswers"
+                        valueField="longestSeries"
                         argumentField="gameName"
                         color="#cd7f32"
                     />

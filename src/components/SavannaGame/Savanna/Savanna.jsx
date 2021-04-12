@@ -85,7 +85,7 @@ function Savanna({
     match,
     wordsList,
 }) {
-    const statistics = useRef({ words: [] });
+    const statistics = useRef({ words: [], longestSeries: 0 });
     const [isStarted, setIsStarted] = useState(false);
     const [finished, onFinish] = useState(false);
 
@@ -96,7 +96,7 @@ function Savanna({
         onFinish(false);
         setIsStarted(false);
         initLife();
-        statistics.current = { words: [] };
+        statistics.current = { words: [], longestSeries: 0 };
     };
 
     function setSoundHandle() {
@@ -114,7 +114,7 @@ function Savanna({
         initLife();
         setTimerHandle();
         setIsStarted(true);
-        statistics.current = { words: [] };
+        statistics.current = { words: [], longestSeries: 0 };
     }
 
     return (

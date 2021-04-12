@@ -57,7 +57,7 @@ const AudioCallPage = ({
     const classes = styles();
     const [finished, onFinish] = useState(false);
     const [ready, onReady] = useState(false);
-    const statistics = useRef({ words: [] });
+    const statistics = useRef({ words: [], longestSeries: 0});
     const gameRef = useRef();
     const history = useHistory();
 
@@ -71,7 +71,7 @@ const AudioCallPage = ({
         setGameWords([]);
         onFinish(false);
         onReady(false);
-        statistics.current = { words: [] };
+        statistics.current = { words: [], longestSeries: 0 };
     };
 
     useEffect(() => {
@@ -90,12 +90,12 @@ const AudioCallPage = ({
         }
     }, [match, setGameWords, history]);
 
-    const onAddWordToDictionary = (wordId, word, isCorrect) => {
+    const onAddWordToDictionary = (wordId, word, isCorrect, ) => {
         if (userId && token) {
             if (word.userWord) {
-                onUpdateUserWordStatistics(wordId, isCorrect);
+                onUpdateUserWordStatistics(wordId, isCorrect, statistics.current);
             } else {
-                onCreateUserWord(wordId, isCorrect);
+                onCreateUserWord(wordId, isCorrect, statistics.current);
             }
         }
     };
@@ -129,10 +129,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
     setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
-    onCreateUserWord: (wordId, isCorrect) =>
-        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'audio')),
-    onUpdateUserWordStatistics: (wordId, isCorrect) =>
-        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'audio')),
+    onCreateUserWord: (wordId, isCorrect, currentGameStatistics) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'audio', currentGameStatistics)),
+    onUpdateUserWordStatistics: (wordId, isCorrect, currentGameStatistics) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'audio', currentGameStatistics)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioCallPage);

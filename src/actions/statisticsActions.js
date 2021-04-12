@@ -27,7 +27,7 @@ const GET_INITIAL_STATISTICS = () => ({
     },
 });
 
-const updateStatistics = (statistics, isCorrect, game, isNewWord) => {
+const updateStatistics = (statistics, isCorrect, game, isNewWord, longestSeries = 0) => {
     const today = new Date().toLocaleDateString('ru-RU');
     statistics.learnedWords += isNewWord ? 1 : 0;
     const { wordStatistics, gameStatistics } = statistics.optional;
@@ -43,6 +43,7 @@ const updateStatistics = (statistics, isCorrect, game, isNewWord) => {
     gameInfo.learnedWords += isNewWord ? 1 : 0;
     gameInfo.correctAnswers += isCorrect ? 1 : 0;
     gameInfo.wrongAnswers += !isCorrect ? 1 : 0;
+    gameInfo.longestSeries = gameInfo.longestSeries < longestSeries ? longestSeries : gameInfo.longestSeries;
     gameStatistics[game] = gameInfo;
     statistics.id = undefined;
     return statistics;
@@ -56,8 +57,9 @@ export const getUserStatistics = () => (dispatch, getState) => {
         .catch((error) => {});
 };
 
-export const updateUserStatistics = (isCorrect, game, isNewWord) => (dispatch, getState) => {
+export const updateUserStatistics = (isCorrect, game, isNewWord, gameStatistics) => (dispatch, getState) => {
     const userInfo = getState().user;
+    console.log(gameStatistics);
     return statisticsService
         .getUserStatistics(userInfo.userId, userInfo.token)
         .catch((error) => {
@@ -66,7 +68,7 @@ export const updateUserStatistics = (isCorrect, game, isNewWord) => (dispatch, g
             }
             throw error;
         })
-        .then((statistics) => updateStatistics(statistics, isCorrect, game, isNewWord))
+        .then((statistics) => updateStatistics(statistics, isCorrect, game, isNewWord, gameStatistics.longestSeries))
         .then((statistics) => statisticsService.updateUserStatistics(userInfo.userId, userInfo.token, statistics))
         .catch((error) => console.log(error));
 };

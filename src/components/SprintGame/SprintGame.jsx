@@ -145,10 +145,12 @@ const SprintGame = ({ words = [], roundTime = ROUND_TIME, answerScore = ANSWER_S
             if (isAnswerCorrect) {
                 new Audio(success).play();
                 statistics.current.score += answerScore + bonus;
+                statistics.current.longestSeries += 1;
                 statistics.current.words.push({ ...current.info, correct: true });
                 setProgress(current => current + 1);
             } else {
                 new Audio(failed).play();
+                statistics.current.longestSeries = 0;
                 statistics.current.words.push({ ...current.info, correct: false });
                 setProgress(0);
                 setBonus(0);

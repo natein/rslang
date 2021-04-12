@@ -192,6 +192,7 @@ function ChooseWords({
                     const answerIdx = findAnswerIdx(inGameWords, answer);
                     setCorrect(answerIdx + 1);
                     statistics.current.words.push({ ...inGameWords[answerIdx], correct: false });
+                    statistics.current.longestSeries = 0;
 
                     setTimeout(() => {
                         animateOff();
@@ -200,7 +201,7 @@ function ChooseWords({
                         updateLifeCounter();
 
                         const word = inGameWords[answerIdx];
-                        onAddWordToDictionary(word.id, word, false);
+                        onAddWordToDictionary(word.id, word, false, statistics);
 
                         onFinish(counter === GAMES.lifes || inGameWords.length < game.minWords );
                     }, REFRESH);
@@ -249,7 +250,13 @@ function ChooseWords({
 
         const isCorrectClick = checkWord === answer;
 
-        onAddWordToDictionary(word.id, word, isCorrectClick);
+        if(isCorrectClick) {
+            statistics.current.longestSeries += 1;
+        } else {
+            statistics.current.longestSeries = 0;
+        }
+
+        onAddWordToDictionary(word.id, word, isCorrectClick, statistics.current);
 
         if (isCorrectClick) {
             setCorrect(parseFloat(wordIdx.innerText) + 1);

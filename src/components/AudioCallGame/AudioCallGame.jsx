@@ -226,9 +226,11 @@ const AudioCallGame = ({ words = [], statistics, onFinish, onAddWordToDictionary
       const isAnswerCorrect = currentWord.id === answerWord.id && !hint;
       if (isAnswerCorrect) {
         sound && new Audio(success).play();
+        statistics.current.longestSeries += 1;
         statistics.current.words.push({ ...currentWord, correct: true });
       } else {
         sound && new Audio(failed).play();
+        statistics.current.longestSeries = 0;
         statistics.current.words.push({ ...currentWord, correct: false });
       }
       setAnswer(answerWord);

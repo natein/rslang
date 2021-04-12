@@ -46,7 +46,7 @@ const SprintPage = ({
 }) => {
     const classes = styles();
     const [finished, onFinish] = useState(false);
-    const statistics = useRef({ score: 0, words: [] });
+    const statistics = useRef({ score: 0, words: [], longestSeries: 0 });
     const gameRef = useRef();
     const history = useHistory();
 
@@ -58,7 +58,7 @@ const SprintPage = ({
 
     const onNewGame = () => {
         onFinish(false);
-        statistics.current = { score: 0, words: [] };
+        statistics.current = { score: 0, words: [], longestSeries: 0 };
     };
 
     useEffect(() => {
@@ -72,9 +72,9 @@ const SprintPage = ({
     const onAddWordToDictionary = (wordId, word, isCorrect) => {
         if (userId && token) {
             if (word.userWord) {
-                onUpdateUserWordStatistics(wordId, isCorrect);
+                onUpdateUserWordStatistics(wordId, isCorrect, statistics.current);
             } else {
-                onCreateUserWord(wordId, isCorrect);
+                onCreateUserWord(wordId, isCorrect, statistics.current);
             }
         }
     };
@@ -107,10 +107,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onLoadWords: (group, page) => dispatch(gameActions.loadWords(group, page)),
     setGameWords: (words) => dispatch(gameActions.onWordsLoaded(words)),
-    onCreateUserWord: (wordId, isCorrect) =>
-        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'sprint')),
-    onUpdateUserWordStatistics: (wordId, isCorrect) =>
-        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'sprint')),
+    onCreateUserWord: (wordId, isCorrect, gameStatistics) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'sprint', gameStatistics)),
+    onUpdateUserWordStatistics: (wordId, isCorrect, gameStatistics) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'sprint', gameStatistics)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SprintPage);

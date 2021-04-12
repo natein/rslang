@@ -44,12 +44,12 @@ function SavannaPage({
         }
     }, [difficultyLvl, loadSavannaWords]);
 
-    const onAddWordToDictionary = (wordId, word, isCorrect) => {
+    const onAddWordToDictionary = (wordId, word, isCorrect, currentGameStatistics) => {
         if (userId && token) {
             if (word.userWord) {
-                onUpdateUserWordStatistics(wordId, isCorrect);
+                onUpdateUserWordStatistics(wordId, isCorrect, currentGameStatistics);
             } else {
-                onCreateUserWord(wordId, isCorrect);
+                onCreateUserWord(wordId, isCorrect, currentGameStatistics);
             }
         }
     };
@@ -83,10 +83,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     loadSavannaWords: (group) => dispatch(loadSavannaWords(group)),
-    onCreateUserWord: (wordId, isCorrect) =>
-        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'savanna')),
-    onUpdateUserWordStatistics: (wordId, isCorrect) =>
-        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'savanna')),
+    onCreateUserWord: (wordId, isCorrect, currentGameStatistics) =>
+        dispatch(userWordsActions.createUserWordWithStatistics(wordId, isCorrect, 'savanna', currentGameStatistics)),
+    onUpdateUserWordStatistics: (wordId, isCorrect, currentGameStatistics) =>
+        dispatch(userWordsActions.onUpdateUserWordStatistics(wordId, isCorrect, 'savanna', currentGameStatistics)),
 });
 
 SavannaPage.propTypes = {
