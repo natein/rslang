@@ -180,16 +180,19 @@ const OurGame = ({
 
     useEffect(() => {
         if(isAnswer) {
-            
-            if(curWord.word.toLowerCase() === answer.toLowerCase()) {
+            const isCorrect = curWord.word.toLowerCase() === answer.toLowerCase();
+            if(isCorrect) {
                 changeResultState(true);
                 new Audio(success).play();
                 statistics.current.words.push({ ...curWord, correct: true });
+                statistics.current.longestSeries += 1;
             } else {
                 changeResultState(false);
                 new Audio(failed).play();
                 statistics.current.words.push({ ...curWord, correct: false });
+                statistics.current.longestSeries = 0;
             }
+            onAddWordToDictionary(curWord.id, curWord, isCorrect);
         }
         setAnswer('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
