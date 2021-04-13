@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import { Chart, ArgumentAxis, ValueAxis, AreaSeries, Title, Legend, Tooltip } from '@devexpress/dx-react-chart-material-ui';
 
 import { ArgumentScale, Animation, EventTracker } from '@devexpress/dx-react-chart';
@@ -20,6 +19,7 @@ const legendStyles = {
         flexDirection: 'column',
         paddingTop: '0px',
         paddingBottom: '0px',
+        overflow: 'hidden'
     },
 };
 const legendLabelStyles = (theme) => ({
@@ -78,26 +78,24 @@ export default class DayChartCount extends React.PureComponent {
     render() {
         const { data: chartData } = this.state;
         return (
-            <Paper>
-                <Chart data={chartData} rootComponent={ChartRoot}>
-                    <ArgumentScale factory={scalePoint} />
-                    <ArgumentAxis />
-                    <ValueAxis />
+            <Chart data={chartData} rootComponent={ChartRoot}>
+                <ArgumentScale factory={scalePoint} />
+                <ArgumentAxis />
+                <ValueAxis />
 
-                    <AreaSeries name="Правильные ответы(%)" valueField="correctAnswersPercent" argumentField="date" />
-                    <AreaSeries name="Изученные слова" valueField="learnedWordsCount" argumentField="date" />
-                    <Animation />
-                    <Legend
-                        position="bottom"
-                        rootComponent={LegendRoot}
-                        itemComponent={LegendItem}
-                        labelComponent={LegendLabel}
-                    />
-                    <Title text="Общая дневная статистика" />
-                    <EventTracker />
-                    <Tooltip />
-                </Chart>
-            </Paper>
+                <AreaSeries name="Правильные ответы(%)" valueField="correctAnswersPercent" argumentField="date" />
+                <AreaSeries name="Изученные слова" valueField="learnedWordsCount" argumentField="date" />
+                <Animation />
+                <Legend
+                    position="bottom"
+                    rootComponent={LegendRoot}
+                    itemComponent={LegendItem}
+                    labelComponent={LegendLabel}
+                />
+                <Title text="Общая дневная статистика" />
+                <EventTracker />
+                <Tooltip />
+            </Chart>
         );
     }
 }
