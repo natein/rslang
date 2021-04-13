@@ -7,60 +7,60 @@ import natein from '../assets/team/natein.jpg';
 
 const team = [
   {
-    name: 'Aliaksei Bulhak',
+    name: 'Алексей Булгак',
     github: 'aleksei-bulgak-study',
     photo: aleksei,
-    role: 'Developer',
+    role: 'Разработчик',
     tasks: [
-      'Login/Signup pages including backend changes',
-      'Sprint game',
-      'Integrate statistic page with backend'
+      'Страница регистрации и логина',
+      'Страница "Статистика"',
+      'Игра "Спринт"',
+      'Создание API',
     ],
   },
   {
-    name: 'Alexandr Kudryavtsev',
+    name: 'Александр Кудрявцев',
     github: 'kvalexandr',
     photo: kvalexandr,
-    role: 'Developer',
+    role: 'Разработчик',
     tasks: [
-      'the leap into electronic',
-      'In the 1960s with',
-      'Aldus PageMaker including',
-      'Where does it come from?'
+      'Учебник и словарь',
+      'Игра «Аудио вызов»',
+      'Страница «Игры»',
+      'Создание API',
     ],
   },
   {
-    name: 'Nikolay Volzhenin',
+    name: 'Николай Волженин',
     github: 'Kvadeck',
     photo: kvadeck,
-    role: 'Developer',
+    role: 'Разработчик',
     tasks: [
-      'It is a long established fact',
-      'when an unknown printer',
-      'release of Letraset'
+      'Игра «Саванна»',
+      'Общие компоненты для игр',
+      'Страница «404»',
     ],
   },
   {
-    name: 'Ivan Mikhalchanka',
+    name: 'Иван Михальченко',
     github: 'spaceragga',
     photo: spaceragga,
-    role: 'Developer',
+    role: 'Разработчик',
     tasks: [
-      'the leap into electronic',
-      'In the 1960s with',
-      'Aldus PageMaker including',
-      'Where does it come from?'
+      'Дашборд, футер',
+      'Главная страница, описание проекта',
+      'Страница «Статистика»',
+      'Страница «Отзывы о проекте»',
     ],
   },
   {
-    name: 'Natalija Eina',
+    name: 'Наталья Эйн',
     github: 'natein',
     photo: natein,
-    role: 'Developer',
+    role: 'Разработчик',
     tasks: [
-      'It is a long established fact',
-      'when an unknown printer',
-      'release of Letraset'
+      'Страница «О команде»',
+      'Игра «Своя игра»',
     ],
   },
 ];
