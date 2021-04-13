@@ -277,7 +277,7 @@ const OurGame = ({
             <form className={classes.gameForm} noValidate autoComplete="off"
                 onSubmit={onAnswer}
             >
-                <TextField label="Insert word" variant="filled"
+                <TextField label="Введите слово" variant="filled"
                     className={inputStyle}
                     value={answer}
                     onChange={handleChangeAnswer}
@@ -285,13 +285,13 @@ const OurGame = ({
                 />
                 <Button className={enterStyle} 
                     onClick={onAnswer}
-                >Enter</Button>
+                >Ввод</Button>
             </form>
             <Button className={nextWordStyle}
                 ref={nextBtn}
                 onClick={onNextWord}
                 onKeyDown={handleKeyDown}
-            >Next Word</Button>
+            >Следующее слово</Button>
             <Crystal />
         </>
     );
