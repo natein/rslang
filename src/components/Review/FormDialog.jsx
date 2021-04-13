@@ -114,7 +114,7 @@ function FormDialog({ user }) {
                 className={classes.button}
                 disabled={!user.token}
             >
-                Оставить свой
+                { !user.token ? 'Авторизуйся' : 'Оставить свой' }
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Написать отзыв</DialogTitle>

@@ -8,7 +8,7 @@ import CardsAbout from './ModalAboutCard';
 import CardsVideo from './ModalAboutVideo';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     button: {
         color: 'dimgray',
         minWidth: 180,
@@ -35,6 +35,9 @@ const useStyles = makeStyles(() => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        [theme.breakpoints.down('sm')]: {
+            overflow: 'auto',
+        },
     },
     info: {
         textAlign: 'center',

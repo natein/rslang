@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     buttonCont: {
         padding: theme.spacing(2),
         paddingTop: '5rem',
+        textAlign: 'center',
     },
     title: {
         fontSize: '5rem',
@@ -63,6 +64,12 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
         textAlignLast: 'center',
+        [theme.breakpoints.down('sm')]: {
+            height: 600,
+            maxWidth: 350,
+            overflow: 'auto',
+            textAlign: 'center',
+        },
     },
 }));
 
@@ -112,7 +119,6 @@ function HomePage() {
                     className={classes.button}
                     component="a"
                     onClick={handleOpen}
-                    // href="/premium-themes/onepirate/sign-up/"
                 >
                     O проекте
                 </Button>

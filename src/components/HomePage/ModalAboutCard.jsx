@@ -11,7 +11,7 @@ import infoGame from '../../assets/about/InfoGame.png';
 import infoCont from '../../assets/about/infoCont.png';
 
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         width: 190,
         height: 'auto',
@@ -21,11 +21,14 @@ const useStyles = makeStyles({
     },
     cardMedia: {
         height: '100%',
+        [theme.breakpoints.down('sm')]: {
+            display: 'none',
+        },
     },
     cardCont: {
         padding: 5,
     },
-});
+}));
 
 const data = [
     {

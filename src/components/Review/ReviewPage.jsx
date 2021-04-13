@@ -10,9 +10,12 @@ import { loadReview } from '../../actions/reviewActions';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     reviewCont: {
         padding: '0 12em',
+        [theme.breakpoints.down('sm')]: {
+            padding: '0 0',
+        },
     },
 }));
 

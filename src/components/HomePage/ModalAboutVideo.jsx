@@ -1,6 +1,14 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 
+import { withStyles } from '@material-ui/core/styles';
+
+const useStyles = () => ({
+    main: {
+        display: 'contents',
+    },
+});
+
 const Loader = () => {
     return (
         <>
@@ -9,7 +17,7 @@ const Loader = () => {
     );
 };
 
-export default class Video extends React.Component {
+class Video extends React.Component {
     state = {
         videoIsLoading: true,
     };
@@ -28,8 +36,10 @@ export default class Video extends React.Component {
     };
 
     render() {
+        const { classes } = this.props;
+
         return (
-            <Box>
+            <Box className={classes.main}>
                 <iframe
                     title={'title'}
                     width="600px"
@@ -51,3 +61,5 @@ export default class Video extends React.Component {
         );
     }
 }
+
+export default withStyles(useStyles, { withTheme: true })(Video);
