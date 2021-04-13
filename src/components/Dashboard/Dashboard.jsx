@@ -25,6 +25,7 @@ import SprintPage from '../../pages/SprintPage';
 import GamesPage from '../../pages/GamesPage';
 import AudioCallPage from '../../pages/AudioCallPage';
 import SavannaPage from '../../pages/SavannaPage';
+import OurGamePage from '../../pages/OurGamePage';
 import ReviewPage from '../Review';
 import StatisticsPage from '../../pages/StatisticsPage';
 import DictionaryPage from '../../pages/DictionaryPage';
@@ -197,6 +198,7 @@ function Dashboard() {
                         <Route path="/games/sprint" component={SprintPage} />
                         <Route path="/games/audio" component={AudioCallPage} />
                         <Route path="/games/savanna" component={SavannaPage} />
+                        <Route path="/games/our-game" component={OurGamePage} />
                         <Route path="*" component={NotFound} />
                     </Switch>
                 </Container>
