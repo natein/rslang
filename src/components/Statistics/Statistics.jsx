@@ -19,25 +19,25 @@ function Statistics({ statistics, loadStatistics, clearStatistics }) {
     }, []);
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg">
             <Grid container spacing={3}>
-                <Grid item xs={12} md={8} lg={9}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+                <Grid item sx={12} sm={12} md={7} lg={9} style={{overflow: 'hidden'}}>
+                    <Paper>
                         <DayChart data={statistics?.optional?.gameStatistics}/>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={4} lg={3}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}>
+                <Grid item sx={12} sm={12} md={5} lg={3} style={{overflow: 'hidden'}}>
+                    <Paper>
                         <DayChartCount data={statistics?.optional?.gameStatistics || {}}/>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Grid item sx={12} sm={12} md={6} lg={6} style={{overflow: 'hidden'}}>
+                    <Paper>
                         <AllDayChart data={statistics?.optional?.wordStatistics || {}} />
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Grid item sx={12} sm={12} md={6} lg={6} style={{overflow: 'hidden'}}>
+                    <Paper>
                         <AllDayChartCount data={statistics?.optional?.wordStatistics || {}} learnedWords={statistics.learnedWords || 0}/>
                     </Paper>
                 </Grid>

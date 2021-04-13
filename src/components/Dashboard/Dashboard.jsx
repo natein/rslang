@@ -180,6 +180,7 @@ function Dashboard() {
                     width: '100%',
                     backgroundSize: '100% 100%',
                     backgroundAttachment: 'fixed',
+                    overflowY: 'hidden',
                 }}
                 className={classes.main}
             >

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import {
     Chart,
     ArgumentAxis,
@@ -21,6 +20,7 @@ const legendStyles = () => ({
         display: 'flex',
         margin: 'auto',
         flexDirection: 'row',
+        overflow: 'hidden'
     },
 });
 const legendLabelStyles = (theme) => ({
@@ -45,9 +45,7 @@ const Root = withStyles(legendStyles, { name: 'LegendRoot' })(legendRootBase);
 const Label = withStyles(legendLabelStyles, { name: 'LegendLabel' })(legendLabelBase);
 const Item = withStyles(legendItemStyles, { name: 'LegendItem' })(legendItemBase);
 const demoStyles = () => ({
-    chart: {
-        paddingRight: '20px',
-    },
+
     title: {
         whiteSpace: 'pre',
     },
@@ -134,24 +132,22 @@ class AllDayChartCount extends React.PureComponent {
         const { classes } = this.props;
 
         return (
-            <Paper>
-                <Chart data={chartData} className={classes.chart}>
-                    <ArgumentAxis tickFormat={format} />
-                    <ValueAxis labelComponent={ValueLabel} />
+            <Chart data={chartData} className={classes.chart}>
+                <ArgumentAxis tickFormat={format} />
+                <ValueAxis labelComponent={ValueLabel} />
 
-                    <LineSeries
-                        name="Общее кол-во изучаемых слов на определенный день"
-                        valueField="count"
-                        argumentField="date"
-                        seriesComponent={LineWithPoints}
-                    />
-                    <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
-                    <Title text={`Увеличение общего количества  ${'\n'}изученных слов`} textComponent={TitleText} />
-                    <Animation />
-                    <EventTracker />
-                    <Tooltip />
-                </Chart>
-            </Paper>
+                <LineSeries
+                    name="Общее кол-во изучаемых слов на определенный день"
+                    valueField="count"
+                    argumentField="date"
+                    seriesComponent={LineWithPoints}
+                />
+                <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
+                <Title text={`Увеличение общего количества  ${'\n'}изученных слов`} textComponent={TitleText} />
+                <Animation />
+                <EventTracker />
+                <Tooltip />
+            </Chart>
         );
     }
 }

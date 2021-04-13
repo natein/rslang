@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import {
     Chart,
     ArgumentAxis,
@@ -61,6 +60,7 @@ const legendStyles = () => ({
         flexDirection: 'column',
         paddingTop: '0px',
         paddingBottom: '0px',
+        overflow: 'hidden'
     },
 });
 const legendRootBase = ({ classes, ...restProps }) => <Legend.Root {...restProps} className={classes.root} />;
@@ -109,37 +109,35 @@ export default class DayChart extends React.PureComponent {
         const { data: chartData } = this.state;
 
         return (
-            <Paper>
-                <Chart data={chartData}>
-                    <ArgumentAxis />
-                    <ValueAxis />
+            <Chart data={chartData}>
+                <ArgumentAxis />
+                <ValueAxis />
 
-                    <BarSeries
-                        name="Изученные слова"
-                        valueField="learnedWords"
-                        argumentField="gameName"
-                        color="#ffd700"
-                    />
-                    <BarSeries
-                        name="Правильные ответы(%)"
-                        valueField="correctAnswersPercent"
-                        argumentField="gameName"
-                        color="#c0c0c0"
-                    />
-                    <BarSeries
-                        name="Серия правильных ответов"
-                        valueField="longestSeries"
-                        argumentField="gameName"
-                        color="#cd7f32"
-                    />
-                    <Animation />
-                    <Legend position="bottom" rootComponent={Root} labelComponent={Label} />
-                    <Title text={`Дневная статистика на ${new Date().toLocaleDateString()}`} />
-                    <Stack />
-                    <EventTracker />
-                    <Tooltip />
-                </Chart>
-            </Paper>
+                <BarSeries
+                    name="Изученные слова"
+                    valueField="learnedWords"
+                    argumentField="gameName"
+                    color="#ffd700"
+                />
+                <BarSeries
+                    name="Правильные ответы(%)"
+                    valueField="correctAnswersPercent"
+                    argumentField="gameName"
+                    color="#c0c0c0"
+                />
+                <BarSeries
+                    name="Серия правильных ответов"
+                    valueField="longestSeries"
+                    argumentField="gameName"
+                    color="#cd7f32"
+                />
+                <Animation />
+                <Legend position="bottom" rootComponent={Root} labelComponent={Label} />
+                <Title text={`Дневная статистика на ${new Date().toLocaleDateString()}`} />
+                <Stack />
+                <EventTracker />
+                <Tooltip />
+            </Chart>
         );
     }
 }

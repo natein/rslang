@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
 import {
     Chart,
     ArgumentAxis,
@@ -21,6 +20,7 @@ const legendStyles = () => ({
         display: 'flex',
         margin: 'auto',
         flexDirection: 'row',
+        overflow: 'hidden'
     },
 });
 const legendLabelStyles = (theme) => ({
@@ -123,25 +123,23 @@ class AllDayChart extends React.PureComponent {
         const { classes } = this.props;
 
         return (
-            <Paper>
-                <Chart data={chartData} className={classes.chart}>
-                    <ArgumentAxis tickFormat={format}/>
-                    <ValueAxis labelComponent={ValueLabel}/>
+            <Chart data={chartData} className={classes.chart}>
+                <ArgumentAxis tickFormat={format}/>
+                <ValueAxis labelComponent={ValueLabel}/>
 
-                    <LineSeries
-                        name="Количесто изученных слов в день"
-                        valueField="words"
-                        argumentField="date"
-                        color="red"
-                        seriesComponent={LineWithPoints}
-                    />
-                    <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
-                    <Title text={`Изученные слова за ${'\n'}каждый день`} textComponent={TitleText} />
-                    <Animation />
-                    <EventTracker />
-                    <Tooltip />
-                </Chart>
-            </Paper>
+                <LineSeries
+                    name="Количесто изученных слов в день"
+                    valueField="words"
+                    argumentField="date"
+                    color="red"
+                    seriesComponent={LineWithPoints}
+                />
+                <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
+                <Title text={`Изученные слова за ${'\n'}каждый день`} textComponent={TitleText} />
+                <Animation />
+                <EventTracker />
+                <Tooltip />
+            </Chart>
         );
     }
 }
