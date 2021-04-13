@@ -192,6 +192,7 @@ const OurGame = ({
             }
         }
         setAnswer('');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAnswer, statistics, currentIdx, curWord]);
 
     const handleChangeAnswer = (evt) => {
@@ -199,20 +200,18 @@ const OurGame = ({
     };
 
     const onAnswer = (evt) => {
-        setAnswerState(true);
-        if (nextBtn.current) {
-            nextBtn.current.focus();
-        }
-    };
-
-    const onSubmitForm = (evt) => {
         evt.preventDefault();
         setAnswerState(true);
     };
 
+    useEffect(() => {
+        nextBtn.current.focus();
+    }, [isAnswer]);
+
     const handleKeyDown = (evt) => {
+        evt.preventDefault();
         const RETURN_CODE = 13;
-        if (evt.keyCode === RETURN_CODE) {
+        if (evt.keyCode === RETURN_CODE || evt.which === RETURN_CODE) {
             onNextWord();
         }
     };
@@ -253,7 +252,6 @@ const OurGame = ({
     
     const letterWordClass = `${classes.wordLetterBox} ${classes[sizeClass]}`;
 
-    console.log(containerWidth);
     const lettersBoxes = curWord.word.split('').map((item, idx) => {
         return (
         <Box className={letterWordClass} key={idx.toString()} >
@@ -274,7 +272,7 @@ const OurGame = ({
             </Box>
             <Typography className={resultStyle}>{result}</Typography>
             <form className={classes.gameForm} noValidate autoComplete="off"
-                onSubmit={onSubmitForm}
+                onSubmit={onAnswer}
             >
                 <TextField label="Insert word" variant="filled"
                     className={inputStyle}
@@ -283,12 +281,12 @@ const OurGame = ({
                     inputRef={input => input && input.focus()}
                 />
                 <Button className={enterStyle} 
-                    onClick={() => onAnswer()}
+                    onClick={onAnswer}
                 >Enter</Button>
             </form>
             <Button className={nextWordStyle}
                 ref={nextBtn}
-                onClick={() => onNextWord()}
+                onClick={onNextWord}
                 onKeyDown={handleKeyDown}
             >Next Word</Button>
             <Crystal />
@@ -307,6 +305,5 @@ const Timer = ({ currentTime, initialTime }) => {
         </Box>
     );
 };
-
 
 export default OurGame;
