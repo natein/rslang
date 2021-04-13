@@ -21,7 +21,7 @@ export const DEVELOPERS = [
     "github": "https://github.com/Kvadeck"
   },
   {
-    "fullname": "Наталия Натеин",
+    "fullname": "Наталья Эйн",
     "github": "https://github.com/natein"
   },
   {
