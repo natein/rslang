@@ -13,6 +13,7 @@ import DictionarySectionMenu from '../WordsPanel/DictionarySectionMenu';
 import DictionaryGroupMenu from '../WordsPanel/DictionaryGroupMenu';
 import { COUNT_WORDS_ON_PAGE } from '../../constants/index';
 import * as gameActions from '../../actions/gameActions';
+import WordsStatsPage from '../WordsStats/WordsStatsPage';
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -73,6 +74,7 @@ function DictionaryContainer(props) {
         {<DictionaryPageMenu countPages={countPages} page={page} routePage={routePage} />}
         {<GameMenu onGame={onGame} />}
         {<Settings />}
+        {type === 'study' && <WordsStatsPage words={wordsList} />}
         {!loader && <Words {...props} wordsList={currentPosts} audio={audio} dictionary={true} onRecoverWord={onRecoverWord} />}
       </Box>
     </>
