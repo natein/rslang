@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     caption: {
       textAlign: 'center',
-      color: 'white',
       marginBottom: '40px',
     },
     card: {

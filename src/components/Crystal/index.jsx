@@ -10,6 +10,9 @@ const CrystalWrapper = styled(Box)`
     width: 114px;
     height: 114px;
     margin: -57px 0 0 -57px;
+    @media (max-width: 1280px) {
+        display: none;
+    }
 `;
 const CrystalImgMove = styled(Box)`
     display: block;

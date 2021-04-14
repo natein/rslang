@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import { Typography } from '@material-ui/core'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import { connect } from 'react-redux';
@@ -14,6 +14,11 @@ import { onSetReview } from '../../actions/reviewActions';
 import { putReview } from '../../api/reviewService';
 
 const useStyles = makeStyles(() => ({
+
+    authText: {
+        color: 'red',
+        marginBottom: '16px'
+    },
     button: {
         color: 'white',
         minWidth: 150,
@@ -107,15 +112,12 @@ function FormDialog({ user }) {
 
     return (
         <div className={classes.mainForm}>
-            <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleClickOpen}
-                className={classes.button}
-                disabled={!user.token}
-            >
-                { !user.token ? 'Авторизуйся' : 'Оставить свой' }
-            </Button>
+
+            {!user.token
+                ? <Typography className={classes.authText} component="p">Чтобы оставить отзыв необходимо авторизоваться</Typography>
+                : <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.button}>  Оставить отзыв</Button>
+            }
+
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Написать отзыв</DialogTitle>
                 <DialogContent>

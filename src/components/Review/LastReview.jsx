@@ -6,7 +6,7 @@ function LastReview({ review }) {
 
     return (
         <div style={{ padding: 14, marginBottom: '16px' }} className="App">
-            <h1 style={{ color: 'white' }}>Отзывы о проекте</h1>
+            <h1>Отзывы о проекте</h1>
             {review.map((review) => {
                 return (
                     <Paper key={review._id} style={{ padding: '40px 20px', marginBottom: 10 }}>

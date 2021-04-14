@@ -1,5 +1,13 @@
 import Dictionary from '../components/Dictionary';
 import { useSelector } from 'react-redux';
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  ebookTitle: {
+    marginBottom: '10px'
+  },
+}));
 
 function DictionaryPage({ location, match: { params } }) {
   const user = useSelector(state => state.user);
@@ -13,12 +21,17 @@ function DictionaryPage({ location, match: { params } }) {
   const page = pageQuery ? +pageQuery : 1;
   const group = groupQuery ? +groupQuery : 1;
 
+  const classes = useStyles();
+
   return (
-    <div>
-      <h1 style={{ color: 'white' }}>Словарь</h1>
+    <>
+      <Typography className={classes.ebookTitle} variant="h4" component="h1">
+          Словарь
+      </Typography>
+
       {user.token && <Dictionary type={type} page={page} group={group} />}
-      {!user.token && <div style={{ color: 'white' }}>Необходимо авторизоваться</div>}
-    </div>
+      {!user.token && <Typography  component="p">Необходимо авторизоваться</Typography>}
+    </>
   );
 }
 

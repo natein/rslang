@@ -8,12 +8,9 @@ function EbookPage({ location }) {
   const page = pageQuery > 0 ? pageQuery : 1;
   const group = groupQuery > 0 ? groupQuery : 1;
 
-  //const group = params.group ? +params.group : 1;
-  //const page = params.page ? +params.page : 1;
-
   return (
     <div>
-      <h1 style={{ color: 'white' }}>Учебник</h1>
+      <h1>Учебник</h1>
       <Ebook group={group} page={page} />
     </div>
   );

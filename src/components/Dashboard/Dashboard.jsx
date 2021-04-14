@@ -111,6 +111,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        margin: '4rem auto 0',
+        width: '100%',
+        backgroundSize: '100% 100%',
+        backgroundAttachment: 'fixed',
+        overflowY: 'hidden',
     },
     logoPick: {
         width: '130px',
@@ -127,8 +132,12 @@ function Dashboard() {
     const toggleDrawer = () => {
         setOpen(!open);
     };
+
     const history = useHistory();
 
+    const pathname = history.location.pathname;
+    const backgroundRoutes =  pathname === '/' || pathname === '/games'
+    
     return (
         <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
@@ -143,8 +152,8 @@ function Dashboard() {
                     >
                         <MenuIcon />
                     </IconButton>
-                        <Logo onClick={() => history.push('/')} component='span'>
-                            RSlang
+                    <Logo onClick={() => history.push('/')} component='span'>
+                        RSlang
                         </Logo>
                     <TransitionsModal />
                 </Toolbar>
@@ -174,14 +183,8 @@ function Dashboard() {
                     height: '100vh',
                     overflow: 'auto',
                 }}
-                style={{
-                    backgroundImage: `url(${backgroundImage})`,
-                    margin: '4rem auto 0',
-                    width: '100%',
-                    backgroundSize: '100% 100%',
-                    backgroundAttachment: 'fixed',
-                    overflowY: 'hidden',
-                }}
+
+                style={ backgroundRoutes ? { backgroundImage: `url(${backgroundImage})` } : null}
                 className={classes.main}
             >
                 <Container maxWidth="lg" style={{ minHeight: '100%', padding: '1rem' }}>
@@ -202,7 +205,7 @@ function Dashboard() {
                     </Switch>
                 </Container>
             </Box>
-        </Box>
+        </Box >
     );
 }
 
