@@ -58,7 +58,6 @@ const styles = makeStyles((theme) => ({
     },     
     wordLetter: {
         fontSize: '40px',
-        fontWeight: 'black',
         color: '#000',
     },
     gameForm: {
@@ -196,7 +195,7 @@ const OurGame = ({
         }
         setAnswer('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAnswer, statistics, currentIdx, curWord]);
+    }, [isAnswer, statistics, curWord]);
 
     const handleChangeAnswer = (evt) => {
         setAnswer(evt.target.value);
