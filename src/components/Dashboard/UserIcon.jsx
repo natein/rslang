@@ -13,7 +13,6 @@ import * as userActions from '../../actions/userActions';
 const useStyles = makeStyles(() => ({
     loginBtn: {
         marginLeft: '10px',
-        color: 'white',
     },
     avatar: {
         width: '2rem',

@@ -33,11 +33,12 @@ import backgroundImage from '../../assets/main_page.jpg';
 import NotFound from '../NotFound'
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 const drawerWidth = 240;
 
 const Logo = styled(Typography)`
-    color: white;
+    color: grey;
     font-weight: bold;
     cursor: pointer;
     font-size: 1.5rem;
@@ -47,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
         justifyContent: 'space-between',
-        backgroundColor: 'tomato',
         opacity: '0.9',
     },
     toolbarIcon: {
@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        backgroundColor: '#ebebeb',
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
     },
     menuButton: {
         marginRight: 36,
+        color: 'rgba(0, 0, 0, 0.54)'
     },
     menuButtonHidden: {
         display: 'none',
@@ -127,9 +129,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Dashboard() {
+function Dashboard(props) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -137,8 +139,8 @@ function Dashboard() {
     const history = useHistory();
 
     const pathname = history.location.pathname;
-    const backgroundRoutes =  pathname === '/' || pathname === '/games'
-    
+    const backgroundRoutes = pathname === '/' || pathname === '/games'
+
     return (
         <Box style={{ display: 'flex', flexGrow: 1 }}>
             <CssBaseline />
@@ -153,14 +155,15 @@ function Dashboard() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Logo onClick={() => history.push('/')} component='span'>
+                    <Logo onClick={() => history.push('/')} component='span' className={classes.logo}>
                         RSlang
-                        </Logo>
+                    </Logo>
                     <TransitionsModal />
                 </Toolbar>
             </AppBar>
             <Drawer
-                variant="permanent"
+                variant={isWidthUp('sm', props.width) ? 'permanent' : 'temporary'}
+                onClose={toggleDrawer}
                 classes={{
                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
                 }}
@@ -185,7 +188,7 @@ function Dashboard() {
                     overflow: 'auto',
                 }}
 
-                style={ backgroundRoutes ? { backgroundImage: `url(${backgroundImage})` } : null}
+                style={backgroundRoutes ? { backgroundImage: `url(${backgroundImage})` } : null}
                 className={classes.main}
             >
                 <Container maxWidth="lg" style={{ minHeight: '100%', padding: '1rem' }}>
@@ -211,4 +214,4 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+export default withWidth()(Dashboard);

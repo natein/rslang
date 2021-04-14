@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
   },
   wordMain: {
     display: 'flex',
-    color: 'white',
     alignItems: 'center'
   },
   volume: {
