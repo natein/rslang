@@ -53,9 +53,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^.+\\.(css|less|scss|svg)$": "babel-jest"
-    },
-    "collectCoverage": true
+      "^.+\\.(css|less|scss|svg|png)$": "babel-jest"
+    }
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.6"
