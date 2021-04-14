@@ -11,8 +11,7 @@
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
+    "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "prop-types": "^15.7.2",
@@ -51,5 +50,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss|svg|png)$": "babel-jest"
+    }
+  },
+  "devDependencies": {
+    "@testing-library/react": "^11.2.6"
   }
 }
