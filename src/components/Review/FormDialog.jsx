@@ -19,31 +19,24 @@ const useStyles = makeStyles(() => ({
         color: 'red',
         marginBottom: '16px'
     },
-    button: {
-        // color: 'white',
-        minWidth: 150,
-        fontWeight: 900,
-        margin: '1rem',
-        borderRadius: '10px 10px 10px 10px',
-        fontFamily: 'Gilroy, Arial, sans-serif',
-    },
     buttonDialog: {
-        color: '#0D7E94',
-        minWidth: 150,
-        margin: '1rem',
-        boxShadow: '0px 2px 0px #0D7E94',
-        border: '1px double #0D7E94',
-        borderRadius: '15px 15px 15px 15px',
-        fontFamily: 'Gilroy, Arial, sans-serif',
-        '&:focus': {
-            boxShadow: '0px 2px 0px #0D7E94',
+            color: 'dimgray',
+            minWidth: 180,
+            fontWeight: 900,
+            margin: '0.4rem',
+            boxShadow: '0px 2px 0px dimgray',
+            border: '1px double dimgray',
+            borderRadius: '10px 10px 10px 10px',
+            fontFamily: 'Gilroy, Arial, sans-serif',
+            '&:focus': {
+                boxShadow: '0px 2px 0px black',
+            },
+            '&:hover': {
+                color: 'black',
+                border: '1px double darkslategray',
+                boxShadow: '0 3px 3px black',
+            },
         },
-        '&:hover': {
-            color: '#0D7E94',
-            border: '1px double #0D7E94',
-            boxShadow: '0 5px 5px #0D7E94',
-        },
-    },
     mainForm: {
         textAlign: 'center',
     },
@@ -100,7 +93,7 @@ function FormDialog({ user }) {
 
             {!user.token
                 ? <Typography className={classes.authText} component="p">Чтобы оставить отзыв необходимо авторизоваться</Typography>
-                : <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.button}>  Оставить отзыв</Button>
+                : <Button variant="outlined" color="primary" onClick={handleClickOpen} className={classes.buttonDialog}>  Оставить отзыв</Button>
             }
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

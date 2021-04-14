@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '10px 10px 10px 10px',
         fontFamily: 'Gilroy, Arial, sans-serif',
         '&:focus': {
-            boxShadow: '0px 2px 0px darkslategray',
+            boxShadow: '0px 2px 0px black',
         },
         '&:hover': {
             color: 'black',
             border: '1px double darkslategray',
-            boxShadow: '0 3px 3px darkslategray',
+            boxShadow: '0 3px 3px black',
         },
     },
     contAbout: {
