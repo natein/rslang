@@ -72,7 +72,7 @@ function AboutTeam({ team }) {
             <Grid container spacing={4}>
                 {team.map((dev) => (
                     <Grid item xs={12} sm={12} md={6} lg={4} key={dev.github} >
-                        <Card className={classes.root}>                            
+                        <Card className={`${classes.root} developer`}>                            
                             <CardMedia
                                 component="img"
                                 alt={dev.name}
