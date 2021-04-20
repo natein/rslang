@@ -1,7 +1,7 @@
 # RS Lang
 Application for learning English language.
 
-# [UI part of application]()
+# [UI part of application](https://rslang-team15-natein.netlify.app)
 
 Stack:
 - react
@@ -53,11 +53,6 @@ Application will start at port 3001
 Additionaly you need to create `.env` file in backend application root directory and specify such variables in it:
 
 ```
-DATABASE_USER=admin
-DATABASE_PASSWORD=admin
-DATABASE_URL=mongodb+srv://admin:password@travel-app.url.mongodb.net/travel-app
-SECRET=superSecretPassword
-
 MONGO_CONNECTION_STRING=mongodb+srv://databaseUserName:password@cluster0.ucess.mongodb.net/learnwords
 JWT_SECRET_KEY=jwtSecretKey
 JWT_REFRESH_SECRET_KEY=refreshSecretKey
