@@ -6,7 +6,7 @@ import {
     makeStyles,
     Typography,
 } from '@material-ui/core';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Crystal from '../Crystal';
 import success from '../../assets/sounds/correct.mp3';
 import failed from '../../assets/sounds/wrong.mp3';
@@ -129,10 +129,6 @@ const OurGame = ({
     onAddWordToDictionary
 }) => {
     const classes = styles();
-    
-    const randomizedWords = [].concat(words)
-        .sort((a,b) => Math.random() > 0.5);
-
     const nextBtn = useRef();
     const cont = useRef();
     const [timer, setTimer] = useState(roundTime);
@@ -141,6 +137,7 @@ const OurGame = ({
     const [answer, setAnswer] = useState('');
     const [isAnswer, setAnswerState] = useState(false);
     const [isCorrect, changeResultState] = useState(false);
+    const randomizedWords = useMemo(() => [].concat(words).sort((a, b) => Math.random() > 0.5), [words]);
 
     const curWord = (currentIdx > randomizedWords.length - 1)
       ? randomizedWords[randomizedWords.length - 1]
