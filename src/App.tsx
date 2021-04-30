@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import Footer from './components/Footer';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App({ onUserTokenUpdate }) {
+const App: React.FC<{onUserTokenUpdate: () => void }> = ({ onUserTokenUpdate }) => {
     const classes = useStyles();
     const location = useLocation();
 
@@ -40,8 +41,8 @@ function App({ onUserTokenUpdate }) {
     );
 }
 
-const mapDispatchToProps = (dispach) => ({
-    onUserTokenUpdate: () => dispach(userActions.updateToken()),
+const mapDispatchToProps = (dispatch: any) => ({
+    onUserTokenUpdate: () => dispatch(userActions.updateToken()),
 });
 
 export default connect(null, mapDispatchToProps)(App);
