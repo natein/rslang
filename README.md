@@ -7,6 +7,7 @@ Stack:
 - react
 - redux
 - react-router
+- typescript
 
 Styling:
 - material-ui
