@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,200;0,400;0,500;0,700;0,900;1,200;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Grandstander', cursive;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@keyframes animate-vertical {
+    0% {
+        transform: translate(0);
+    }
+
+    23% {
+        transform: translateY(-6px);
+    }
+
+    25% {
+        transform: translateY(-7px);
+    }
+
+    28% {
+        transform: translateY(-6px);
+    }
+
+    50% {
+        transform: translate(0);
+    }
+
+    72% {
+        transform: translateY(6px);
+    }
+
+    75% {
+        transform: translateY(7px);
+    }
+
+    78% {
+        transform: translateY(6px);
+    }
+
+    to {
+        transform: translate(0);
+    }
+}
+
+@keyframes rotate-animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+@keyframes animate-image {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    35% {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+@keyframes animate-point1 {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    10% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    65% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+@keyframes animate-point2 {
+    0% {
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+
+    10% {
+        opacity: 1;
+        transform: rotate(-20deg);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 0;
+        transform: rotate(-90deg);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes animate-point6 {
+    0% {
+        opacity: 0;
+        transform: rotate(-20deg);
+    }
+
+    10% {
+        opacity: 1;
+        transform: rotate(-20deg);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 0;
+        transform: rotate(-110deg);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotate(-20deg);
+    }
+}
+
+@keyframes animate-point8 {
+    0% {
+        opacity: 0;
+        transform: rotate(-90deg);
+    }
+
+    10% {
+        opacity: 1;
+        transform: rotate(-90deg);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 0;
+        transform: rotate(-180deg);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotate(-90deg);
+    }
+}
